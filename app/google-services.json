@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "345521301448",
+    "project_id": "filmaccio",
+    "storage_bucket": "filmaccio.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:345521301448:android:371c52036ee16fa1ac82fd",
+        "android_client_info": {
+          "package_name": "it.univpm.filmaccio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "345521301448-nqilj1b09jveh07teotr4vam7hjdjape.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBsv7bFz-YugncqP4CUdlc0ICcDHiMTdo8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "345521301448-nqilj1b09jveh07teotr4vam7hjdjape.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
