@@ -20,7 +20,7 @@ class LoginFragment : Fragment() {
 
         regEmailButton = view.findViewById<Button>(R.id.buttonRegEmail)
 
-        regEmailButton.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_regFragment)}
+        regEmailButton.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_regPrimaFragment)}
 
         return view
     }

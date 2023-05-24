@@ -11,16 +11,28 @@
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
-            android:id="@+id/action_loginFragment_to_regFragment"
-            app:destination="@id/regFragment" />
+            android:id="@+id/action_loginFragment_to_regPrimaFragment"
+            app:destination="@id/regPrimaFragment" />
     </fragment>
     <fragment
-        android:id="@+id/regFragment"
-        android:name="it.univpm.filmaccio.RegFragment"
+        android:id="@+id/regPrimaFragment"
+        android:name="it.univpm.filmaccio.RegPrimaFragment"
         android:label="fragment_reg"
-        tools:layout="@layout/fragment_reg" >
+        tools:layout="@layout/fragment_reg_prima" >
         <action
-            android:id="@+id/action_regFragment_to_loginFragment"
+            android:id="@+id/action_regPrimaFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
+        <action
+            android:id="@+id/action_regPrimaFragment_to_regSecondaFragment"
+            app:destination="@id/regSecondaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/regSecondaFragment"
+        android:name="it.univpm.filmaccio.RegSecondaFragment"
+        android:label="fragment_reg_seconda"
+        tools:layout="@layout/fragment_reg_seconda" >
+        <action
+            android:id="@+id/action_regSecondaFragment_to_regPrimaFragment"
+            app:destination="@id/regPrimaFragment" />
     </fragment>
 </navigation>

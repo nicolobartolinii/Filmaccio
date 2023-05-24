@@ -35,4 +35,9 @@
     <string name="_1_su_3" tools:ignore="TypographyFractions">1/3</string>
     <string name="_2_su_3">2/3</string>
     <string name="_3_su_3">3/3</string>
+    <string name="seleziona_il_tuo_genere">Seleziona il tuo genere</string>
+    <string name="maschile">Maschile</string>
+    <string name="femminile">Femminile</string>
+    <string name="altro">Altro</string>
+    <string name="inserisci_la_tua_data_di_nascita">Inserisci la tua data di nascita</string>
 </resources>
