@@ -34,5 +34,17 @@
         <action
             android:id="@+id/action_regSecondaFragment_to_regPrimaFragment"
             app:destination="@id/regPrimaFragment" />
+        <action
+            android:id="@+id/action_regSecondaFragment_to_regTerzaFragment"
+            app:destination="@id/regTerzaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/regTerzaFragment"
+        android:name="it.univpm.filmaccio.RegTerzaFragment"
+        android:label="fragment_reg_terza"
+        tools:layout="@layout/fragment_reg_terza" >
+        <action
+            android:id="@+id/action_regTerzaFragment_to_regSecondaFragment"
+            app:destination="@id/regSecondaFragment" />
     </fragment>
 </navigation>

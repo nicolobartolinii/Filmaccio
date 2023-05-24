@@ -2,9 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegPrimaFragment">
+    tools:context=".RegTerzaFragment">
 
     <LinearLayout
         android:id="@+id/registratiLinearLayout"
@@ -48,12 +49,12 @@
         style="@style/Widget.Material3.Button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/avanti"
+        android:layout_marginTop="12dp"
+        android:text="@string/fine"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/spinnerData"
+        app:layout_constraintTop_toBottomOf="@+id/propicSetImageView"
         tools:ignore="TextSizeCheck" />
 
     <LinearLayout
@@ -61,8 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:layout_editor_absoluteX="70dp">
+        app:layout_constraintTop_toTopOf="parent">
 
         <Button
             android:id="@+id/buttonBack"
@@ -81,7 +81,7 @@
             android:layout_weight="1"
             android:fontFamily="sans-serif-medium"
             android:gravity="center"
-            android:text="@string/_2_su_3"
+            android:text="@string/_3_su_3"
             android:textAlignment="viewEnd"
             android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
             android:textColor="?attr/colorPrimary"
@@ -89,87 +89,44 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/selezionaGenereTextView"
+        android:id="@+id/propicTextView"
         android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="@string/imposta_propic_text"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nomeVisualizatoTextInputLayout" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/nomeVisualizatoTextInputLayout"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
-        android:text="@string/seleziona_il_tuo_genere"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+        app:endIconMode="clear_text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/registratiLinearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/registratiLinearLayout"
+        app:startIconDrawable="@drawable/round_contact_page_24">
 
-    <RadioGroup
-        android:id="@+id/genereRadioGroup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/selezionaGenereTextView">
-
-        <RadioButton
-            android:id="@+id/maschileRadioButton"
-            style="@style/Widget.Material3.CompoundButton.RadioButton"
-            android:layout_width="wrap_content"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/nomeVisualizzatoTextInputEditText"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:text="@string/maschile" />
+            android:hint="@string/nome_visualizzato"
+            android:inputType="textShortMessage" />
+    </com.google.android.material.textfield.TextInputLayout>
 
-        <RadioButton
-            android:id="@+id/femminileRadioButton"
-            style="@style/Widget.Material3.CompoundButton.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:text="@string/femminile" />
-
-        <RadioButton
-            android:id="@+id/altroGenereRadioButton"
-            style="@style/Widget.Material3.CompoundButton.RadioButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="5dp"
-            android:text="@string/altro" />
-    </RadioGroup>
-
-    <View
-        android:id="@+id/divider3"
-        android:layout_width="300dp"
-        android:layout_height="1dp"
-        android:layout_marginTop="10dp"
-        android:background="?android:attr/listDivider"
+    <ImageView
+        android:id="@+id/propicSetImageView"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="12dp"
+        android:contentDescription="@string/imposta_propic_description"
+        android:src="@drawable/default_propic"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/genereRadioGroup" />
-
-    <TextView
-        android:id="@+id/dataNascitaTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/inserisci_la_tua_data_di_nascita"
-        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/divider3" />
-
-    <DatePicker
-        android:id="@+id/spinnerData"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:calendarViewShown="false"
-        android:datePickerMode="spinner"
-        android:spinnersShown="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dataNascitaTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/propicTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

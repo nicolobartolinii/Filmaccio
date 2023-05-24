@@ -128,7 +128,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/buttonAvanti"
+        android:id="@+id/buttonFine"
         style="@style/Widget.Material3.Button"
         android:layout_width="150dp"
         android:layout_height="wrap_content"

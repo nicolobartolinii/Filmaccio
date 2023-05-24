@@ -26,4 +26,7 @@
     <string name="femminile">Femminile</string>
     <string name="altro">Altro</string>
     <string name="inserisci_la_tua_data_di_nascita">Inserisci la tua data di nascita</string>
+    <string name="fine">Fine</string>
+    <string name="nome_visualizzato">Nome visualizzato</string>
+    <string name="imposta_propic_description">Imposta immagine di profilo</string>
 </resources>

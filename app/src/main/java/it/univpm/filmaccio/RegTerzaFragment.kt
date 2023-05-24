@@ -8,22 +8,21 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.navigation.Navigation
 
-class RegSecondaFragment : Fragment() {
+class RegTerzaFragment : Fragment() {
 
     private lateinit var buttonBack: Button
-    private lateinit var buttonAvanti: Button
+    private lateinit var buttonFine: Button
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_reg_seconda, container, false)
+        val view = inflater.inflate(R.layout.fragment_reg_terza, container, false)
 
         buttonBack = view.findViewById<Button>(R.id.buttonBack)
-        buttonAvanti = view.findViewById<Button>(R.id.buttonFine)
+        buttonFine = view.findViewById<Button>(R.id.buttonFine)
 
-        buttonBack.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regSecondaFragment_to_regPrimaFragment)}
-        buttonAvanti.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regSecondaFragment_to_regTerzaFragment) }
+        buttonBack.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regTerzaFragment_to_regSecondaFragment)}
 
         return view
     }

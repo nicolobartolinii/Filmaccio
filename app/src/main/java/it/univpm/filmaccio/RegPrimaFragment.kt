@@ -20,7 +20,7 @@ class RegPrimaFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_reg_prima, container, false)
 
         buttonBack = view.findViewById<Button>(R.id.buttonBack)
-        buttonAvanti = view.findViewById<Button>(R.id.buttonAvanti)
+        buttonAvanti = view.findViewById<Button>(R.id.buttonFine)
 
         buttonBack.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regPrimaFragment_to_loginFragment) }
         buttonAvanti.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regPrimaFragment_to_regSecondaFragment) }
