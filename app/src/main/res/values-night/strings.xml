@@ -14,4 +14,11 @@
     <string name="ricordami_login_checkbox">Ricordami</string>
     <string name="password_dimenticata">Password dimenticata?</string>
     <string name="oppure">oppure</string>
+    <string name="registrati_a_text_view">Registrati a</string>
+    <string name="indirizzo_email_input_text">Indirizzo email</string>
+    <string name="nome_utente_input_text">Nome utente</string>
+    <string name="conferma_password_input_text">Conferma password</string>
+    <string name="avanti">Avanti</string>
+    <string name="back">back</string>
+    <string name="_1_su_3">⅓</string>
 </resources>
