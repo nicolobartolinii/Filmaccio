@@ -45,5 +45,8 @@
         <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Material3.SmallComponent</item>
         <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Material3.MediumComponent</item>
         <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Material3.LargeComponent</item>
+        <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
+        <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
+        <item name="snackbarTextViewStyle">@style/Widget.MaterialComponents.Snackbar.TextView</item>
     </style>
 </resources>

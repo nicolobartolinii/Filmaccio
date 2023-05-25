@@ -21,7 +21,7 @@
         tools:layout="@layout/fragment_reg_prima" >
         <action
             android:id="@+id/action_regPrimaFragment_to_loginFragment"
-            app:destination="@id/loginFragment" />
+            app:destination="@id/loginFragment"/>
         <action
             android:id="@+id/action_regPrimaFragment_to_regSecondaFragment"
             app:destination="@id/regSecondaFragment" />
@@ -41,7 +41,7 @@
             android:name="email"
             app:argType="string" />
         <argument
-            android:name="nomeUtente"
+            android:name="username"
             app:argType="string" />
         <argument
             android:name="password"
@@ -55,5 +55,20 @@
         <action
             android:id="@+id/action_regTerzaFragment_to_regSecondaFragment"
             app:destination="@id/regSecondaFragment" />
+        <argument
+            android:name="email"
+            app:argType="string"/>
+        <argument
+            android:name="username"
+            app:argType="string"/>
+        <argument
+            android:name="password"
+            app:argType="string"/>
+        <argument
+            android:name="gender"
+            app:argType="string"/>
+        <argument
+            android:name="birth_date"
+            app:argType="com.google.firebase.Timestamp"/>
     </fragment>
 </navigation>
