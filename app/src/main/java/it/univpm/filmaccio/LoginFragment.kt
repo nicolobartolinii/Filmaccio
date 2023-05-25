@@ -2,24 +2,21 @@ package it.univpm.filmaccio
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
-import androidx.constraintlayout.widget.Constraints.TAG
 import androidx.navigation.Navigation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.firestore.FirebaseFirestore
 
 class LoginFragment : Fragment() {
 
@@ -34,8 +31,7 @@ class LoginFragment : Fragment() {
     private lateinit var inputPasswordLayout: TextInputLayout
     private lateinit var inputPassword: TextInputEditText
     private lateinit var firebaseAuth: FirebaseAuth
-    private lateinit var buttonLoginGoogle: Button
-    private lateinit var buttonRegGoogle: Button
+    private lateinit var buttonEntraGoogle: Button
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -49,8 +45,7 @@ class LoginFragment : Fragment() {
         inputEmail = view.findViewById(R.id.inputUserEmailEditText)
         inputPasswordLayout = view.findViewById(R.id.inputLoginPassword)
         inputPassword = view.findViewById(R.id.inputPasswordEditText)
-        buttonLoginGoogle = view.findViewById(R.id.buttonLoginGoogle)
-        buttonRegGoogle = view.findViewById(R.id.buttonRegGoogle)
+        buttonEntraGoogle = view.findViewById(R.id.buttonEntraGoogle)
 
         regEmailButton.setOnClickListener {
             Navigation.findNavController(view)
@@ -68,7 +63,7 @@ class LoginFragment : Fragment() {
             loginUserWithEmailAndPassword(email, password)
         }
 
-        buttonLoginGoogle.setOnClickListener {
+        buttonEntraGoogle.setOnClickListener {
             signInWithGoogle()
         }
         return view
@@ -114,44 +109,48 @@ class LoginFragment : Fragment() {
         if (requestCode == RC_GOOGLE_SIGN_IN) {
             val task = GoogleSignIn.getSignedInAccountFromIntent(data)
             try {
-                // Login con Google riuscito
+                // Ottenimento dell'account Google
                 val account = task.getResult(ApiException::class.java)
-                firebaseAuthWithGoogle(account)
-            } catch (e: ApiException) {
-                // Login con Google fallito
-                Log.e(TAG, "Google sign-in failed", e)
-            }
-        }
-    }
 
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount?) {
-        val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-        firebaseAuth.signInWithCredential(credential)
-            .addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Login con Google avvenuto con successo
-                    // TODO: far sì che quando l'utente è nuovo, poi si passi alla parte di registrazione per aggiungere i nuovi dati al database
-                    val user = firebaseAuth.currentUser
-                    val isNewUser = task.result?.additionalUserInfo?.isNewUser ?: false
-                    if (isNewUser) {
-                        showRegisterMessage()
-                    } else {
-                        // Esegui le azioni desiderate dopo il login
+                // Autenticazione con Google tramite Firebase Authentication
+                val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
+                FirebaseAuth.getInstance().signInWithCredential(credential)
+                    .addOnCompleteListener { authTask ->
+                        if (authTask.isSuccessful) {
+                            val firebaseUser = FirebaseAuth.getInstance().currentUser
+
+                            // Verifica se l'utente esiste già nel database
+                            val userRef = FirebaseFirestore.getInstance().collection("users")
+                                .whereEqualTo("email", firebaseUser?.email)
+
+                            userRef.get()
+                                .addOnCompleteListener { userTask ->
+                                    if (userTask.isSuccessful && !userTask.result.isEmpty) {
+                                        // L'utente esiste nel database, passa alla HomeActivity
+                                        val intent = Intent(requireContext(), HomeActivity::class.java)
+                                        startActivity(intent)
+                                        requireActivity().finish()
+                                    } else {
+                                        Navigation.findNavController(requireView())
+                                            .navigate(R.id.action_loginFragment_to_regGooglePrimoFragment)
+                                    }
+                                }
+                        } else {
+                            // Login con Google fallito
+                            Toast.makeText(requireContext(), "Accesso con Google non riuscito", Toast.LENGTH_SHORT).show()
+                        }
                     }
-                } else {
-                    // Login con Google fallito
-                    val exception = task.exception // TODO: Gestire l'eccezione
-                }
+
+            } catch (e: ApiException) {
+                // Si è verificato un errore durante l'accesso con Google
+                Toast.makeText(requireContext(), "Errore durante l'accesso con Google", Toast.LENGTH_SHORT).show()
             }
+        }
     }
 
-    private fun showRegisterMessage() {
-        val message = "Non sei ancora registrato, effettua la registrazione per continuare"
-        val snackbar = Snackbar.make(requireView(), message, Snackbar.LENGTH_LONG)
-        // TODO: Capire come applicare lo stile di Material 3 alla snackbar
-        snackbar.setAction("Registrati") {
-            buttonRegGoogle.performClick()
-        }
-        snackbar.show()
+    private fun startHomeActivity() {
+        val intent = Intent(requireContext(), HomeActivity::class.java)
+        startActivity(intent)
+        requireActivity().finish()
     }
 }

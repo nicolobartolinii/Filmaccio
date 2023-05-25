@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:tools="http://schemas.android.com/tools">
     <string name="login_email_text">Login con email</string>
-    <string name="login_google_text">Login con Google</string>
+    <string name="login_google_text">Entra con Google</string>
     <string name="reg_email_text">Registrati con email</string>
     <string name="reg_google_text">Registrati con Google</string>
     <string name="reg_text">Non sei ancora registrato?</string>
@@ -29,4 +29,6 @@
     <string name="fine">Fine</string>
     <string name="nome_visualizzato">Nome visualizzato</string>
     <string name="imposta_propic_description">Imposta immagine di profilo</string>
+    <string name="_1_su_2" tools:ignore="TypographyFractions">1/2</string>
+    <string name="_2_su_2">2/2</string>
 </resources>

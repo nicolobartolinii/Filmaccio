@@ -106,6 +106,9 @@ class RegPrimaFragment : Fragment() {
                     }
                 }
             }
+            if (usernameRegInputTextLayout.isErrorEnabled || emailRegInputTextLayout.isErrorEnabled) {
+                return@setOnClickListener
+            }
         }
         return view
     }

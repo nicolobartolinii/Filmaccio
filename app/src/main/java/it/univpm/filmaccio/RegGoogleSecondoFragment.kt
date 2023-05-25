@@ -32,7 +32,7 @@ import java.io.File
 import java.io.FileOutputStream
 
 @Suppress("DEPRECATION")
-class RegTerzaFragment : Fragment() {
+class RegGoogleSecondoFragment : Fragment() {
 
     companion object {
         private const val PICK_IMAGE_REQUEST = 7
@@ -44,19 +44,18 @@ class RegTerzaFragment : Fragment() {
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ImageView
     private lateinit var selectedImageUri: Uri
-    private lateinit var email: String
     private lateinit var username: String
-    private lateinit var password: String
     private lateinit var gender: String
     private lateinit var birthDate: Timestamp
     private lateinit var nameShown: String
+    private lateinit var email: String
     private var croppedImageFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_reg_terza, container, false)
+        val view = inflater.inflate(R.layout.fragment_reg_google_secondo, container, false)
 
         buttonBack = view.findViewById(R.id.buttonBack)
         buttonFine = view.findViewById(R.id.buttonFine)
@@ -65,10 +64,8 @@ class RegTerzaFragment : Fragment() {
         nomeVisualizzatoTectInputLayout = view.findViewById(R.id.nomeVisualizatoTextInputLayout)
         propicImageView = view.findViewById(R.id.propicSetImageView)
 
-        val args: RegTerzaFragmentArgs by navArgs()
-        email = args.email
+        val args: RegGoogleSecondoFragmentArgs by navArgs()
         username = args.username
-        password = args.password
         gender = args.gender
         birthDate = args.birthDate
 
@@ -76,7 +73,7 @@ class RegTerzaFragment : Fragment() {
 
         buttonBack.setOnClickListener {
             Navigation.findNavController(view)
-                .navigate(R.id.action_regTerzaFragment_to_regSecondaFragment)
+                .navigate(R.id.action_regGoogleSecondoFragment_to_regGooglePrimoFragment)
         }
 
         buttonFine.setOnClickListener {
@@ -89,18 +86,10 @@ class RegTerzaFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val auth = FirebaseAuth.getInstance()
-            auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        val user = auth.currentUser
-                        val uid = user?.uid
-                        uploadPropicAndUser(uid)
-                    } else {
-                        Toast.makeText(requireContext(), "Registrazione fallita", Toast.LENGTH_LONG)
-                            .show()
-                    }
-                }
+            val firebaseUser = FirebaseAuth.getInstance().currentUser
+            email = firebaseUser?.email.toString()
+            val uid = firebaseUser?.uid
+            uploadPropicAndUser(uid)
         }
 
         propicImageView.setOnClickListener { onPropicClick() }

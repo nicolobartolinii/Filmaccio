@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_loginFragment_to_regPrimaFragment"
             app:destination="@id/regPrimaFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_regGooglePrimoFragment"
+            app:destination="@id/regGooglePrimoFragment" />
     </fragment>
     <fragment
         android:id="@+id/regPrimaFragment"
@@ -69,6 +72,34 @@
             app:argType="string"/>
         <argument
             android:name="birth_date"
+            app:argType="com.google.firebase.Timestamp"/>
+    </fragment>
+    <fragment
+        android:id="@+id/regGooglePrimoFragment"
+        android:name="it.univpm.filmaccio.RegGooglePrimoFragment"
+        android:label="RegGooglePrimoFragment" >
+        <action
+            android:id="@+id/action_regGooglePrimoFragment_to_regGoogleSecondoFragment"
+            app:destination="@id/regGoogleSecondoFragment" />
+        <action
+            android:id="@+id/action_regGooglePrimoFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/regGoogleSecondoFragment"
+        android:name="it.univpm.filmaccio.RegGoogleSecondoFragment"
+        android:label="RegGoogleSecondoFragment" >
+        <action
+            android:id="@+id/action_regGoogleSecondoFragment_to_regGooglePrimoFragment"
+            app:destination="@id/regGooglePrimoFragment" />
+        <argument
+            android:name="username"
+            app:argType="string" />
+        <argument
+            android:name="gender"
+            app:argType="string" />
+        <argument
+            android:name="birthDate"
             app:argType="com.google.firebase.Timestamp"/>
     </fragment>
 </navigation>
