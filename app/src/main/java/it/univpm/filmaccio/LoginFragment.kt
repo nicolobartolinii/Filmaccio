@@ -43,16 +43,19 @@ class LoginFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_login, container, false)
 
-        regEmailButton = view.findViewById<Button>(R.id.buttonRegEmail)
-        buttonEntra = view.findViewById<Button>(R.id.buttonEntra)
-        inputEmailLayout = view.findViewById<TextInputLayout>(R.id.inputLoginUserEmail)
-        inputEmail = view.findViewById<TextInputEditText>(R.id.inputUserEmailEditText)
-        inputPasswordLayout = view.findViewById<TextInputLayout>(R.id.inputLoginPassword)
-        inputPassword = view.findViewById<TextInputEditText>(R.id.inputPasswordEditText)
-        buttonLoginGoogle = view.findViewById<Button>(R.id.buttonLoginGoogle)
-        buttonRegGoogle = view.findViewById<Button>(R.id.buttonRegGoogle)
+        regEmailButton = view.findViewById(R.id.buttonRegEmail)
+        buttonEntra = view.findViewById(R.id.buttonEntra)
+        inputEmailLayout = view.findViewById(R.id.inputLoginUserEmail)
+        inputEmail = view.findViewById(R.id.inputUserEmailEditText)
+        inputPasswordLayout = view.findViewById(R.id.inputLoginPassword)
+        inputPassword = view.findViewById(R.id.inputPasswordEditText)
+        buttonLoginGoogle = view.findViewById(R.id.buttonLoginGoogle)
+        buttonRegGoogle = view.findViewById(R.id.buttonRegGoogle)
 
-        regEmailButton.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_loginFragment_to_regPrimaFragment)}
+        regEmailButton.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_loginFragment_to_regPrimaFragment)
+        }
 
         firebaseAuth = FirebaseAuth.getInstance()
 
@@ -77,7 +80,11 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = firebaseAuth.currentUser
                     // Login avvenuto con successo, esegui l'azione desiderata
-                    Toast.makeText(requireContext(), "Login avvenuto con successo", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        requireContext(),
+                        "Login avvenuto con successo",
+                        Toast.LENGTH_SHORT
+                    ).show()
                 } else {
                     // Login fallito, mostra un messaggio di errore all'utente
                     Toast.makeText(requireContext(), "Login fallito", Toast.LENGTH_SHORT).show()
@@ -133,8 +140,7 @@ class LoginFragment : Fragment() {
                     }
                 } else {
                     // Login con Google fallito
-                    val exception = task.exception
-                    // Gestisci l'errore e mostra un messaggio all'utente
+                    val exception = task.exception // TODO: Gestire l'eccezione
                 }
             }
     }

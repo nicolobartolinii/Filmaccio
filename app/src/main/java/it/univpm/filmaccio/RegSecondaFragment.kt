@@ -27,12 +27,15 @@ class RegSecondaFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_reg_seconda, container, false)
 
-        buttonBack = view.findViewById<Button>(R.id.buttonBack)
-        buttonAvanti = view.findViewById<Button>(R.id.buttonFine)
+        buttonBack = view.findViewById(R.id.buttonBack)
+        buttonAvanti = view.findViewById(R.id.buttonFine)
         genereRadioGroup = view.findViewById(R.id.genereRadioGroup)
         dataNascitaDatePicker = view.findViewById(R.id.spinnerData)
 
-        buttonBack.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regSecondaFragment_to_regPrimaFragment)}
+        buttonBack.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_regSecondaFragment_to_regPrimaFragment)
+        }
         buttonAvanti.setOnClickListener {
             val gender = when (genereRadioGroup.checkedRadioButtonId) {
                 R.id.maschileRadioButton -> "M"
@@ -66,7 +69,11 @@ class RegSecondaFragment : Fragment() {
             val isValidAge = age >= minimumAge
 
             if (!isValidAge) {
-                Toast.makeText(requireContext(), "Inserisci una data di nascita valida (almeno 14 anni)", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Inserisci una data di nascita valida (almeno 14 anni)",
+                    Toast.LENGTH_LONG
+                ).show()
                 return@setOnClickListener
             }
 
@@ -81,7 +88,13 @@ class RegSecondaFragment : Fragment() {
             val username: String = args.username
             val password: String = args.password
 
-            val action = RegSecondaFragmentDirections.actionRegSecondaFragmentToRegTerzaFragment(email, username, password, gender, birthDate)
+            val action = RegSecondaFragmentDirections.actionRegSecondaFragmentToRegTerzaFragment(
+                email,
+                username,
+                password,
+                gender,
+                birthDate
+            )
 
             Navigation.findNavController(view).navigate(action)
         }

@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import androidx.core.os.bundleOf
 import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -34,8 +33,8 @@ class RegPrimaFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.fragment_reg_prima, container, false)
 
-        buttonBack = view.findViewById<Button>(R.id.buttonBack)
-        buttonAvanti = view.findViewById<Button>(R.id.buttonFine)
+        buttonBack = view.findViewById(R.id.buttonBack)
+        buttonAvanti = view.findViewById(R.id.buttonFine)
         emailRegInputTextLayout = view.findViewById(R.id.emailRegInputLayout)
         usernameRegInputTextLayout = view.findViewById(R.id.usernameRegInputLayout)
         passwordRegInputTextLayout = view.findViewById(R.id.passwordRegInputLayout)
@@ -45,7 +44,10 @@ class RegPrimaFragment : Fragment() {
         passwordRegInputTextEdit = view.findViewById(R.id.passwordRegInputTextEdit)
         passwordConfirmRegInputTextEdit = view.findViewById(R.id.passwordConfirmRegInputTextEdit)
 
-        buttonBack.setOnClickListener { Navigation.findNavController(view).navigate(R.id.action_regPrimaFragment_to_loginFragment) }
+        buttonBack.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_regPrimaFragment_to_loginFragment)
+        }
         buttonAvanti.setOnClickListener {
             val email = emailRegInputTextEdit.text.toString()
             val username = usernameRegInputTextEdit.text.toString().lowercase()
@@ -64,13 +66,15 @@ class RegPrimaFragment : Fragment() {
 
             if (!isUsernameValid(username)) {
                 usernameRegInputTextLayout.isErrorEnabled = true
-                usernameRegInputTextLayout.error = "Il nome utente deve essere lungo almeno 3 caratteri, deve contenere almeno una lettera e può contenere solo lettere, numeri e i caratteri '.' e '_'"
+                usernameRegInputTextLayout.error =
+                    "Il nome utente deve essere lungo almeno 3 caratteri, deve contenere almeno una lettera e può contenere solo lettere, numeri e i caratteri '.' e '_'"
                 return@setOnClickListener
             }
 
             if (!isPasswordValid(password)) {
                 passwordRegInputTextLayout.isErrorEnabled = true
-                passwordRegInputTextLayout.error = "La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, una minuscola e un numero"
+                passwordRegInputTextLayout.error =
+                    "La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, una minuscola e un numero"
                 return@setOnClickListener
             }
 
@@ -91,12 +95,12 @@ class RegPrimaFragment : Fragment() {
                             usernameRegInputTextLayout.isErrorEnabled = true
                             usernameRegInputTextLayout.error = "Il nome utente non è disponibile"
                         } else {
-                            val args = bundleOf(
-                                "email" to email,
-                                "username" to username,
-                                "password" to password
-                            )
-                            val action = RegPrimaFragmentDirections.actionRegPrimaFragmentToRegSecondaFragment(email, username, password)
+                            val action =
+                                RegPrimaFragmentDirections.actionRegPrimaFragmentToRegSecondaFragment(
+                                    email,
+                                    username,
+                                    password
+                                )
                             Navigation.findNavController(view).navigate(action)
                         }
                     }
