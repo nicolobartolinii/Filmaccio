@@ -37,6 +37,15 @@
         <action
             android:id="@+id/action_regSecondaFragment_to_regTerzaFragment"
             app:destination="@id/regTerzaFragment" />
+        <argument
+            android:name="email"
+            app:argType="string" />
+        <argument
+            android:name="nomeUtente"
+            app:argType="string" />
+        <argument
+            android:name="password"
+            app:argType="string" />
     </fragment>
     <fragment
         android:id="@+id/regTerzaFragment"

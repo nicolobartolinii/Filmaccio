@@ -8,7 +8,7 @@
     <string name="password_text_input">Password</string>
     <string name="indirizzo_e_mail_text_input">Indirizzo e-mail</string>
     <string name="effettua_il_login_text_view">Effettua il login</string>
-    <string name="hint_nome_utente_email">Nome utente o email</string>
+    <string name="hint_nome_utente_email">Indirizzo email</string>
     <string name="hint_password">Password</string>
     <string name="login_button_text">Login</string>
     <string name="ricordami_login_checkbox">Ricordami</string>
