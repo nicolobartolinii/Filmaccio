@@ -196,19 +196,14 @@ class RegGoogleSecondoFragment : Fragment() {
             .set(user)
             .addOnSuccessListener {
                 // Utente aggiunto con successo al database Firestore
-                navigateToEmailConfirmationActivity()
+                val intent = Intent(activity, HomeActivity::class.java)
+                startActivity(intent)
+                activity?.finish()
             }
             .addOnFailureListener {
                 // Si è verificato un errore durante l'aggiunta dell'utente al database Firestore
                 Toast.makeText(requireContext(), "Registrazione fallita", Toast.LENGTH_LONG).show()
             }
-    }
-
-    private fun navigateToEmailConfirmationActivity() {
-        /*val intent = Intent(activity, EmailConfirmationActivity::class.java)
-        startActivity(intent)
-        activity?.finish()*/
-        print("FATTO")
     }
 
 }

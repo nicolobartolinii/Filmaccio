@@ -75,11 +75,9 @@ class LoginFragment : Fragment() {
                 if (task.isSuccessful) {
                     val user = firebaseAuth.currentUser
                     // Login avvenuto con successo, esegui l'azione desiderata
-                    Toast.makeText(
-                        requireContext(),
-                        "Login avvenuto con successo",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    val intent = Intent(requireContext(), HomeActivity::class.java)
+                    startActivity(intent)
+                    requireActivity().finish()
                 } else {
                     // Login fallito, mostra un messaggio di errore all'utente
                     Toast.makeText(requireContext(), "Login fallito", Toast.LENGTH_SHORT).show()

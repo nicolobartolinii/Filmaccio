@@ -95,6 +95,22 @@ class RegTerzaFragment : Fragment() {
                     if (task.isSuccessful) {
                         val user = auth.currentUser
                         val uid = user?.uid
+                        user?.sendEmailVerification()
+                            ?.addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Ti è stata inviata una email di verifica!",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                } else {
+                                    Toast.makeText(
+                                        requireContext(),
+                                        "Invio dell'email di verifica fallito",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                }
+                            }
                         uploadPropicAndUser(uid)
                     } else {
                         Toast.makeText(requireContext(), "Registrazione fallita", Toast.LENGTH_LONG)
@@ -216,10 +232,9 @@ class RegTerzaFragment : Fragment() {
     }
 
     private fun navigateToEmailConfirmationActivity() {
-        /*val intent = Intent(activity, EmailConfirmationActivity::class.java)
+        val intent = Intent(activity, HomeActivity::class.java)
         startActivity(intent)
-        activity?.finish()*/
-        print("FATTO")
+        activity?.finish()
     }
 
 }
