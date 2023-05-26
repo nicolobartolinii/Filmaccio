@@ -32,6 +32,7 @@ class LoginFragment : Fragment() {
     private lateinit var inputPassword: TextInputEditText
     private lateinit var firebaseAuth: FirebaseAuth
     private lateinit var buttonEntraGoogle: Button
+    private lateinit var buttonForgotPassword: Button
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,6 +47,7 @@ class LoginFragment : Fragment() {
         inputPasswordLayout = view.findViewById(R.id.inputLoginPassword)
         inputPassword = view.findViewById(R.id.inputPasswordEditText)
         buttonEntraGoogle = view.findViewById(R.id.buttonEntraGoogle)
+        buttonForgotPassword = view.findViewById(R.id.buttonForgotPassword)
 
         regEmailButton.setOnClickListener {
             Navigation.findNavController(view)
@@ -66,6 +68,11 @@ class LoginFragment : Fragment() {
         buttonEntraGoogle.setOnClickListener {
             signInWithGoogle()
         }
+
+        buttonForgotPassword.setOnClickListener {
+            Navigation.findNavController(view)
+                .navigate(R.id.action_loginFragment_to_passwordResetFragment)
+        }
         return view
     }
 
@@ -73,14 +80,10 @@ class LoginFragment : Fragment() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val user = firebaseAuth.currentUser
-                    // Login avvenuto con successo, esegui l'azione desiderata
                     val intent = Intent(requireContext(), HomeActivity::class.java)
                     startActivity(intent)
                     requireActivity().finish()
                 } else {
-                    // Login fallito, mostra un messaggio di errore all'utente
-                    Toast.makeText(requireContext(), "Login fallito", Toast.LENGTH_SHORT).show()
                     inputEmailLayout.isErrorEnabled = true
                     inputEmailLayout.error = "Indirizzo email o password errati"
                     inputPasswordLayout.isErrorEnabled = true
@@ -115,33 +118,31 @@ class LoginFragment : Fragment() {
                 FirebaseAuth.getInstance().signInWithCredential(credential)
                     .addOnCompleteListener { authTask ->
                         if (authTask.isSuccessful) {
-                            val firebaseUser = FirebaseAuth.getInstance().currentUser
+                            val user = FirebaseAuth.getInstance().currentUser
 
                             // Verifica se l'utente esiste già nel database
-                            val userRef = FirebaseFirestore.getInstance().collection("users")
-                                .whereEqualTo("email", firebaseUser?.email)
+                            val userRef = FirebaseFirestore.getInstance().collection("users").whereEqualTo("uid", user!!.uid)
 
                             userRef.get()
                                 .addOnCompleteListener { userTask ->
                                     if (userTask.isSuccessful && !userTask.result.isEmpty) {
                                         // L'utente esiste nel database, passa alla HomeActivity
-                                        val intent = Intent(requireContext(), HomeActivity::class.java)
-                                        startActivity(intent)
-                                        requireActivity().finish()
+                                        startHomeActivity()
                                     } else {
+                                        // L'utente non esiste nel database, passa alla registrazione tramite Google
                                         Navigation.findNavController(requireView())
                                             .navigate(R.id.action_loginFragment_to_regGooglePrimoFragment)
                                     }
                                 }
                         } else {
                             // Login con Google fallito
-                            Toast.makeText(requireContext(), "Accesso con Google non riuscito", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(), "Errore durante l'accesso con Google (Errore: ${task.exception.toString()})", Toast.LENGTH_SHORT).show()
                         }
                     }
 
             } catch (e: ApiException) {
                 // Si è verificato un errore durante l'accesso con Google
-                Toast.makeText(requireContext(), "Errore durante l'accesso con Google", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), "Errore durante l'accesso con Google (Errore: ${task.exception.toString()})", Toast.LENGTH_SHORT).show()
             }
         }
     }

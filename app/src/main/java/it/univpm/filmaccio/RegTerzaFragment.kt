@@ -27,6 +27,7 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.storage.FirebaseStorage
 import java.io.File
 import java.io.FileOutputStream
@@ -96,25 +97,29 @@ class RegTerzaFragment : Fragment() {
                         val user = auth.currentUser
                         val uid = user?.uid
                         user?.sendEmailVerification()
-                            ?.addOnCompleteListener { task ->
-                                if (task.isSuccessful) {
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Ti è stata inviata una email di verifica!",
-                                        Toast.LENGTH_LONG
-                                    ).show()
+                            ?.addOnCompleteListener { verifyTask ->
+                                if (verifyTask.isSuccessful) {
+                                    MaterialAlertDialogBuilder(requireContext())
+                                        .setTitle("Verifica la tua email")
+                                        .setMessage("Benvenuto in Filmaccio! Per sbloccare tutte le funzionalità dell'app, ricordati di verificare il tuo indirizzo email cliccando sul link che ti abbiamo inviato.")
+                                        .setPositiveButton("OK") { dialog, _ ->
+                                            dialog.dismiss()
+                                        }
+                                        .show()
                                 } else {
                                     Toast.makeText(
                                         requireContext(),
-                                        "Invio dell'email di verifica fallito",
+                                        "Invio dell'email di verifica fallito, contatta il nostro team di supporto",
                                         Toast.LENGTH_LONG
                                     ).show()
                                 }
                             }
                         uploadPropicAndUser(uid)
                     } else {
-                        Toast.makeText(requireContext(), "Registrazione fallita", Toast.LENGTH_LONG)
+                        Toast.makeText(requireContext(), "Registrazione fallita, riprova", Toast.LENGTH_LONG)
                             .show()
+                        Navigation.findNavController(view)
+                            .navigate(R.id.action_regTerzaFragment_to_loginFragment)
                     }
                 }
         }
@@ -188,10 +193,12 @@ class RegTerzaFragment : Fragment() {
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
                 // Si è verificato un errore durante il caricamento dell'immagine
-                val exception = task.exception // TODO: gestire l'eccezione
+                val exception = task.exception
+                Toast.makeText(requireContext(), "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})", Toast.LENGTH_LONG)
+                    .show()
             }
 
-            // Ottieni l'URL del download dell'immagine
+            // Ottiene l'URL del download dell'immagine
             propicRef.downloadUrl
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -199,8 +206,10 @@ class RegTerzaFragment : Fragment() {
                 val imageURL = downloadUri.toString()
                 addNewUserToFirestore(uid, imageURL)
             } else {
-                // Si è verificato un errore durante il recupero dell'URL di download dell'immagine
-                val exception = task.exception // TODO: gestire l'eccezione
+                // Si è verificato un errore durante il caricamento dell'immagine
+                val exception = task.exception
+                Toast.makeText(requireContext(), "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }
@@ -223,18 +232,17 @@ class RegTerzaFragment : Fragment() {
             .set(user)
             .addOnSuccessListener {
                 // Utente aggiunto con successo al database Firestore
-                navigateToEmailConfirmationActivity()
+                navigateToHomeActivity()
             }
             .addOnFailureListener {
                 // Si è verificato un errore durante l'aggiunta dell'utente al database Firestore
-                Toast.makeText(requireContext(), "Registrazione fallita", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Registrazione al database fallita, avvisa il nostro team di supporto", Toast.LENGTH_LONG).show()
             }
     }
 
-    private fun navigateToEmailConfirmationActivity() {
+    private fun navigateToHomeActivity() {
         val intent = Intent(activity, HomeActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }
-
 }

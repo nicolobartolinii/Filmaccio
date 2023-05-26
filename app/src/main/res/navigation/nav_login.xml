@@ -16,6 +16,9 @@
         <action
             android:id="@+id/action_loginFragment_to_regGooglePrimoFragment"
             app:destination="@id/regGooglePrimoFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordResetFragment"
+            app:destination="@id/passwordResetFragment" />
     </fragment>
     <fragment
         android:id="@+id/regPrimaFragment"
@@ -73,6 +76,9 @@
         <argument
             android:name="birth_date"
             app:argType="com.google.firebase.Timestamp"/>
+        <action
+            android:id="@+id/action_regTerzaFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
     <fragment
         android:id="@+id/regGooglePrimoFragment"
@@ -101,5 +107,14 @@
         <argument
             android:name="birthDate"
             app:argType="com.google.firebase.Timestamp"/>
+    </fragment>
+    <fragment
+        android:id="@+id/passwordResetFragment"
+        android:name="it.univpm.filmaccio.PasswordResetFragment"
+        android:label="fragment_password_reset"
+        tools:layout="@layout/fragment_password_reset" >
+        <action
+            android:id="@+id/action_passwordResetFragment_to_loginFragment"
+            app:destination="@id/loginFragment" />
     </fragment>
 </navigation>

@@ -100,42 +100,27 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/checkBoxForgotPasswordLinearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonForgotPassword" />
 
-    <LinearLayout
-        android:id="@+id/checkBoxForgotPasswordLinearLayout"
+    <Button
+        android:id="@+id/buttonForgotPassword"
+        style="@style/Widget.Material3.Button.TextButton"
         android:layout_width="300dp"
-        android:layout_height="50dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
-        android:orientation="horizontal"
+        android:layout_weight="1"
+        android:paddingLeft="0dp"
+        android:paddingTop="2dp"
+        android:paddingRight="0dp"
+        android:paddingBottom="2dp"
+        android:text="@string/password_dimenticata"
+        android:textAlignment="textEnd"
+        android:textAllCaps="false"
+        android:textAppearance="@style/TextAppearance.Material3.BodySmall"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/inputLoginPassword">
-
-        <CheckBox
-            android:id="@+id/checkBoxRememberMe"
-            style="@style/Widget.Material3.CompoundButton.CheckBox"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="@string/ricordami_login_checkbox" />
-
-        <Button
-            android:id="@+id/buttonForgotPassword"
-            style="@style/Widget.Material3.Button.TextButton"
-            android:layout_width="175dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:paddingLeft="0dp"
-            android:paddingTop="2dp"
-            android:paddingRight="0dp"
-            android:paddingBottom="2dp"
-            android:text="@string/password_dimenticata"
-            android:textAlignment="textEnd"
-            android:textAllCaps="false"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-    </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@+id/inputLoginPassword" />
 
     <LinearLayout
         android:id="@+id/dividerLinearLayout"
