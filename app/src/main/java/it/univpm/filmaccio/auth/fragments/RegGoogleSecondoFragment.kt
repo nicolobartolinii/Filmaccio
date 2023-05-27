@@ -1,4 +1,4 @@
-package it.univpm.filmaccio
+package it.univpm.filmaccio.auth.fragments
 
 import android.app.Activity
 import android.content.Intent
@@ -28,6 +28,9 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.storage.FirebaseStorage
+import it.univpm.filmaccio.home.HomeActivity
+import it.univpm.filmaccio.R
+import it.univpm.filmaccio.RegGoogleSecondoFragmentArgs
 import java.io.File
 import java.io.FileOutputStream
 
@@ -161,7 +164,9 @@ class RegGoogleSecondoFragment : Fragment() {
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
                 // Si è verificato un errore durante il caricamento dell'immagine
-                val exception = task.exception // TODO: gestire l'eccezione
+                val exception = task.exception
+                Toast.makeText(requireContext(), "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})", Toast.LENGTH_LONG)
+                    .show()
             }
 
             // Ottieni l'URL del download dell'immagine
@@ -173,7 +178,9 @@ class RegGoogleSecondoFragment : Fragment() {
                 addNewUserToFirestore(uid, imageURL)
             } else {
                 // Si è verificato un errore durante il recupero dell'URL di download dell'immagine
-                val exception = task.exception // TODO: gestire l'eccezione
+                val exception = task.exception
+                Toast.makeText(requireContext(), "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})", Toast.LENGTH_LONG)
+                    .show()
             }
         }
     }

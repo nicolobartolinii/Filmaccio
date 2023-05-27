@@ -1,4 +1,4 @@
-package it.univpm.filmaccio
+package it.univpm.filmaccio.auth.fragments
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -10,44 +10,36 @@ import android.widget.DatePicker
 import android.widget.RadioGroup
 import android.widget.Toast
 import androidx.navigation.Navigation
-import com.google.android.material.textfield.TextInputEditText
-import com.google.android.material.textfield.TextInputLayout
+import androidx.navigation.fragment.navArgs
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import it.univpm.filmaccio.R
+import it.univpm.filmaccio.RegSecondaFragmentArgs
+import it.univpm.filmaccio.RegSecondaFragmentDirections
 import java.util.Calendar
 
-class RegGooglePrimoFragment : Fragment() {
+class RegSecondaFragment : Fragment() {
 
     private lateinit var buttonBack: Button
     private lateinit var buttonAvanti: Button
-    private lateinit var usernameRegInputTextLayout: TextInputLayout
-    private lateinit var usernameRegInputTextEdit: TextInputEditText
     private lateinit var genereRadioGroup: RadioGroup
     private lateinit var dataNascitaDatePicker: DatePicker
-    private val db = Firebase.firestore
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_reg_google_primo, container, false)
+        val view = inflater.inflate(R.layout.fragment_reg_seconda, container, false)
 
         buttonBack = view.findViewById(R.id.buttonBack)
-        buttonAvanti = view.findViewById(R.id.buttonAvanti)
-        usernameRegInputTextLayout = view.findViewById(R.id.usernameRegInputLayout)
-        usernameRegInputTextEdit = view.findViewById(R.id.usernameRegInputTextEdit)
+        buttonAvanti = view.findViewById(R.id.buttonFine)
         genereRadioGroup = view.findViewById(R.id.genereRadioGroup)
         dataNascitaDatePicker = view.findViewById(R.id.spinnerData)
 
         buttonBack.setOnClickListener {
             Navigation.findNavController(view)
-                .navigate(R.id.action_regGooglePrimoFragment_to_loginFragment)
+                .navigate(R.id.action_regSecondaFragment_to_regPrimaFragment)
         }
         buttonAvanti.setOnClickListener {
-            val username = usernameRegInputTextEdit.text.toString().lowercase()
-            usernameRegInputTextLayout.isErrorEnabled = false
-
             val gender = when (genereRadioGroup.checkedRadioButtonId) {
                 R.id.maschileRadioButton -> "M"
                 R.id.femminileRadioButton -> "F"
@@ -58,24 +50,6 @@ class RegGooglePrimoFragment : Fragment() {
             val day = dataNascitaDatePicker.dayOfMonth
             val month = dataNascitaDatePicker.month
             val year = dataNascitaDatePicker.year
-
-            if (!isUsernameValid(username)) {
-                usernameRegInputTextLayout.isErrorEnabled = true
-                usernameRegInputTextLayout.error =
-                    "Il nome utente deve essere lungo almeno 3 caratteri, deve contenere almeno una lettera e può contenere solo lettere, numeri e i caratteri '.' e '_'"
-                return@setOnClickListener
-            }
-
-            isUsernameAlreadyRegistered(username) { usernameExists ->
-                if (usernameExists) {
-                    usernameRegInputTextLayout.isErrorEnabled = true
-                    usernameRegInputTextLayout.error = "Il nome utente non è disponibile"
-                }
-            }
-
-            if (usernameRegInputTextLayout.isErrorEnabled) {
-                return@setOnClickListener
-            }
 
             if (gender == null) {
                 Toast.makeText(requireContext(), "Seleziona un genere", Toast.LENGTH_LONG).show()
@@ -112,27 +86,22 @@ class RegGooglePrimoFragment : Fragment() {
 
             val birthDate = Timestamp(calendar.time)
 
-            val action = RegGooglePrimoFragmentDirections.actionRegGooglePrimoFragmentToRegGoogleSecondoFragment(username, gender, birthDate)
+            val args: RegSecondaFragmentArgs by navArgs()
+            val email: String = args.email
+            val username: String = args.username
+            val password: String = args.password
+
+            val action = RegSecondaFragmentDirections.actionRegSecondaFragmentToRegTerzaFragment(
+                email,
+                username,
+                password,
+                gender,
+                birthDate
+            )
+
             Navigation.findNavController(view).navigate(action)
         }
+
         return view
     }
-
-    private fun isUsernameValid(username: String): Boolean {
-        // Verifica che il nome utente non contenga caratteri speciali
-        val pattern = "^(?=.*[a-z])[a-z0-9_.]{3,30}$".toRegex()
-        return pattern.matches(username)
-    }
-
-    private fun isUsernameAlreadyRegistered(username: String, callback: (Boolean) -> Unit) {
-        db.collection("users").whereEqualTo("username", username).get()
-            .addOnSuccessListener { querySnapshot ->
-                val exists = !querySnapshot.isEmpty
-                callback(exists)
-            }
-            .addOnFailureListener {
-                callback(false)
-            }
-    }
-
 }

@@ -1,4 +1,4 @@
-package it.univpm.filmaccio
+package it.univpm.filmaccio.auth.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -11,6 +11,7 @@ import androidx.navigation.Navigation
 import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import it.univpm.filmaccio.R
 
 
 class PasswordResetFragment : Fragment() {

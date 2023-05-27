@@ -1,4 +1,4 @@
-package it.univpm.filmaccio
+package it.univpm.filmaccio.auth.fragments
 
 import android.content.Intent
 import android.os.Bundle
@@ -17,6 +17,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
+import it.univpm.filmaccio.home.HomeActivity
+import it.univpm.filmaccio.R
 
 class LoginFragment : Fragment() {
 

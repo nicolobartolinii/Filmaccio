@@ -1,12 +1,13 @@
-package it.univpm.filmaccio
+package it.univpm.filmaccio.auth
 
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import it.univpm.filmaccio.R
+import it.univpm.filmaccio.home.HomeActivity
 
 class AuthActivity : AppCompatActivity() {
 
@@ -22,7 +23,6 @@ class AuthActivity : AppCompatActivity() {
         // Controlla se l'utente è già loggato
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            Toast.makeText(this, "Utente ${currentUser.email} già loggato", Toast.LENGTH_SHORT).show()
             val intent = Intent(this, HomeActivity::class.java)
             startActivity(intent)
             finish()

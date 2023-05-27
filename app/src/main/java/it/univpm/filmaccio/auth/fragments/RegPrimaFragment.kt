@@ -1,4 +1,4 @@
-package it.univpm.filmaccio
+package it.univpm.filmaccio.auth.fragments
 
 import android.os.Bundle
 import android.util.Patterns
@@ -12,6 +12,8 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import it.univpm.filmaccio.R
+import it.univpm.filmaccio.RegPrimaFragmentDirections
 
 class RegPrimaFragment : Fragment() {
 

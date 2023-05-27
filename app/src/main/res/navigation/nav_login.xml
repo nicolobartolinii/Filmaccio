@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="it.univpm.filmaccio.LoginFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.LoginFragment"
         android:label="fragment_login"
         tools:layout="@layout/fragment_login" >
         <action
@@ -22,7 +22,7 @@
     </fragment>
     <fragment
         android:id="@+id/regPrimaFragment"
-        android:name="it.univpm.filmaccio.RegPrimaFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.RegPrimaFragment"
         android:label="fragment_reg"
         tools:layout="@layout/fragment_reg_prima" >
         <action
@@ -34,7 +34,7 @@
     </fragment>
     <fragment
         android:id="@+id/regSecondaFragment"
-        android:name="it.univpm.filmaccio.RegSecondaFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.RegSecondaFragment"
         android:label="fragment_reg_seconda"
         tools:layout="@layout/fragment_reg_seconda" >
         <action
@@ -55,7 +55,7 @@
     </fragment>
     <fragment
         android:id="@+id/regTerzaFragment"
-        android:name="it.univpm.filmaccio.RegTerzaFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.RegTerzaFragment"
         android:label="fragment_reg_terza"
         tools:layout="@layout/fragment_reg_terza" >
         <action
@@ -82,7 +82,7 @@
     </fragment>
     <fragment
         android:id="@+id/regGooglePrimoFragment"
-        android:name="it.univpm.filmaccio.RegGooglePrimoFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.RegGooglePrimoFragment"
         android:label="RegGooglePrimoFragment" >
         <action
             android:id="@+id/action_regGooglePrimoFragment_to_regGoogleSecondoFragment"
@@ -93,7 +93,7 @@
     </fragment>
     <fragment
         android:id="@+id/regGoogleSecondoFragment"
-        android:name="it.univpm.filmaccio.RegGoogleSecondoFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.RegGoogleSecondoFragment"
         android:label="RegGoogleSecondoFragment" >
         <action
             android:id="@+id/action_regGoogleSecondoFragment_to_regGooglePrimoFragment"
@@ -110,7 +110,7 @@
     </fragment>
     <fragment
         android:id="@+id/passwordResetFragment"
-        android:name="it.univpm.filmaccio.PasswordResetFragment"
+        android:name="it.univpm.filmaccio.auth.fragments.PasswordResetFragment"
         android:label="fragment_password_reset"
         tools:layout="@layout/fragment_password_reset" >
         <action

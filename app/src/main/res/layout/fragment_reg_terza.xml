@@ -5,7 +5,7 @@
     style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegTerzaFragment">
+    tools:context=".auth.fragments.RegTerzaFragment">
 
     <LinearLayout
         android:id="@+id/registratiLinearLayout"
