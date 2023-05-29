@@ -17,8 +17,8 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.firestore.FirebaseFirestore
-import it.univpm.filmaccio.home.HomeActivity
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.main.MainActivity
 
 class LoginFragment : Fragment() {
 
@@ -82,9 +82,7 @@ class LoginFragment : Fragment() {
         firebaseAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener(requireActivity()) { task ->
                 if (task.isSuccessful) {
-                    val intent = Intent(requireContext(), HomeActivity::class.java)
-                    startActivity(intent)
-                    requireActivity().finish()
+                    startHomeActivity()
                 } else {
                     inputEmailLayout.isErrorEnabled = true
                     inputEmailLayout.error = "Indirizzo email o password errati"
@@ -150,7 +148,7 @@ class LoginFragment : Fragment() {
     }
 
     private fun startHomeActivity() {
-        val intent = Intent(requireContext(), HomeActivity::class.java)
+        val intent = Intent(requireContext(), MainActivity::class.java)
         startActivity(intent)
         requireActivity().finish()
     }

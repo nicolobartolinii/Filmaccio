@@ -13,8 +13,6 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
 import com.google.firebase.Timestamp
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.RegSecondaFragmentArgs
-import it.univpm.filmaccio.RegSecondaFragmentDirections
 import java.util.Calendar
 
 class RegSecondaFragment : Fragment() {

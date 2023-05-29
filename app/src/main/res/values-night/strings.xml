@@ -35,4 +35,9 @@
     <string name="password_reset_spiegazione">Inserisci il tuo indirizzo email e ti invieremo un link per effettuare il reset della tua password.</string>
     <string name="password_reset_alternative">Torna indietro e registrati o prova ad entrare con Google</string>
     <string name="invia_il_link_di_reset">Invia il link di reset</string>
+    <string name="title_home">Home</string>
+    <string name="title_feed">Feed</string>
+    <string name="title_search">Ricerca</string>
+    <string name="title_episodes">Episodi</string>
+    <string name="title_profile">Profilo</string>
 </resources>

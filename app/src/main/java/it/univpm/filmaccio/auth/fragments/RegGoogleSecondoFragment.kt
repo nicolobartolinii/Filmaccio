@@ -28,9 +28,8 @@ import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.storage.FirebaseStorage
-import it.univpm.filmaccio.home.HomeActivity
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.RegGoogleSecondoFragmentArgs
+import it.univpm.filmaccio.main.MainActivity
 import java.io.File
 import java.io.FileOutputStream
 
@@ -203,7 +202,7 @@ class RegGoogleSecondoFragment : Fragment() {
             .set(user)
             .addOnSuccessListener {
                 // Utente aggiunto con successo al database Firestore
-                val intent = Intent(activity, HomeActivity::class.java)
+                val intent = Intent(activity, MainActivity::class.java)
                 startActivity(intent)
                 activity?.finish()
             }

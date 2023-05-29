@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_main"
+    app:startDestination="@id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="it.univpm.filmaccio.main.fragments.HomeFragment"
+        android:label="@string/title_home" />
+
+    <fragment
+        android:id="@+id/navigation_feed"
+        android:name="it.univpm.filmaccio.main.fragments.FeedFragment"
+        android:label="@string/title_feed" />
+
+    <fragment
+        android:id="@+id/navigation_search"
+        android:name="it.univpm.filmaccio.main.fragments.SearchFragment"
+        android:label="@string/title_search" />
+
+    <fragment
+        android:id="@+id/navigation_episodes"
+        android:name="it.univpm.filmaccio.main.fragments.EpisodesFragment"
+        android:label="@string/title_episodes" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="it.univpm.filmaccio.main.fragments.ProfileFragment"
+        android:label="@string/title_profile" />
+</navigation>

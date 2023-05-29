@@ -13,7 +13,6 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.RegPrimaFragmentDirections
 
 class RegPrimaFragment : Fragment() {
 

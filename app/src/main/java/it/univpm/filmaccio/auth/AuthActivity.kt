@@ -7,7 +7,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.home.HomeActivity
+import it.univpm.filmaccio.main.MainActivity
 
 class AuthActivity : AppCompatActivity() {
 
@@ -23,7 +23,7 @@ class AuthActivity : AppCompatActivity() {
         // Controlla se l'utente è già loggato
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            val intent = Intent(this, HomeActivity::class.java)
+            val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }

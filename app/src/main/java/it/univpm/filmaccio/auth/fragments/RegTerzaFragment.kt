@@ -29,9 +29,8 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.firebase.storage.FirebaseStorage
-import it.univpm.filmaccio.home.HomeActivity
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.RegTerzaFragmentArgs
+import it.univpm.filmaccio.main.MainActivity
 import java.io.File
 import java.io.FileOutputStream
 
@@ -244,7 +243,7 @@ class RegTerzaFragment : Fragment() {
     }
 
     private fun navigateToHomeActivity() {
-        val intent = Intent(activity, HomeActivity::class.java)
+        val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity?.finish()
     }
