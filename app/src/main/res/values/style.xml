@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.Filmaccio.CircleShapeAppearanceOverlay" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+    <style name="Theme.Filmaccio.SquareCornerRadius" parent="">
+        <item name="cornerSize">10%</item>
+    </style>
+    <style name="Theme.Filmaccio.ActiveSmallButton" parent="Widget.Material3.Button">
+        <item name="android:background">@drawable/button_active</item>
+    </style>
+    <style name="Theme.Filmaccio.OutlinedSmallButton" parent="Widget.Material3.Button.OutlinedButton">
+        <item name="android:background">@drawable/button_outlined</item>
+    </style>
+</resources>
