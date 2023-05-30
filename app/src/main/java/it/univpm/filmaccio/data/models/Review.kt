@@ -1,4 +1,3 @@
 package it.univpm.filmaccio.data.models
 
-class Review {
-}
+data class Review(val id: Int)

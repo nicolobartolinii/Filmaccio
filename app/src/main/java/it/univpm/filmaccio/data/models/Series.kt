@@ -1,4 +1,3 @@
 package it.univpm.filmaccio.data.models
 
-class Series {
-}
+data class Series(val id: Int)

@@ -1,4 +1,3 @@
 package it.univpm.filmaccio.data.models
 
-class Episode {
-}
+data class Episode(val id: Int)
