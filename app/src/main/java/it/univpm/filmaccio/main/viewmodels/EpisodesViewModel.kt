@@ -1,4 +1,6 @@
 package it.univpm.filmaccio.main.viewmodels
 
-class EpisodesViewModel {
+import androidx.lifecycle.ViewModel
+
+class EpisodesViewModel : ViewModel() {
 }

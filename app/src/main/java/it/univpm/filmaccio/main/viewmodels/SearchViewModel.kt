@@ -1,4 +1,6 @@
 package it.univpm.filmaccio.main.viewmodels
 
-class SearchViewModel {
+import androidx.lifecycle.ViewModel
+
+class SearchViewModel : ViewModel() {
 }

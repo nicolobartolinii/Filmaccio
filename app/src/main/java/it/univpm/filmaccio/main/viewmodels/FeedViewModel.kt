@@ -1,4 +1,6 @@
 package it.univpm.filmaccio.main.viewmodels
 
-class FeedViewModel {
+import androidx.lifecycle.ViewModel
+
+class FeedViewModel : ViewModel() {
 }

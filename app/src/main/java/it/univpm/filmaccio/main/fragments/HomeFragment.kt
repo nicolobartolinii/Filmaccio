@@ -6,6 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.ui.setupWithNavController
 import com.bumptech.glide.Glide
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
@@ -24,6 +26,7 @@ class HomeFragment : Fragment() {
     ): View? {
         _binding = FragmentHomeBinding
             .inflate(inflater, container, false)
+
         return binding.root
     }
 
