@@ -19,9 +19,6 @@
             android:name=".main.MainActivity"
             android:exported="false" />
         <activity
-            android:name=".main.HomeActivity"
-            android:exported="false" />
-        <activity
             android:name=".auth.AuthActivity"
             android:exported="true" >
             <intent-filter>

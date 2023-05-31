@@ -27,46 +27,5 @@ class MainActivity : AppCompatActivity() {
         navBar = findViewById(R.id.navigation_bar)
 
         navBar.setupWithNavController(navController)
-
-        navController.addOnDestinationChangedListener { _, destination, _ ->
-            navBar.menu.findItem(destination.id)?.isChecked = true
-        }
-
-        navBar.setOnItemSelectedListener { menuItem ->
-            when (menuItem.itemId) {
-                R.id.navigation_home -> {
-                    // Carica il fragment HomeFragment
-                    loadFragment(HomeFragment())
-                    true
-                }
-                R.id.navigation_feed -> {
-                    // Carica il fragment FeedFragment
-                    loadFragment(FeedFragment())
-                    true
-                }
-                R.id.navigation_search -> {
-                    // Carica il fragment EpisodesFragment
-                    loadFragment(SearchFragment())
-                    true
-                }
-                R.id.navigation_episodes -> {
-                    // Carica il fragment EpisodesFragment
-                    loadFragment(EpisodesFragment())
-                    true
-                }
-                R.id.navigation_profile -> {
-                    // Carica il fragment EpisodesFragment
-                    loadFragment(ProfileFragment())
-                    true
-                }
-                else -> false
-            }
-        }
-    }
-
-    private fun loadFragment(fragment: Fragment) {
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView2, fragment)
-            .commit()
     }
 }
