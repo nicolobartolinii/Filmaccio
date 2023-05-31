@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.bumptech.glide.Glide
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
@@ -28,9 +29,54 @@ class SearchFragment : Fragment() {
         return binding.root
     }
 
-    private fun loadFragment(fragment: Fragment) {
-        childFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainerView2, fragment)
-            .commit()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        val recommendedMoviePosters = listOf(
+            _binding?.firstRecommendedMovieSearch,
+            _binding?.secondRecommendedMovieSearch,
+            _binding?.thirdRecommendedMovieSearch
+        )
+        val recommendedSeriesPosters = listOf(
+            _binding?.firstRecommendedSeriesSearch,
+            _binding?.secondRecommendedSeriesSearch,
+            _binding?.thirdRecommendedSeriesSearch
+        )
+        val trendingMoviePosters = listOf(
+            _binding?.firstTrendingMovieSearch,
+            _binding?.secondTrendingMovieSearch,
+            _binding?.thirdTrendingMovieSearch
+        )
+        val trendingSeriesPosters = listOf(
+            _binding?.firstTrendingSeriesSearch,
+            _binding?.secondTrendingSeriesSearch,
+            _binding?.thirdTrendingSeriesSearch
+        )
+        searchViewModel.topRatedMovies.observe(viewLifecycleOwner) {
+            for (i in 0..2) {
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                    .into(recommendedMoviePosters[i]!!)
+            }
+        }
+        searchViewModel.topRatedSeries.observe(viewLifecycleOwner) {
+            for (i in 0..2) {
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
+                    .into(recommendedSeriesPosters[i]!!)
+            }
+        }
+        searchViewModel.trendingMovies.observe(viewLifecycleOwner) {
+            for (i in 0..2) {
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                    .into(trendingMoviePosters[i]!!)
+            }
+        }
+        searchViewModel.trendingSeries.observe(viewLifecycleOwner) {
+            for (i in 0..2) {
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
+                    .into(trendingSeriesPosters[i]!!)
+            }
+        }
     }
 }
