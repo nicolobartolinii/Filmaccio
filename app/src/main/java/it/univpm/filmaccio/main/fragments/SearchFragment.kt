@@ -1,22 +1,41 @@
 package it.univpm.filmaccio.main.fragments
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.widget.SearchView.OnQueryTextListener
+import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import com.google.android.material.search.SearchView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
+import it.univpm.filmaccio.main.adapters.SearchResultAdapter
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
-
     private val searchViewModel: SearchViewModel by viewModels()
+    private val job = Job()
+    private val scope = CoroutineScope(Dispatchers.IO + job)
+    private val adapter = SearchResultAdapter()
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,6 +44,41 @@ class SearchFragment : Fragment() {
     ): View? {
         _binding = FragmentSearchBinding
             .inflate(inflater, container, false)
+
+
+
+        binding.searchView.setupWithSearchBar(binding.searchBar)
+        binding.searchRecyclerView.adapter = adapter
+        binding.searchRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        binding.searchView.editText.addTextChangedListener(object : TextWatcher {
+            private var searchJob: Job? = null
+
+            override fun afterTextChanged(s: Editable?) {
+                if (s.isNullOrEmpty()) {
+                    return
+                }
+                searchJob?.cancel()
+                searchJob = scope.launch {
+                        Log.e("Search", "Searching for $s in fragment")
+                        delay(1000)
+                        Log.e("Search", "Searching for $s in fragment after delay")
+                        if (isActive) {
+                            searchViewModel.search(s.toString())
+                            Log.e("Search", "Searching for $s in fragment after delay and isActive")
+                        }
+                }
+            }
+
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+        })
+
+
+        searchViewModel.searchResults.observe(viewLifecycleOwner) { results ->
+            Log.e("Search", "Updating search results")
+            adapter.updateSearchResults(results)
+        }
 
         return binding.root
     }
@@ -78,5 +132,10 @@ class SearchFragment : Fragment() {
                     .into(trendingSeriesPosters[i]!!)
             }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        job.cancel()
     }
 }

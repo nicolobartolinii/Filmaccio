@@ -2,6 +2,7 @@ package it.univpm.filmaccio.data.api
 
 import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
+import it.univpm.filmaccio.data.models.SearchResponse
 import it.univpm.filmaccio.main.utils.Constants
 import retrofit2.http.GET
 import retrofit2.http.Query
@@ -21,4 +22,7 @@ interface TmdbApiService {
 
     @GET("tv/top_rated")
     suspend fun getTopRatedSeries(@Query("api_key") apiKey: String = Constants.TMDB_API_KEY, @Query("page") page: Int = 1, @Query("language") language: String = "it-IT", @Query("region") region: String = "IT"): DiscoverSeriesResponse
+
+    @GET("search/multi")
+    suspend fun searchMulti(@Query("api_key") apiKey: String = Constants.TMDB_API_KEY, @Query("query") query: String, @Query("page") page: Int = 1, @Query("language") language: String = "it-IT", @Query("include_adult") includeAdult: Boolean = false): SearchResponse
 }

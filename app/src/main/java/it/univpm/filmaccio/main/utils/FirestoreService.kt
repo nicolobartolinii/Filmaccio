@@ -30,4 +30,9 @@ object FirestoreService {
         val user = FirebaseFirestore.getInstance().collection("users").document(uid).get().await().toObject(User::class.java)
         emit(user)
     }
+
+    fun searchUsers(query: String) = flow {
+        val users = FirebaseFirestore.getInstance().collection("users").whereGreaterThanOrEqualTo("username", query).get().await().toObjects(User::class.java)
+        emit(users)
+    }
 }
