@@ -1,8 +1,6 @@
 package it.univpm.filmaccio.main.adapters
 
-import ActivityItem
-import ActivityItem.Companion.FOLLOW_TYPE
-import ActivityItem.Companion.REVIEW_TYPE
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ class FeedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Lista di dati da visualizzare
     var data = listOf<ActivityItem>()
+        @SuppressLint("NotifyDataSetChanged")
         set(value) {
             field = value
             notifyDataSetChanged()
@@ -23,12 +22,7 @@ class FeedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        return when (viewType) {
-            FOLLOW_TYPE -> FollowViewHolder.from(parent)
-            REVIEW_TYPE -> ReviewViewHolder.from(parent)
-            // Aggiungere altri tipi di ViewHolder
-            else -> throw ClassCastException("Unknown viewType $viewType")
-        }
+        return FollowViewHolder.from(parent)
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
@@ -37,6 +31,7 @@ class FeedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
                 val item = data[position] as ActivityItem.FollowActivityItem
                 holder.bind(item)
             }
+
             is ReviewViewHolder -> {
                 val item = data[position] as ActivityItem.ReviewActivityItem
                 holder.bind(item)

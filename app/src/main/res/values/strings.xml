@@ -9,7 +9,6 @@
     <string name="password_text_input">Password</string>
     <string name="indirizzo_e_mail_text_input">Indirizzo e-mail</string>
     <string name="effettua_il_login_text_view">Effettua il login</string>
-    <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
@@ -42,7 +41,6 @@
     <string name="imposta_propic_text">Se vuoi, imposta un\'immagine di profilo</string>
     <string name="nome_visualizzato">Nome visualizzato</string>
     <string name="imposta_propic_description">Imposta immagine di profilo</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="_2_su_2">2/2</string>
     <string name="_1_su_2" tools:ignore="TypographyFractions">1/2</string>
@@ -88,4 +86,16 @@
     <string name="lists_text">Liste</string>
     <string name="seen_movies_text">Film visti</string>
     <string name="seen_series_text">Serie TV viste</string>
+    <string name="activity_time">26 m</string>
+    <string name="user_started_to_follow_you">{name_shown} ha iniziato a seguirti</string>
+    <string name="already_following">SEGUI GIÀ</string>
+    <string name="series_name">Nome serie TV</string>
+    <string name="season_number_episode_number">S01 | E01</string>
+    <string name="episode_name">Nome episodio</string>
+    <string name="user_watched_product">{name_shown} ha guardato {product_name}</string>
+    <string name="more_details">Più dettagli</string>
+    <string name="episodes_to_watch">Episodi da guardare</string>
+    <string name="new_person_product">Un nuovo prodotto relativo a {person_name} è ora disponibile!</string>
+    <string name="user_reviews_product">{name_shown} ha recensito {product_name}</string>
+    <string name="follow">SEGUI</string>
 </resources>

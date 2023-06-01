@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -16,17 +15,18 @@ import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.storage.FirebaseStorage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.main.MainActivity
@@ -84,7 +84,8 @@ class RegGoogleSecondoFragment : Fragment() {
 
             if (nameShown.length > 50 || nameShown.isEmpty() || nameShown.length < 3) {
                 nomeVisualizzatoTectInputLayout.isErrorEnabled = true
-                nomeVisualizzatoTectInputLayout.error = "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
+                nomeVisualizzatoTectInputLayout.error =
+                    "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
                 return@setOnClickListener
             }
 
@@ -164,7 +165,11 @@ class RegGoogleSecondoFragment : Fragment() {
             if (!task.isSuccessful) {
                 // Si è verificato un errore durante il caricamento dell'immagine
                 val exception = task.exception
-                Toast.makeText(requireContext(), "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})", Toast.LENGTH_LONG)
+                Toast.makeText(
+                    requireContext(),
+                    "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})",
+                    Toast.LENGTH_LONG
+                )
                     .show()
             }
 
@@ -178,7 +183,11 @@ class RegGoogleSecondoFragment : Fragment() {
             } else {
                 // Si è verificato un errore durante il recupero dell'URL di download dell'immagine
                 val exception = task.exception
-                Toast.makeText(requireContext(), "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})", Toast.LENGTH_LONG)
+                Toast.makeText(
+                    requireContext(),
+                    "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})",
+                    Toast.LENGTH_LONG
+                )
                     .show()
             }
         }

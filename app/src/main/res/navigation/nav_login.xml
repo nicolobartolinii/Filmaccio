@@ -9,7 +9,7 @@
         android:id="@+id/loginFragment"
         android:name="it.univpm.filmaccio.auth.fragments.LoginFragment"
         android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginFragment_to_regPrimaFragment"
             app:destination="@id/regPrimaFragment" />
@@ -24,10 +24,10 @@
         android:id="@+id/regPrimaFragment"
         android:name="it.univpm.filmaccio.auth.fragments.RegPrimaFragment"
         android:label="fragment_reg"
-        tools:layout="@layout/fragment_reg_prima" >
+        tools:layout="@layout/fragment_reg_prima">
         <action
             android:id="@+id/action_regPrimaFragment_to_loginFragment"
-            app:destination="@id/loginFragment"/>
+            app:destination="@id/loginFragment" />
         <action
             android:id="@+id/action_regPrimaFragment_to_regSecondaFragment"
             app:destination="@id/regSecondaFragment" />
@@ -36,7 +36,7 @@
         android:id="@+id/regSecondaFragment"
         android:name="it.univpm.filmaccio.auth.fragments.RegSecondaFragment"
         android:label="fragment_reg_seconda"
-        tools:layout="@layout/fragment_reg_seconda" >
+        tools:layout="@layout/fragment_reg_seconda">
         <action
             android:id="@+id/action_regSecondaFragment_to_regPrimaFragment"
             app:destination="@id/regPrimaFragment" />
@@ -57,25 +57,25 @@
         android:id="@+id/regTerzaFragment"
         android:name="it.univpm.filmaccio.auth.fragments.RegTerzaFragment"
         android:label="fragment_reg_terza"
-        tools:layout="@layout/fragment_reg_terza" >
+        tools:layout="@layout/fragment_reg_terza">
         <action
             android:id="@+id/action_regTerzaFragment_to_regSecondaFragment"
             app:destination="@id/regSecondaFragment" />
         <argument
             android:name="email"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="username"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="password"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="gender"
-            app:argType="string"/>
+            app:argType="string" />
         <argument
             android:name="birth_date"
-            app:argType="com.google.firebase.Timestamp"/>
+            app:argType="com.google.firebase.Timestamp" />
         <action
             android:id="@+id/action_regTerzaFragment_to_loginFragment"
             app:destination="@id/loginFragment" />
@@ -83,7 +83,7 @@
     <fragment
         android:id="@+id/regGooglePrimoFragment"
         android:name="it.univpm.filmaccio.auth.fragments.RegGooglePrimoFragment"
-        android:label="RegGooglePrimoFragment" >
+        android:label="RegGooglePrimoFragment">
         <action
             android:id="@+id/action_regGooglePrimoFragment_to_regGoogleSecondoFragment"
             app:destination="@id/regGoogleSecondoFragment" />
@@ -94,7 +94,7 @@
     <fragment
         android:id="@+id/regGoogleSecondoFragment"
         android:name="it.univpm.filmaccio.auth.fragments.RegGoogleSecondoFragment"
-        android:label="RegGoogleSecondoFragment" >
+        android:label="RegGoogleSecondoFragment">
         <action
             android:id="@+id/action_regGoogleSecondoFragment_to_regGooglePrimoFragment"
             app:destination="@id/regGooglePrimoFragment" />
@@ -106,13 +106,13 @@
             app:argType="string" />
         <argument
             android:name="birthDate"
-            app:argType="com.google.firebase.Timestamp"/>
+            app:argType="com.google.firebase.Timestamp" />
     </fragment>
     <fragment
         android:id="@+id/passwordResetFragment"
         android:name="it.univpm.filmaccio.auth.fragments.PasswordResetFragment"
         android:label="fragment_password_reset"
-        tools:layout="@layout/fragment_password_reset" >
+        tools:layout="@layout/fragment_password_reset">
         <action
             android:id="@+id/action_passwordResetFragment_to_loginFragment"
             app:destination="@id/loginFragment" />

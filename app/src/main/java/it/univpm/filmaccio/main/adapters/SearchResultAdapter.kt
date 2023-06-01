@@ -8,7 +8,6 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.CornerFamily
 import com.google.android.material.shape.ShapeAppearanceModel
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.TmdbEntity
@@ -25,7 +24,8 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.search_result_row, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.search_result_row, parent, false)
         return ViewHolder(view)
     }
 
@@ -43,13 +43,16 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                         .into(holder.shapeableImageView)
                 }
             }
+
             is User -> {
                 holder.title.text = result.nameShown
-                val shapeAppearanceModel = holder.shapeableImageView.shapeAppearanceModel.toBuilder()
-                    .setAllCornerSizes(ShapeAppearanceModel.PILL)
-                    .build()
+                val shapeAppearanceModel =
+                    holder.shapeableImageView.shapeAppearanceModel.toBuilder()
+                        .setAllCornerSizes(ShapeAppearanceModel.PILL)
+                        .build()
                 holder.shapeableImageView.shapeAppearanceModel = shapeAppearanceModel
-                Glide.with(holder.itemView.context).load(result.profileImage).into(holder.shapeableImageView)
+                Glide.with(holder.itemView.context).load(result.profileImage)
+                    .into(holder.shapeableImageView)
             }
         }
     }

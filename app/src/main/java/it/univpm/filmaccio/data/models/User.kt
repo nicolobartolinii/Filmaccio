@@ -2,7 +2,7 @@ package it.univpm.filmaccio.data.models
 
 import com.google.firebase.Timestamp
 
-data class User (
+data class User(
     var uid: String = "",
     var username: String = "",
     var email: String = "",

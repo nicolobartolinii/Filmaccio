@@ -18,7 +18,7 @@ class PasswordResetFragment : Fragment() {
 
     private lateinit var emailPasswordResetTextEdit: EditText
     private lateinit var buttonInviaReset: Button
-    private lateinit var buttonBackReset : Button
+    private lateinit var buttonBackReset: Button
     private lateinit var db: FirebaseFirestore
     override fun onCreateView(
         inflater: LayoutInflater,

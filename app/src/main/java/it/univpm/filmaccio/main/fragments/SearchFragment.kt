@@ -7,18 +7,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.appcompat.widget.SearchView.OnQueryTextListener
-import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
-import com.google.android.material.search.SearchView
-import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
 import it.univpm.filmaccio.main.adapters.SearchResultAdapter
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
@@ -41,7 +33,7 @@ class SearchFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentSearchBinding
             .inflate(inflater, container, false)
 
@@ -60,13 +52,13 @@ class SearchFragment : Fragment() {
                 }
                 searchJob?.cancel()
                 searchJob = scope.launch {
-                        Log.e("Search", "Searching for $s in fragment")
-                        delay(1000)
-                        Log.e("Search", "Searching for $s in fragment after delay")
-                        if (isActive) {
-                            searchViewModel.search(s.toString())
-                            Log.e("Search", "Searching for $s in fragment after delay and isActive")
-                        }
+                    Log.e("Search", "Searching for $s in fragment")
+                    delay(1000)
+                    Log.e("Search", "Searching for $s in fragment after delay")
+                    if (isActive) {
+                        searchViewModel.search(s.toString())
+                        Log.e("Search", "Searching for $s in fragment after delay and isActive")
+                    }
                 }
             }
 

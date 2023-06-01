@@ -1,17 +1,11 @@
 package it.univpm.filmaccio.main.utils
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.data.models.User
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
-import kotlinx.coroutines.withContext
 
 object FirestoreService {
 
@@ -24,7 +18,8 @@ object FirestoreService {
     }
 
     fun getUserByUid(uid: String) = flow {
-        val user = FirebaseFirestore.getInstance().collection("users").document(uid).get().await().toObject(User::class.java)
+        val user = FirebaseFirestore.getInstance().collection("users").document(uid).get().await()
+            .toObject(User::class.java)
         emit(user)
     }
 

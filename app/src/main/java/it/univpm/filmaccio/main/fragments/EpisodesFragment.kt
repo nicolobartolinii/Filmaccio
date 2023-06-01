@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
-import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentEpisodesBinding
 import it.univpm.filmaccio.main.viewmodels.EpisodesViewModel
 
@@ -21,7 +19,7 @@ class EpisodesFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentEpisodesBinding
             .inflate(inflater, container, false)
 

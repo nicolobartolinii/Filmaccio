@@ -6,14 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.Observer
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
-import it.univpm.filmaccio.R
-import it.univpm.filmaccio.databinding.FragmentFeedBinding
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
-import it.univpm.filmaccio.main.viewmodels.FeedViewModel
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -27,7 +22,7 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentProfileBinding
             .inflate(inflater, container, false)
 

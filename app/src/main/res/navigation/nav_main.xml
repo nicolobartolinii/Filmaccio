@@ -7,7 +7,7 @@
     <fragment
         android:id="@+id/navigation_home"
         android:name="it.univpm.filmaccio.main.fragments.HomeFragment"
-        android:label="@string/title_home" >
+        android:label="@string/title_home">
         <action
             android:id="@+id/action_navigation_home_to_navigation_feed"
             app:destination="@id/navigation_feed" />
@@ -25,7 +25,7 @@
     <fragment
         android:id="@+id/navigation_feed"
         android:name="it.univpm.filmaccio.main.fragments.FeedFragment"
-        android:label="@string/title_feed" >
+        android:label="@string/title_feed">
         <action
             android:id="@+id/action_navigation_feed_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -48,7 +48,7 @@
     <fragment
         android:id="@+id/navigation_episodes"
         android:name="it.univpm.filmaccio.main.fragments.EpisodesFragment"
-        android:label="@string/title_episodes" >
+        android:label="@string/title_episodes">
         <action
             android:id="@+id/action_navigation_episodes_to_navigation_home"
             app:destination="@id/navigation_home" />
@@ -66,7 +66,7 @@
     <fragment
         android:id="@+id/navigation_profile"
         android:name="it.univpm.filmaccio.main.fragments.ProfileFragment"
-        android:label="@string/title_profile" >
+        android:label="@string/title_profile">
         <action
             android:id="@+id/action_navigation_profile_to_navigation_home"
             app:destination="@id/navigation_home" />

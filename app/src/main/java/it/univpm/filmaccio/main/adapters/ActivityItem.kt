@@ -1,3 +1,5 @@
+package it.univpm.filmaccio.main.adapters
+
 sealed class ActivityItem {
     abstract val type: Int
     abstract val timestamp: Long

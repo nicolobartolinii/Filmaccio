@@ -5,7 +5,7 @@ import androidx.lifecycle.liveData
 import it.univpm.filmaccio.data.repository.MovieRepository
 import kotlinx.coroutines.Dispatchers
 
-class HomeViewModel : ViewModel(){
+class HomeViewModel : ViewModel() {
     private val movieRepository = MovieRepository()
 
     val nowPlayingMovies = liveData(Dispatchers.IO) {

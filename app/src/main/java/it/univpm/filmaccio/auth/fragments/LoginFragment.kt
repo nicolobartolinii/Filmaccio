@@ -2,12 +2,12 @@ package it.univpm.filmaccio.auth.fragments
 
 import android.content.Intent
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.Toast
+import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
@@ -121,7 +121,8 @@ class LoginFragment : Fragment() {
                             val user = FirebaseAuth.getInstance().currentUser
 
                             // Verifica se l'utente esiste già nel database
-                            val userRef = FirebaseFirestore.getInstance().collection("users").whereEqualTo("uid", user!!.uid)
+                            val userRef = FirebaseFirestore.getInstance().collection("users")
+                                .whereEqualTo("uid", user!!.uid)
 
                             userRef.get()
                                 .addOnCompleteListener { userTask ->
@@ -136,13 +137,21 @@ class LoginFragment : Fragment() {
                                 }
                         } else {
                             // Login con Google fallito
-                            Toast.makeText(requireContext(), "Errore durante l'accesso con Google (Errore: ${task.exception.toString()})", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(
+                                requireContext(),
+                                "Errore durante l'accesso con Google (Errore: ${task.exception.toString()})",
+                                Toast.LENGTH_SHORT
+                            ).show()
                         }
                     }
 
             } catch (e: ApiException) {
                 // Si è verificato un errore durante l'accesso con Google
-                Toast.makeText(requireContext(), "Errore durante l'accesso con Google (Errore: ${task.exception.toString()})", Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Errore durante l'accesso con Google (Errore: ${task.exception.toString()})",
+                    Toast.LENGTH_SHORT
+                ).show()
             }
         }
     }

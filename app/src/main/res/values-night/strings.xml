@@ -72,4 +72,16 @@
     <string name="lists_text">Liste</string>
     <string name="seen_movies_text">Film visti</string>
     <string name="seen_series_text">Serie TV viste</string>
+    <string name="activity_time">26 m</string>
+    <string name="user_started_to_follow_you">{name_shown} ha iniziato a seguirti</string>
+    <string name="already_following">SEGUI GIÀ</string>
+    <string name="series_name">Nome serie TV</string>
+    <string name="season_number_episode_number">S01 | E01</string>
+    <string name="episode_name">Nome episodio</string>
+    <string name="user_watched_product">{name_shown} ha guardato {product_name}</string>
+    <string name="more_details">Più dettagli</string>
+    <string name="episodes_to_watch">Episodi da guardare</string>
+    <string name="new_person_product">Un nuovo prodotto relativo a {person_name} è ora disponibile!</string>
+    <string name="user_reviews_product">{name_shown} ha recensito {product_name}</string>
+    <string name="follow">SEGUI</string>
 </resources>

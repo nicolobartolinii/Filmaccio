@@ -27,11 +27,8 @@ class ProfileHorizontalListAdapter(private val itemList: List<ProfileListItem>) 
     }
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        private val titleText: TextView = itemView.findViewById(R.id.titleText)
-        private val descriptionText: TextView = itemView.findViewById(R.id.descriptionText)
 
         fun bind(item: ProfileListItem) {
-            titleText.text = item.title
         }
     }
 }
