@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +17,7 @@
             android:id="@+id/search_bar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Ricerca..." />
+            android:hint="@string/ricerca_hint" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <com.google.android.material.search.SearchView
@@ -26,7 +25,7 @@
         style="@style/Widget.Material3.SearchView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:hint="Ricerca..."
+        android:hint="@string/ricerca_hint"
         app:layout_anchor="@id/appbar">
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/search_recycler_view"
@@ -63,9 +62,10 @@
 
                 <TextView
                     android:id="@+id/title_recommended_movies_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Film consigliati per te"
+                    android:layout_weight="100"
+                    android:text="@string/recommended_movies_text"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -79,7 +79,7 @@
                     android:id="@+id/button_recommeended_movies_view_all_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
@@ -93,9 +93,7 @@
                     android:id="@+id/first_recommended_movie_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                 <View
                     android:layout_width="0dp"
@@ -106,9 +104,7 @@
                     android:id="@+id/second_recommended_movie_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp" />
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -119,9 +115,7 @@
                     android:id="@+id/third_recommended_movie_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
             </LinearLayout>
 
@@ -143,9 +137,10 @@
 
                 <TextView
                     android:id="@+id/title_recommended_series_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Serie TV consigliate per te"
+                    android:layout_weight="100"
+                    android:text="@string/recommended_series_text"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -159,7 +154,7 @@
                     android:id="@+id/button_recommended_series_view_all_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
@@ -173,9 +168,7 @@
                     android:id="@+id/first_recommended_series_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -186,9 +179,7 @@
                     android:id="@+id/second_recommended_series_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -199,9 +190,7 @@
                     android:id="@+id/third_recommended_series_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
             </LinearLayout>
 
@@ -223,9 +212,10 @@
 
                 <TextView
                     android:id="@+id/title_trending_movie_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Film di tendenza"
+                    android:layout_weight="100"
+                    android:text="@string/trending_movies_text"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -239,7 +229,7 @@
                     android:id="@+id/button_trending_movies_view_all_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
@@ -253,9 +243,7 @@
                     android:id="@+id/first_trending_movie_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -266,9 +254,7 @@
                     android:id="@+id/second_trending_movie_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -279,9 +265,7 @@
                     android:id="@+id/third_trending_movie_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
             </LinearLayout>
 
@@ -303,9 +287,10 @@
 
                 <TextView
                     android:id="@+id/title_trending_series_search"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:text="Serie TV di tendenza"
+                    android:layout_weight="100"
+                    android:text="@string/trending_series_text"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -319,7 +304,7 @@
                     android:id="@+id/button_trending_series_view_all_search"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
@@ -333,9 +318,7 @@
                     android:id="@+id/first_trending_series_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -346,9 +329,7 @@
                     android:id="@+id/second_trending_series_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -359,9 +340,7 @@
                     android:id="@+id/third_trending_series_search"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
             </LinearLayout>
 

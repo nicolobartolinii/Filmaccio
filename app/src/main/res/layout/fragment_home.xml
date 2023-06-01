@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -31,7 +30,7 @@
                     android:id="@+id/title_latest_releases_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Ultime uscite"
+                    android:text="@string/latest_releases_text"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -45,7 +44,7 @@
                     android:id="@+id/button_latest_releases_view_all_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
@@ -59,9 +58,7 @@
                     android:id="@+id/first_latest_release_home"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -72,9 +69,7 @@
                     android:id="@+id/second_latest_release_home"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
                 <View
                     android:layout_width="0dp"
@@ -85,9 +80,7 @@
                     android:id="@+id/third_latest_release_home"
                     android:layout_width="110dp"
                     android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
-                    app:strokeColor="?colorOnSurface"
-                    app:strokeWidth="1.5dp"/>
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
 
             </LinearLayout>
 
@@ -111,7 +104,7 @@
                     android:id="@+id/title_feed_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Feed"
+                    android:text="@string/feed"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -125,7 +118,7 @@
                     android:id="@+id/button_feed_view_all_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
@@ -181,7 +174,7 @@
                     android:id="@+id/title_episodes_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Episodi"
+                    android:text="@string/episodes"
                     style="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     android:fontFamily="@font/roboto_bold" />
@@ -195,7 +188,7 @@
                     android:id="@+id/button_episodes_view_all_home"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Vedi tutto"
+                    android:text="@string/see_all"
                     style="@style/Widget.Material3.Button.TextButton"/>
             </LinearLayout>
 
