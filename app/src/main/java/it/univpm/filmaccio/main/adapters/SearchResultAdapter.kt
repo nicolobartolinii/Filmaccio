@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.shape.CornerFamily
+import com.google.android.material.shape.ShapeAppearanceModel
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
@@ -31,10 +33,22 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
         when (val result = searchResults[position]) {
             is TmdbEntity -> {
                 holder.title.text = result.title
-                Glide.with(holder.itemView.context).load(result.imagePath).into(holder.shapeableImageView)
+                if (result.imagePath != null) {
+                    Glide.with(holder.itemView.context)
+                        .load("https://image.tmdb.org/t/p/w185${result.imagePath}")
+                        .into(holder.shapeableImageView)
+                } else {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.error_404)
+                        .into(holder.shapeableImageView)
+                }
             }
             is User -> {
                 holder.title.text = result.nameShown
+                val shapeAppearanceModel = holder.shapeableImageView.shapeAppearanceModel.toBuilder()
+                    .setAllCornerSizes(ShapeAppearanceModel.PILL)
+                    .build()
+                holder.shapeableImageView.shapeAppearanceModel = shapeAppearanceModel
                 Glide.with(holder.itemView.context).load(result.profileImage).into(holder.shapeableImageView)
             }
         }

@@ -15,6 +15,11 @@ import it.univpm.filmaccio.data.repository.SearchRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.toList
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class SearchViewModel : ViewModel() {
     private val movieRepository = MovieRepository()
@@ -42,33 +47,17 @@ class SearchViewModel : ViewModel() {
         emit(series)
     }
 
-    suspend fun search(query: String) {
-        Log.e("Search", "Searching for $query")
-        val multiTmdbSearchLiveData = liveData(Dispatchers.Default) {
-            try {
-                Log.e("Search", "Searching for $query in TMDB")
-                val response = searchRepository.searchMulti(query)
-                emit(response.entities)
-            } catch (e: Exception) {
-                Log.e("Search", "Error searching for $query in TMDB: ${e.message}")
-            }
+    fun search(query: String) = viewModelScope.launch(Dispatchers.IO) {
+        Log.e("Search", "Searching for $query in TMDB and Firestore")
+
+        val multiTmdbSearch = async { searchRepository.searchMulti(query) }
+        val usersSearch = FirestoreService.searchUsers(query).toList()[0]
+
+        val combinedSearchResults = multiTmdbSearch.await().entities + usersSearch
+
+        withContext(Dispatchers.Main) {
+            Log.e("Search", "Search results: $combinedSearchResults")
+            searchResults.value = combinedSearchResults
         }
-
-        Log.e("Search", "Searching for $query a metà")
-
-        val usersLiveData = liveData(Dispatchers.Default) {
-            Log.e("Search", "Searching for $query in Firestore")
-            val response = FirestoreService.searchUsers(query)
-            emit(response)
-        }
-
-        searchResults = multiTmdbSearchLiveData.switchMap { multiTmdbSearch ->
-            usersLiveData.map { users ->
-                multiTmdbSearch + users
-            }
-        } as MutableLiveData<List<Any>>
     }
-
-
-
 }

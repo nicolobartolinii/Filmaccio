@@ -170,7 +170,7 @@ class RegTerzaFragment : Fragment() {
     }
 
     private fun saveBitmapToFile(bitmap: Bitmap): File {
-        val file = File(requireContext().cacheDir, "propic.jpg")
+        val file = File(requireContext().cacheDir, "propic.png")
         val outputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         outputStream.flush()
@@ -181,7 +181,7 @@ class RegTerzaFragment : Fragment() {
     private fun uploadPropicAndUser(uid: String?) {
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
-        val propicRef = storageRef.child("propic/${uid}.jpg")
+        val propicRef = storageRef.child("propic/${uid}.png")
         val imageUri = if (croppedImageFile != null) {
             Uri.fromFile(croppedImageFile)
         } else {

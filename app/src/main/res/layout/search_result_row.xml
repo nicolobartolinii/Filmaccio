@@ -9,7 +9,8 @@
         android:layout_width="50dp"
         android:layout_height="50dp"
         android:layout_margin="5dp"
-        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
     <TextView
         android:id="@+id/search_result_title"

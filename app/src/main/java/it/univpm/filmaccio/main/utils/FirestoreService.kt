@@ -14,9 +14,6 @@ import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 object FirestoreService {
-    val firestore: FirebaseFirestore by lazy {
-        FirebaseFirestore.getInstance()
-    }
 
     fun getUsers(): Task<QuerySnapshot> {
         return FirebaseFirestore.getInstance().collection("users").get()
@@ -32,7 +29,14 @@ object FirestoreService {
     }
 
     fun searchUsers(query: String) = flow {
-        val users = FirebaseFirestore.getInstance().collection("users").whereGreaterThanOrEqualTo("username", query).get().await().toObjects(User::class.java)
+        val usersCollection = FirebaseFirestore.getInstance().collection("users")
+        val snapshot = usersCollection
+            .orderBy("username")
+            .startAt(query)
+            .endAt(query + "\uf8ff")
+            .get()
+            .await()
+        val users = snapshot.toObjects(User::class.java)
         emit(users)
     }
 }
