@@ -15,6 +15,11 @@ import it.univpm.filmaccio.data.models.User
 
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
+    companion object {
+        const val RESULT_TYPE_TMDB_ENTITY = 0
+        const val RESULT_TYPE_USER = 1
+    }
+
     private var searchResults: List<Any> = listOf()
 
     @SuppressLint("NotifyDataSetChanged")
@@ -24,8 +29,11 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view =
-            LayoutInflater.from(parent.context).inflate(R.layout.search_result_row, parent, false)
+        val view = when(viewType) {
+            RESULT_TYPE_TMDB_ENTITY -> LayoutInflater.from(parent.context).inflate(R.layout.search_result_entity, parent, false)
+            RESULT_TYPE_USER -> LayoutInflater.from(parent.context).inflate(R.layout.search_result_user, parent, false)
+            else -> throw IllegalArgumentException("Invalid view type")
+        }
         return ViewHolder(view)
     }
 
@@ -46,14 +54,17 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
 
             is User -> {
                 holder.title.text = result.nameShown
-                val shapeAppearanceModel =
-                    holder.shapeableImageView.shapeAppearanceModel.toBuilder()
-                        .setAllCornerSizes(ShapeAppearanceModel.PILL)
-                        .build()
-                holder.shapeableImageView.shapeAppearanceModel = shapeAppearanceModel
                 Glide.with(holder.itemView.context).load(result.profileImage)
                     .into(holder.shapeableImageView)
             }
+        }
+    }
+
+    override fun getItemViewType(position: Int): Int {
+        return when(searchResults[position]) {
+            is TmdbEntity -> RESULT_TYPE_TMDB_ENTITY
+            is User -> RESULT_TYPE_USER
+            else -> throw IllegalArgumentException("Invalid item type")
         }
     }
 
