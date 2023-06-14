@@ -1,9 +1,12 @@
 package it.univpm.filmaccio.main.adapters
 
 import android.annotation.SuppressLint
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -12,6 +15,7 @@ import com.google.android.material.shape.ShapeAppearanceModel
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
+import it.univpm.filmaccio.details.MovieDetailsActivity
 
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
@@ -49,6 +53,17 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                     Glide.with(holder.itemView.context)
                         .load(R.drawable.error_404)
                         .into(holder.shapeableImageView)
+                }
+
+                holder.itemView.setOnClickListener {
+                    val context = holder.itemView.context
+                    if (result.mediaType == "movie") {
+                        val intent = Intent(context, MovieDetailsActivity::class.java)
+                        intent.putExtra("movieId", result.id)
+                        context.startActivity(intent)
+                    } else {
+                        Log.e("SearchResultAdapter", "Media type not supported")
+                    }
                 }
             }
 

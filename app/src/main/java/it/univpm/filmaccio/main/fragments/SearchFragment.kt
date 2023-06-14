@@ -1,5 +1,6 @@
 package it.univpm.filmaccio.main.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -12,6 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
+import it.univpm.filmaccio.details.MovieDetailsActivity
 import it.univpm.filmaccio.main.adapters.SearchResultAdapter
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -36,8 +38,6 @@ class SearchFragment : Fragment() {
     ): View {
         _binding = FragmentSearchBinding
             .inflate(inflater, container, false)
-
-
 
         binding.searchView.setupWithSearchBar(binding.searchBar)
         binding.searchRecyclerView.adapter = adapter
@@ -96,8 +96,13 @@ class SearchFragment : Fragment() {
             _binding?.secondTrendingSeriesSearch,
             _binding?.thirdTrendingSeriesSearch
         )
+        val recommendedMovieIds = mutableListOf(0, 0, 0)
+        val recommendedSeriesIds = mutableListOf(0, 0, 0)
+        val trendingMovieIds = mutableListOf(0, 0, 0)
+        val trendingSeriesIds = mutableListOf(0, 0, 0)
         searchViewModel.topRatedMovies.observe(viewLifecycleOwner) {
             for (i in 0..2) {
+                recommendedMovieIds[i] = it.movies[i].id
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
                     .into(recommendedMoviePosters[i]!!)
@@ -112,6 +117,7 @@ class SearchFragment : Fragment() {
         }
         searchViewModel.trendingMovies.observe(viewLifecycleOwner) {
             for (i in 0..2) {
+                trendingMovieIds[i] = it.movies[i].id
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
                     .into(trendingMoviePosters[i]!!)
@@ -122,6 +128,22 @@ class SearchFragment : Fragment() {
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
                     .into(trendingSeriesPosters[i]!!)
+            }
+        }
+
+        for (poster in recommendedMoviePosters) {
+            poster?.setOnClickListener {
+                val intent = Intent(context, MovieDetailsActivity::class.java)
+                intent.putExtra("movieId", recommendedMovieIds[recommendedMoviePosters.indexOf(poster)])
+                startActivity(intent)
+            }
+        }
+
+        for (poster in trendingMoviePosters) {
+            poster?.setOnClickListener {
+                val intent = Intent(context, MovieDetailsActivity::class.java)
+                intent.putExtra("movieId", trendingMovieIds[trendingMoviePosters.indexOf(poster)])
+                startActivity(intent)
             }
         }
     }

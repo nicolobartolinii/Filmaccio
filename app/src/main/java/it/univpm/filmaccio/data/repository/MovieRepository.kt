@@ -28,4 +28,8 @@ class MovieRepository {
     ): DiscoverMoviesResponse {
         return tmdbApi.getTopRatedMovies(page = page, language = language, region = region)
     }
+
+    suspend fun getMovieDetails(movieId: Int): Movie {
+        return tmdbApi.getMovieDetails(movieId = movieId)
+    }
 }
