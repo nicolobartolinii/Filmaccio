@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
-import it.univpm.filmaccio.details.MovieDetailsActivity
+import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.main.viewmodels.HomeViewModel
 
 class HomeFragment : Fragment() {

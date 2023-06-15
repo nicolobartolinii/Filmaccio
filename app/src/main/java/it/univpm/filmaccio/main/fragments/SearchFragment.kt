@@ -13,8 +13,8 @@ import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
-import it.univpm.filmaccio.details.MovieDetailsActivity
-import it.univpm.filmaccio.details.SeriesDetailsActivity
+import it.univpm.filmaccio.details.activities.MovieDetailsActivity
+import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.main.adapters.SearchResultAdapter
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
 import kotlinx.coroutines.CoroutineScope

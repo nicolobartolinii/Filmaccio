@@ -1,6 +1,7 @@
-package it.univpm.filmaccio.details
+package it.univpm.filmaccio.details.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
@@ -12,8 +13,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.data.models.Director
+import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModel
+import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModelFactory
+import it.univpm.filmaccio.details.adapters.CastAdapter
+import it.univpm.filmaccio.details.adapters.SeasonsAdapter
 
 class SeriesDetailsActivity : AppCompatActivity() {
 
@@ -29,6 +36,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
     private lateinit var overviewFullText: String
     private lateinit var seasonsRecyclerView: RecyclerView
     private lateinit var castRecyclerView: RecyclerView
+    private lateinit var seriesDirectors: List<Director>
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +73,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
                 .into(posterImage)
             else posterImage.setImageResource(R.drawable.error_404)
             if (it.backdropPath != null) Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w700${it.backdropPath}")
+                .load("https://image.tmdb.org/t/p/w780${it.backdropPath}")
                 .into(backdropImage)
             else backdropImage.setImageResource(R.drawable.error_404)
 
@@ -87,14 +95,19 @@ class SeriesDetailsActivity : AppCompatActivity() {
             releaseDateTextView.text = "${it.releaseDate.substring(0, 4)} | Creata da:"
             durationTextView.text = "${it.duration} ep."
             if (it.creator.isNotEmpty()) {
-                directorTextView.text = it.creator.joinToString(", ") { director -> director.name }
+                seriesDirectors = it.creator
+                directorTextView.text =
+                    seriesDirectors.joinToString(", ") { director -> director.name }
             } else {
                 if (it.credits.crew.any { creator -> creator.job == "Creator" }) {
+                    seriesDirectors = it.credits.crew.filter { creator -> creator.job == "Creator" }
                     directorTextView.text =
-                        it.credits.crew.joinToString(", ") { creator -> creator.name }
+                        seriesDirectors.joinToString(", ") { creator -> creator.name }
                 } else if (it.credits.crew.any { creator -> creator.job == "Series Director" }) {
+                    seriesDirectors =
+                        it.credits.crew.filter { creator -> creator.job == "Series Director" }
                     directorTextView.text =
-                        it.credits.crew.joinToString(", ") { creator -> creator.name }
+                        seriesDirectors.joinToString(", ") { creator -> creator.name }
                 } else {
                     directorTextView.text = "Non disponibile"
                 }
@@ -119,6 +132,27 @@ class SeriesDetailsActivity : AppCompatActivity() {
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 overviewTextView.text = spannableString
+            }
+        }
+
+        directorTextView.setOnClickListener {
+            if (seriesDirectors.size == 1) {
+                val directorId = seriesDirectors[0].id
+                val intent = Intent(this, PersonDetailsActivity::class.java)
+                intent.putExtra("personId", directorId)
+                startActivity(intent)
+            } else if (seriesDirectors.size > 1) {
+                MaterialAlertDialogBuilder(this)
+                    .setTitle("Scegli un creatore")
+                    .setItems(seriesDirectors.map { director -> director.name }
+                        .toTypedArray()) { _, which ->
+                        val directorId = seriesDirectors[which].id
+                        val intent = Intent(this, PersonDetailsActivity::class.java)
+                        intent.putExtra("personId", directorId)
+                        startActivity(intent)
+                    }
+                    .setNegativeButton("Annulla", null)
+                    .show()
             }
         }
     }

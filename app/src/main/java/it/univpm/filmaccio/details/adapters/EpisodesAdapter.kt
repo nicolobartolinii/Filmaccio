@@ -1,4 +1,4 @@
-package it.univpm.filmaccio.details
+package it.univpm.filmaccio.details.adapters
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

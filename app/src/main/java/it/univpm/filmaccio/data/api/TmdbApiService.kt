@@ -3,6 +3,7 @@ package it.univpm.filmaccio.data.api
 import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
 import it.univpm.filmaccio.data.models.Movie
+import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.data.models.SearchResponse
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.Constants
@@ -82,4 +83,12 @@ interface TmdbApiService {
         @Query("language") language: String = "it-IT",
         @Query("region") region: String = "IT",
     ): Series.Season
+
+    @GET("person/{person_id}")
+    suspend fun getPersonDetails(
+        @Path("person_id") personId: Int,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("language") language: String = "it-IT",
+        @Query("region") region: String = "IT",
+    ): Person
 }

@@ -1,5 +1,6 @@
-package it.univpm.filmaccio.details
+package it.univpm.filmaccio.details.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Character
+import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 
 class CastAdapter(private val cast: List<Character>) :
     RecyclerView.Adapter<CastAdapter.ViewHolder>() {
@@ -38,6 +40,12 @@ class CastAdapter(private val cast: List<Character>) :
         }
         holder.nameCastTextView.text = castMember.name
         holder.characterNameCastTextView.text = castMember.character
+
+        holder.itemView.setOnClickListener {
+            val intent = Intent(holder.itemView.context, PersonDetailsActivity::class.java)
+            intent.putExtra("personId", castMember.id)
+            holder.itemView.context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = cast.size

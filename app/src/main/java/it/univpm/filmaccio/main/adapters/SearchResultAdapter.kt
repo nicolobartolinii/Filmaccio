@@ -12,8 +12,9 @@ import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
-import it.univpm.filmaccio.details.MovieDetailsActivity
-import it.univpm.filmaccio.details.SeriesDetailsActivity
+import it.univpm.filmaccio.details.activities.MovieDetailsActivity
+import it.univpm.filmaccio.details.activities.PersonDetailsActivity
+import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
@@ -66,6 +67,10 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                     } else if (result.mediaType == "tv") {
                         val intent = Intent(context, SeriesDetailsActivity::class.java)
                         intent.putExtra("seriesId", result.id)
+                        context.startActivity(intent)
+                    } else if (result.mediaType == "person") {
+                        val intent = Intent(context, PersonDetailsActivity::class.java)
+                        intent.putExtra("personId", result.id)
                         context.startActivity(intent)
                     }
                 }
