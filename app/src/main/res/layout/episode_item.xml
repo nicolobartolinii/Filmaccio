@@ -45,9 +45,8 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
-    <!-- TODO: trovare il modo di fare il bottone come sta su figma -->
     <Button
-        android:id="@+id/buttonWatchEpisode"
+        android:id="@+id/episode_item_button_watch_episode"
         style="@style/Widget.Material3.Button.IconButton.Filled"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

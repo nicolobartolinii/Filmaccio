@@ -1,6 +1,5 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -242,7 +241,7 @@
                     app:layout_constraintTop_toBottomOf="@+id/overview_title_text_view" />
 
                 <View
-                    android:id="@+id/divider_overview_cast"
+                    android:id="@+id/divider_overview_seasons"
                     style="@style/Widget.Material3.MaterialDivider"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -256,6 +255,48 @@
                     app:layout_constraintTop_toBottomOf="@+id/overview_text_view" />
 
                 <TextView
+                    android:id="@+id/seasons_title_text_view"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="16dp"
+                    android:text="Stagioni"
+                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                    android:textColor="?colorPrimary"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/divider_overview_seasons" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/seasons_recycler_view"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="8dp"
+                    android:orientation="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/seasons_title_text_view">
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+                <View
+                    android:id="@+id/divider_seasons_cast"
+                    style="@style/Widget.Material3.MaterialDivider"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:background="?android:attr/listDivider"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.5"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/seasons_recycler_view" />
+
+                <TextView
                     android:id="@+id/cast_title_text_view"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -267,7 +308,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider_overview_cast" />
+                    app:layout_constraintTop_toBottomOf="@id/divider_seasons_cast" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/cast_recycler_view"
@@ -277,6 +318,7 @@
                     android:layout_marginTop="8dp"
                     android:layout_marginEnd="16dp"
                     android:orientation="horizontal"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cast_title_text_view">

@@ -4,9 +4,9 @@ import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.SearchResponse
+import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.Constants
 import retrofit2.http.GET
-import retrofit2.http.Headers
 import retrofit2.http.Path
 import retrofit2.http.Query
 
@@ -64,4 +64,22 @@ interface TmdbApiService {
         @Query("region") region: String = "IT",
         @Query("append_to_response") appendToResponse: String = "credits"
     ): Movie
+
+    @GET("tv/{series_id}")
+    suspend fun getSeriesDetails(
+        @Path("series_id") seriesId: Int,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("language") language: String = "it-IT",
+        @Query("region") region: String = "IT",
+        @Query("append_to_response") appendToResponse: String = "credits"
+    ): Series
+
+    @GET("tv/{series_id}/season/{season_number}")
+    suspend fun getSeasonDetails(
+        @Path("series_id") seriesId: Int,
+        @Path("season_number") seasonNumber: Int,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("language") language: String = "it-IT",
+        @Query("region") region: String = "IT",
+    ): Series.Season
 }

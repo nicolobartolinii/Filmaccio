@@ -10,15 +10,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 
-class MovieDetailsActivity : AppCompatActivity() {
+class SeriesDetailsActivity : AppCompatActivity() {
 
-    private lateinit var movieDetailsViewModel: MovieDetailsViewModel
+    private lateinit var seriesDetailsViewModel: SeriesDetailsViewModel
 
     private lateinit var posterImage: ShapeableImageView
     private lateinit var backdropImage: ImageView
@@ -28,18 +27,19 @@ class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var durationTextView: TextView
     private lateinit var directorTextView: TextView
     private lateinit var overviewFullText: String
+    private lateinit var seasonsRecyclerView: RecyclerView
     private lateinit var castRecyclerView: RecyclerView
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_movie_details)
+        setContentView(R.layout.activity_series_details)
 
-        val movieId = intent.getIntExtra("movieId", 0)
-        movieDetailsViewModel = ViewModelProvider(
+        val seriesId = intent.getIntExtra("seriesId", 0)
+        seriesDetailsViewModel = ViewModelProvider(
             this,
-            MovieDetailsViewModelFactory(movieId)
-        )[MovieDetailsViewModel::class.java]
+            SeriesDetailsViewModelFactory(seriesId)
+        )[SeriesDetailsViewModel::class.java]
 
         posterImage = findViewById(R.id.poster_image)
         backdropImage = findViewById(R.id.backdrop_image)
@@ -48,25 +48,24 @@ class MovieDetailsActivity : AppCompatActivity() {
         releaseDateTextView = findViewById(R.id.release_date_text_view)
         durationTextView = findViewById(R.id.duration_text_view)
         directorTextView = findViewById(R.id.director_text_view)
+        seasonsRecyclerView = findViewById(R.id.seasons_recycler_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
-
-        castRecyclerView.layoutManager =
-            LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val typedValue = TypedValue()
         val theme = this.theme
         theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true)
         val color = typedValue.data
 
-        movieDetailsViewModel.currentMovie.observe(this) {
+        seriesDetailsViewModel.currentSeries.observe(this) {
             it.credits.cast = it.credits.cast.take(50)
-            it.credits.crew = it.credits.crew.filter { crewMember -> crewMember.job == "Director" }
-            Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w185${it.posterPath}")
+            it.credits.crew =
+                it.credits.crew.filter { crewMember -> crewMember.job == "Creator" || crewMember.job == "Series Director" }
+            if (it.posterPath != null) Glide.with(this)
+                .load("https://image.tmdb.org/t/p/w342${it.posterPath}")
                 .into(posterImage)
-
+            else posterImage.setImageResource(R.drawable.error_404)
             if (it.backdropPath != null) Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w500${it.backdropPath}")
+                .load("https://image.tmdb.org/t/p/w700${it.backdropPath}")
                 .into(backdropImage)
             else backdropImage.setImageResource(R.drawable.error_404)
 
@@ -85,9 +84,22 @@ class MovieDetailsActivity : AppCompatActivity() {
                 )
                 overviewTextView.text = spannableString
             }
-            releaseDateTextView.text = "${it.releaseDate.substring(0, 4)} | Diretto da:"
-            durationTextView.text = "${it.duration} min"
-            directorTextView.text = it.credits.crew.joinToString(", ") { director -> director.name }
+            releaseDateTextView.text = "${it.releaseDate.substring(0, 4)} | Creata da:"
+            durationTextView.text = "${it.duration} ep."
+            if (it.creator.isNotEmpty()) {
+                directorTextView.text = it.creator.joinToString(", ") { director -> director.name }
+            } else {
+                if (it.credits.crew.any { creator -> creator.job == "Creator" }) {
+                    directorTextView.text =
+                        it.credits.crew.joinToString(", ") { creator -> creator.name }
+                } else if (it.credits.crew.any { creator -> creator.job == "Series Director" }) {
+                    directorTextView.text =
+                        it.credits.crew.joinToString(", ") { creator -> creator.name }
+                } else {
+                    directorTextView.text = "Non disponibile"
+                }
+            }
+            seasonsRecyclerView.adapter = SeasonsAdapter(it.seasons, this)
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
         }
 

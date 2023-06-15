@@ -2,20 +2,18 @@ package it.univpm.filmaccio.main.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
-import com.google.android.material.shape.ShapeAppearanceModel
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.details.MovieDetailsActivity
+import it.univpm.filmaccio.details.SeriesDetailsActivity
 
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
@@ -33,9 +31,13 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = when(viewType) {
-            RESULT_TYPE_TMDB_ENTITY -> LayoutInflater.from(parent.context).inflate(R.layout.search_result_entity, parent, false)
-            RESULT_TYPE_USER -> LayoutInflater.from(parent.context).inflate(R.layout.search_result_user, parent, false)
+        val view = when (viewType) {
+            RESULT_TYPE_TMDB_ENTITY -> LayoutInflater.from(parent.context)
+                .inflate(R.layout.search_result_entity, parent, false)
+
+            RESULT_TYPE_USER -> LayoutInflater.from(parent.context)
+                .inflate(R.layout.search_result_user, parent, false)
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
         return ViewHolder(view)
@@ -61,8 +63,10 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                         val intent = Intent(context, MovieDetailsActivity::class.java)
                         intent.putExtra("movieId", result.id)
                         context.startActivity(intent)
-                    } else {
-                        Log.e("SearchResultAdapter", "Media type not supported")
+                    } else if (result.mediaType == "tv") {
+                        val intent = Intent(context, SeriesDetailsActivity::class.java)
+                        intent.putExtra("seriesId", result.id)
+                        context.startActivity(intent)
                     }
                 }
             }
@@ -76,7 +80,7 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
     }
 
     override fun getItemViewType(position: Int): Int {
-        return when(searchResults[position]) {
+        return when (searchResults[position]) {
             is TmdbEntity -> RESULT_TYPE_TMDB_ENTITY
             is User -> RESULT_TYPE_USER
             else -> throw IllegalArgumentException("Invalid item type")

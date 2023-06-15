@@ -1,7 +1,5 @@
 package it.univpm.filmaccio.data.repository
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
 import it.univpm.filmaccio.data.models.Series
@@ -19,5 +17,13 @@ class SeriesRepository {
         region: String = "IT"
     ): DiscoverSeriesResponse {
         return tmdbApi.getTopRatedSeries(page = page, language = language, region = region)
+    }
+
+    suspend fun getSeriesDetails(seriesId: Int): Series {
+        val series = tmdbApi.getSeriesDetails(seriesId = seriesId)
+        series.seasons = series.seasons.map {
+            tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number)
+        }
+        return series
     }
 }

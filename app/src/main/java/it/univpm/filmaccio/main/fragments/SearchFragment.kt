@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
 import it.univpm.filmaccio.details.MovieDetailsActivity
+import it.univpm.filmaccio.details.SeriesDetailsActivity
 import it.univpm.filmaccio.main.adapters.SearchResultAdapter
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -110,6 +111,7 @@ class SearchFragment : Fragment() {
         }
         searchViewModel.topRatedSeries.observe(viewLifecycleOwner) {
             for (i in 0..2) {
+                recommendedSeriesIds[i] = it.series[i].id
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
                     .into(recommendedSeriesPosters[i]!!)
@@ -125,6 +127,7 @@ class SearchFragment : Fragment() {
         }
         searchViewModel.trendingSeries.observe(viewLifecycleOwner) {
             for (i in 0..2) {
+                trendingSeriesIds[i] = it.series[i].id
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
                     .into(trendingSeriesPosters[i]!!)
@@ -134,7 +137,21 @@ class SearchFragment : Fragment() {
         for (poster in recommendedMoviePosters) {
             poster?.setOnClickListener {
                 val intent = Intent(context, MovieDetailsActivity::class.java)
-                intent.putExtra("movieId", recommendedMovieIds[recommendedMoviePosters.indexOf(poster)])
+                intent.putExtra(
+                    "movieId",
+                    recommendedMovieIds[recommendedMoviePosters.indexOf(poster)]
+                )
+                startActivity(intent)
+            }
+        }
+
+        for (poster in recommendedSeriesPosters) {
+            poster?.setOnClickListener {
+                val intent = Intent(context, SeriesDetailsActivity::class.java)
+                intent.putExtra(
+                    "seriesId",
+                    recommendedSeriesIds[recommendedSeriesPosters.indexOf(poster)]
+                )
                 startActivity(intent)
             }
         }
@@ -143,6 +160,17 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra("movieId", trendingMovieIds[trendingMoviePosters.indexOf(poster)])
+                startActivity(intent)
+            }
+        }
+
+        for (poster in trendingSeriesPosters) {
+            poster?.setOnClickListener {
+                val intent = Intent(context, SeriesDetailsActivity::class.java)
+                intent.putExtra(
+                    "seriesId",
+                    trendingSeriesIds[trendingSeriesPosters.indexOf(poster)]
+                )
                 startActivity(intent)
             }
         }
