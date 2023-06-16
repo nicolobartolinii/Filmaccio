@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.details.adapters.ProductsAdapter
 import it.univpm.filmaccio.details.viewmodels.PersonDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.PersonDetailsViewModelFactory
 
@@ -120,7 +121,7 @@ class PersonDetailsActivity : AppCompatActivity() {
                 )
                 biographyTextView.text = spannableString
             }
-            // productsRecyclerView.adapter = ProductsAdapter(it.)
+            productsRecyclerView.adapter = ProductsAdapter(it.products)
         }
 
         biographyTextView.setOnClickListener {

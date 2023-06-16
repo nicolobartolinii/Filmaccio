@@ -90,5 +90,6 @@ interface TmdbApiService {
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
         @Query("language") language: String = "it-IT",
         @Query("region") region: String = "IT",
+        @Query("append_to_response") appendToResponse: String = "combined_credits"
     ): Person
 }

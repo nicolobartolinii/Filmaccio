@@ -1,4 +1,5 @@
-package it.univpm.filmaccio.details
+package it.univpm.filmaccio.details.viewmodels
+
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData

@@ -7,6 +7,14 @@ class PeopleRepository {
     private val tmdbApi = TmdbApiClient.TMDB_API
 
     suspend fun getPersonDetails(personId: Int): Person {
-        return tmdbApi.getPersonDetails(personId = personId)
+        val person = tmdbApi.getPersonDetails(personId = personId)
+        val products = when (person.knownFor) {
+            "Acting" -> person.combinedCredits.cast
+            "Directing" -> person.combinedCredits.crew
+            else -> person.combinedCredits.cast + person.combinedCredits.crew
+        }.distinct().sortedBy { it.popularity }.reversed().take(30)
+        person.products = products
+        person.combinedCredits = Person.CombinedCredits(emptyList(), emptyList())
+        return person
     }
 }
