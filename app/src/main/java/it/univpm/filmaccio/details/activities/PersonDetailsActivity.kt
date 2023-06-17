@@ -39,7 +39,7 @@ class PersonDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_person_details)
 
-        val personId = intent.getIntExtra("personId", 0)
+        val personId = intent.getLongExtra("personId", 0L)
         personDetailsViewModel = ViewModelProvider(
             this,
             PersonDetailsViewModelFactory(personId)

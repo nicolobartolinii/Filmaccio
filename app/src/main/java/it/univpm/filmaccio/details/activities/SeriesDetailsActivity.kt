@@ -48,7 +48,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_series_details)
 
-        val seriesId = intent.getIntExtra("seriesId", 0)
+        val seriesId = intent.getLongExtra("seriesId", 0L)
         seriesDetailsViewModel = ViewModelProvider(
             this,
             SeriesDetailsViewModelFactory(seriesId)
@@ -183,7 +183,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
             }
         }
 
-        seriesDetailsViewModel.isSeriesInWatching.observe(this, Observer { isWatched ->
+        seriesDetailsViewModel.isSeriesInWatching.observe(this) { isWatched ->
             if (isWatched) {
                 buttonWatching.setBackgroundColor(colorSecondary)
                 buttonWatching.setIconResource(R.drawable.ic_check)
@@ -191,9 +191,9 @@ class SeriesDetailsActivity : AppCompatActivity() {
                 buttonWatching.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatching.setIconResource(R.drawable.round_remove_red_eye_24)
             }
-        })
+        }
 
-        seriesDetailsViewModel.isSeriesFavorited.observe(this, Observer { isFavorited ->
+        seriesDetailsViewModel.isSeriesFavorited.observe(this) { isFavorited ->
             if (isFavorited) {
                 buttonFavorite.setBackgroundColor(colorSecondary)
                 buttonFavorite.setIconResource(R.drawable.ic_check)
@@ -201,9 +201,9 @@ class SeriesDetailsActivity : AppCompatActivity() {
                 buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonFavorite.setIconResource(R.drawable.round_favorite_24)
             }
-        })
+        }
 
-        seriesDetailsViewModel.isSeriesInWatchlist.observe(this, Observer { isInWatchlist ->
+        seriesDetailsViewModel.isSeriesInWatchlist.observe(this) { isInWatchlist ->
             if (isInWatchlist) {
                 buttonWatchlist.setBackgroundColor(colorSecondary)
                 buttonWatchlist.setIconResource(R.drawable.ic_check)
@@ -211,7 +211,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
                 buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
             }
-        })
+        }
 
         buttonWatching.setOnClickListener {
             seriesDetailsViewModel.toggleInWatching(seriesId)

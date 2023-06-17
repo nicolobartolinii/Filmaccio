@@ -1,22 +1,14 @@
+@file:Suppress("UNCHECKED_CAST")
+
 package it.univpm.filmaccio.main.utils
 
-import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.QuerySnapshot
 import it.univpm.filmaccio.data.models.User
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
 object FirestoreService {
-
-    fun getUsers(): Task<QuerySnapshot> {
-        return FirebaseFirestore.getInstance().collection("users").get()
-    }
-
-    fun getUsersWhereEqualTo(field: String, value: String): Task<QuerySnapshot> {
-        return FirebaseFirestore.getInstance().collection("users").whereEqualTo(field, value).get()
-    }
 
     fun getUserByUid(uid: String) = flow {
         val user = FirebaseFirestore.getInstance().collection("users").document(uid).get().await()
@@ -64,12 +56,12 @@ object FirestoreService {
         followerRef.update("followers", FieldValue.arrayRemove(uid))
     }
 
-    fun addToList(uid: String, listName: String, itemId: Int) {
+    fun addToList(uid: String, listName: String, itemId: Long) {
         val listsRef = FirebaseFirestore.getInstance().collection("lists").document(uid)
         listsRef.update(listName, FieldValue.arrayUnion(itemId))
     }
 
-    fun removeFromList(uid: String, listName: String, itemId: Int) {
+    fun removeFromList(uid: String, listName: String, itemId: Long) {
         val listsRef = FirebaseFirestore.getInstance().collection("lists").document(uid)
         listsRef.update(listName, FieldValue.arrayRemove(itemId))
     }
@@ -82,7 +74,7 @@ object FirestoreService {
 
     fun getLists(uid: String) = flow {
         val doc = FirebaseFirestore.getInstance().collection("lists").document(uid).get().await()
-        val lists = doc.data
+        val lists = doc.data as Map<String, List<Int>>
         emit(lists)
     }
 }

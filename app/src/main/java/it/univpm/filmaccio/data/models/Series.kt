@@ -3,7 +3,7 @@ package it.univpm.filmaccio.data.models
 import com.google.gson.annotations.SerializedName
 
 data class Series(
-    @SerializedName("id") val id: Int,
+    @SerializedName("id") val id: Long,
     @SerializedName("name") val title: String,
     @SerializedName("poster_path") val posterPath: String?,
     @SerializedName("overview") val overview: String,

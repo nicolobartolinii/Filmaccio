@@ -59,7 +59,7 @@ interface TmdbApiService {
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetails(
-        @Path("movie_id") movieId: Int,
+        @Path("movie_id") movieId: Long,
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
         @Query("language") language: String = "it-IT",
         @Query("region") region: String = "IT",
@@ -68,7 +68,7 @@ interface TmdbApiService {
 
     @GET("tv/{series_id}")
     suspend fun getSeriesDetails(
-        @Path("series_id") seriesId: Int,
+        @Path("series_id") seriesId: Long,
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
         @Query("language") language: String = "it-IT",
         @Query("region") region: String = "IT",
@@ -77,7 +77,7 @@ interface TmdbApiService {
 
     @GET("tv/{series_id}/season/{season_number}")
     suspend fun getSeasonDetails(
-        @Path("series_id") seriesId: Int,
+        @Path("series_id") seriesId: Long,
         @Path("season_number") seasonNumber: Int,
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
         @Query("language") language: String = "it-IT",
@@ -86,7 +86,7 @@ interface TmdbApiService {
 
     @GET("person/{person_id}")
     suspend fun getPersonDetails(
-        @Path("person_id") personId: Int,
+        @Path("person_id") personId: Long,
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
         @Query("language") language: String = "it-IT",
         @Query("region") region: String = "IT",

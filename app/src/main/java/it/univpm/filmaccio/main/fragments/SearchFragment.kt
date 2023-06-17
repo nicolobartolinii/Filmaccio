@@ -97,10 +97,10 @@ class SearchFragment : Fragment() {
             _binding?.secondTrendingSeriesSearch,
             _binding?.thirdTrendingSeriesSearch
         )
-        val recommendedMovieIds = mutableListOf(0, 0, 0)
-        val recommendedSeriesIds = mutableListOf(0, 0, 0)
-        val trendingMovieIds = mutableListOf(0, 0, 0)
-        val trendingSeriesIds = mutableListOf(0, 0, 0)
+        val recommendedMovieIds = mutableListOf(0L, 0L, 0L)
+        val recommendedSeriesIds = mutableListOf(0L, 0L, 0L)
+        val trendingMovieIds = mutableListOf(0L, 0L, 0L)
+        val trendingSeriesIds = mutableListOf(0L, 0L, 0L)
         searchViewModel.topRatedMovies.observe(viewLifecycleOwner) {
             for (i in 0..2) {
                 recommendedMovieIds[i] = it.movies[i].id

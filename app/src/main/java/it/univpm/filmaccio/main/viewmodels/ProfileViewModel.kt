@@ -9,29 +9,31 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+@Suppress("UNCHECKED_CAST")
 class ProfileViewModel : ViewModel() {
 
     private val _currentUser = MutableStateFlow<User?>(null)
     val currentUser: StateFlow<User?> get() = _currentUser
 
-    private val _lists = MutableStateFlow<Map<String, Any>?>(emptyMap())
-    val lists: StateFlow<Map<String, Any>?> get() = _lists
+    private val _lists = MutableStateFlow<Map<String, List<Long>>?>(emptyMap())
+    val lists: StateFlow<Map<String, List<Long>>?> get() = _lists
 
     init {
         loadCurrentUser()
+        getLists()
     }
 
     private fun loadCurrentUser() = viewModelScope.launch {
         val currentUserUid = UserUtils.getCurrentUserUid()
-        val user = FirestoreService.getUserByUid(currentUserUid!!).collect {
+        FirestoreService.getUserByUid(currentUserUid!!).collect {
             _currentUser.value = it
         }
     }
 
     private fun getLists() = viewModelScope.launch {
         val currentUserUid = UserUtils.getCurrentUserUid()
-        val user = FirestoreService.getLists(currentUserUid!!).collect {
-            _lists.value = it
+        FirestoreService.getLists(currentUserUid!!).collect {
+            _lists.value = it as Map<String, List<Long>>?
         }
     }
 

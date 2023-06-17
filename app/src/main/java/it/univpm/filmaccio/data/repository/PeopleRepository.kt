@@ -6,7 +6,7 @@ import it.univpm.filmaccio.data.models.Person
 class PeopleRepository {
     private val tmdbApi = TmdbApiClient.TMDB_API
 
-    suspend fun getPersonDetails(personId: Int): Person {
+    suspend fun getPersonDetails(personId: Long): Person {
         val person = tmdbApi.getPersonDetails(personId = personId)
         val products = when (person.knownFor) {
             "Acting" -> person.combinedCredits.cast

@@ -47,7 +47,7 @@ class MovieDetailsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_movie_details)
 
-        val movieId = intent.getIntExtra("movieId", 0)
+        val movieId = intent.getLongExtra("movieId", 0L)
         movieDetailsViewModel = ViewModelProvider(
             this,
             MovieDetailsViewModelFactory(movieId)
@@ -167,7 +167,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             }
         }
 
-        movieDetailsViewModel.isMovieWatched.observe(this, Observer { isWatched ->
+        movieDetailsViewModel.isMovieWatched.observe(this) { isWatched ->
             if (isWatched) {
                 buttonWatched.setBackgroundColor(colorSecondary)
                 buttonWatched.setIconResource(R.drawable.ic_check)
@@ -175,9 +175,9 @@ class MovieDetailsActivity : AppCompatActivity() {
                 buttonWatched.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatched.setIconResource(R.drawable.round_remove_red_eye_24)
             }
-        })
+        }
 
-        movieDetailsViewModel.isMovieFavorited.observe(this, Observer { isFavorited ->
+        movieDetailsViewModel.isMovieFavorited.observe(this) { isFavorited ->
             if (isFavorited) {
                 buttonFavorite.setBackgroundColor(colorSecondary)
                 buttonFavorite.setIconResource(R.drawable.ic_check)
@@ -185,9 +185,9 @@ class MovieDetailsActivity : AppCompatActivity() {
                 buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonFavorite.setIconResource(R.drawable.round_favorite_24)
             }
-        })
+        }
 
-        movieDetailsViewModel.isMovieInWatchlist.observe(this, Observer { isInWatchlist ->
+        movieDetailsViewModel.isMovieInWatchlist.observe(this) { isInWatchlist ->
             if (isInWatchlist) {
                 buttonWatchlist.setBackgroundColor(colorSecondary)
                 buttonWatchlist.setIconResource(R.drawable.ic_check)
@@ -195,7 +195,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
             }
-        })
+        }
 
         buttonWatched.setOnClickListener {
             movieDetailsViewModel.toggleWatched(movieId)

@@ -1,6 +1,5 @@
 package it.univpm.filmaccio.details.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -12,7 +11,7 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
+class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
 
     private val movieRepository = MovieRepository()
 
@@ -39,7 +38,7 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
         }
     }
 
-    fun toggleWatched(movieId: Int) = viewModelScope.launch {
+    fun toggleWatched(movieId: Long) = viewModelScope.launch {
         if (_isMovieWatched.value == true) {
             movieRepository.removeFromList(userId, "watched_m", movieId)
             _isMovieWatched.value = false
@@ -53,7 +52,7 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
         }
     }
 
-    fun toggleWatchlist(movieId: Int) = viewModelScope.launch {
+    fun toggleWatchlist(movieId: Long) = viewModelScope.launch {
         if (_isMovieInWatchlist.value == true) {
             movieRepository.removeFromList(userId, "watchlist_m", movieId)
             _isMovieInWatchlist.value = false
@@ -63,7 +62,7 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
         }
     }
 
-    fun toggleFavorite(movieId: Int) = viewModelScope.launch {
+    fun toggleFavorite(movieId: Long) = viewModelScope.launch {
         if (_isMovieFavorited.value == true) {
             movieRepository.removeFromList(userId, "favorite_m", movieId)
             _isMovieFavorited.value = false
@@ -80,7 +79,7 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
     }
 }
 
-class MovieDetailsViewModelFactory(private val movieId: Int) : ViewModelProvider.Factory {
+class MovieDetailsViewModelFactory(private val movieId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieDetailsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

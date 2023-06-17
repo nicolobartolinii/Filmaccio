@@ -36,7 +36,7 @@ class HomeFragment : Fragment() {
             _binding?.secondLatestReleaseHome,
             _binding?.thirdLatestReleaseHome
         )
-        val movieIds = mutableListOf(0, 0, 0)
+        val movieIds = mutableListOf(0L, 0L, 0L)
         homeViewModel.nowPlayingMovies.observe(viewLifecycleOwner) {
             for (i in 0..2) {
                 movieIds[i] = it.movies[i].id

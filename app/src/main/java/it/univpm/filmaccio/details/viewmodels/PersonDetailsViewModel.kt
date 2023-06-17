@@ -6,7 +6,7 @@ import androidx.lifecycle.liveData
 import it.univpm.filmaccio.data.repository.PeopleRepository
 import kotlinx.coroutines.Dispatchers
 
-class PersonDetailsViewModel(private var personId: Int = 0) : ViewModel() {
+class PersonDetailsViewModel(private var personId: Long = 0L) : ViewModel() {
     private val peopleRepository = PeopleRepository()
 
     val currentPerson = liveData(Dispatchers.IO) {
@@ -15,7 +15,7 @@ class PersonDetailsViewModel(private var personId: Int = 0) : ViewModel() {
     }
 }
 
-class PersonDetailsViewModelFactory(private val personId: Int) : ViewModelProvider.Factory {
+class PersonDetailsViewModelFactory(private val personId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(PersonDetailsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

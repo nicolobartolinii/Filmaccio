@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     style="@style/Widget.MaterialComponents.CardView"
+    android:layout_marginEnd="8dp"
     android:layout_width="150dp"
     android:layout_height="90dp">
 
@@ -19,7 +20,7 @@
             android:fontFamily="sans-serif-black"
             android:gravity="center"
             android:text="FILM PREFERITI"
-            android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+            android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
         <LinearLayout
             android:layout_width="match_parent"

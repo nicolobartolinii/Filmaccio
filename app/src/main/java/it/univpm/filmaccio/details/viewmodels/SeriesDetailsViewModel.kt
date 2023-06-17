@@ -11,7 +11,7 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-class SeriesDetailsViewModel(private var seriesId: Int = 0) : ViewModel() {
+class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
     private val seriesRepository = SeriesRepository()
 
     private val userId = UserUtils.getCurrentUserUid()!!
@@ -37,7 +37,7 @@ class SeriesDetailsViewModel(private var seriesId: Int = 0) : ViewModel() {
         }
     }
 
-    fun toggleInWatching(seriesId: Int) = viewModelScope.launch {
+    fun toggleInWatching(seriesId: Long) = viewModelScope.launch {
         if (_isSeriesInWatching.value == true) {
             seriesRepository.removeFromList(userId, "watching_t", seriesId)
             _isSeriesInWatching.value = false
@@ -51,7 +51,7 @@ class SeriesDetailsViewModel(private var seriesId: Int = 0) : ViewModel() {
         }
     }
 
-    fun toggleWatchlist(seriesId: Int) = viewModelScope.launch {
+    fun toggleWatchlist(seriesId: Long) = viewModelScope.launch {
         if (_isSeriesInWatchlist.value == true) {
             seriesRepository.removeFromList(userId, "watchlist_t", seriesId)
             _isSeriesInWatchlist.value = false
@@ -61,7 +61,7 @@ class SeriesDetailsViewModel(private var seriesId: Int = 0) : ViewModel() {
         }
     }
 
-    fun toggleFavorite(seriesId: Int) = viewModelScope.launch {
+    fun toggleFavorite(seriesId: Long) = viewModelScope.launch {
         if (_isSeriesFavorited.value == true) {
             seriesRepository.removeFromList(userId, "favorite_t", seriesId)
             _isSeriesFavorited.value = false
@@ -77,7 +77,7 @@ class SeriesDetailsViewModel(private var seriesId: Int = 0) : ViewModel() {
     }
 }
 
-class SeriesDetailsViewModelFactory(private val seriesId: Int) : ViewModelProvider.Factory {
+class SeriesDetailsViewModelFactory(private val seriesId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SeriesDetailsViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")

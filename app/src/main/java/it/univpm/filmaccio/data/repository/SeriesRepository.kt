@@ -2,6 +2,7 @@ package it.univpm.filmaccio.data.repository
 
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
+import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
@@ -21,7 +22,7 @@ class SeriesRepository {
         return tmdbApi.getTopRatedSeries(page = page, language = language, region = region)
     }
 
-    suspend fun getSeriesDetails(seriesId: Int): Series {
+    suspend fun getSeriesDetails(seriesId: Long): Series {
         val series = tmdbApi.getSeriesDetails(seriesId = seriesId)
         series.seasons = series.seasons.map {
             tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number)
@@ -29,26 +30,68 @@ class SeriesRepository {
         return series
     }
 
-    fun addToList(userId: String, listName: String, seriesId: Int) {
+    fun addToList(userId: String, listName: String, seriesId: Long) {
         FirestoreService.addToList(userId, listName, seriesId)
     }
 
-    fun removeFromList(userId: String, listName: String, seriesId: Int) {
+    fun removeFromList(userId: String, listName: String, seriesId: Long) {
         FirestoreService.removeFromList(userId, listName, seriesId)
     }
 
-    suspend fun isSeriesInWatching(userId: String, seriesId: Int): Boolean {
+    suspend fun isSeriesInWatching(userId: String, seriesId: Long): Boolean {
         val watchingSeries: List<Any> = FirestoreService.getList(userId, "watching_t").first()
-        return seriesId.toLong() in watchingSeries
+        return seriesId in watchingSeries
     }
 
-    suspend fun isSeriesInWatchlist(userId: String, seriesId: Int): Boolean {
+    suspend fun isSeriesInWatchlist(userId: String, seriesId: Long): Boolean {
         val watchlistSeries: List<Any> = FirestoreService.getList(userId, "watchlist_t").first()
-        return seriesId.toLong() in watchlistSeries
+        return seriesId in watchlistSeries
     }
 
-    suspend fun isSeriesFavorited(userId: String, seriesId: Int): Boolean {
+    suspend fun isSeriesFavorited(userId: String, seriesId: Long): Boolean {
         val favoriteSeries: List<Any> = FirestoreService.getList(userId, "favorite_t").first()
-        return seriesId.toLong() in favoriteSeries
+        return seriesId in favoriteSeries
+    }
+
+    suspend fun convertIdToProfileListItem(id1: Long, id2: Long, id3: Long, listTitle: String): ProfileListItem {
+        val listName = when(listTitle) {
+            "watching_t" -> "in visione (TV)__"
+            "watchlist_t" -> "watchlist (TV)__"
+            "favorite_t" -> "preferiti (TV)__"
+            else -> listTitle
+        }
+        if (id1 == 0L) {
+            return ProfileListItem(
+                title = listName.substring(0, listName.length - 2).uppercase(),
+                imageURL1 = "",
+                imageURL2 = "",
+                imageURL3 = ""
+            )
+        }
+        val movie1 = getSeriesDetails(id1)
+        if (id2 == 0L) {
+            return ProfileListItem(
+                title = listName.substring(0, listName.length - 2).uppercase(),
+                imageURL1 = movie1.posterPath ?: "",
+                imageURL2 = "",
+                imageURL3 = ""
+            )
+        }
+        val movie2 = getSeriesDetails(id2)
+        if (id3 == 0L) {
+            return ProfileListItem(
+                title = listName.substring(0, listName.length - 2).uppercase(),
+                imageURL1 = movie1.posterPath ?: "",
+                imageURL2 = movie2.posterPath ?: "",
+                imageURL3 = ""
+            )
+        }
+        val movie3 = getSeriesDetails(id3)
+        return ProfileListItem(
+            title = listName.substring(0, listName.length - 2).uppercase(),
+            imageURL1 = movie1.posterPath ?: "",
+            imageURL2 = movie2.posterPath ?: "",
+            imageURL3 = movie3.posterPath ?: ""
+        )
     }
 }

@@ -4,14 +4,18 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.ProfileListItem
 
-class ProfileHorizontalListAdapter(private val itemList: List<ProfileListItem>) :
-    RecyclerView.Adapter<ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>() {
+class ProfileHorizontalListAdapter :
+    ListAdapter<ProfileListItem, ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>(
+        ProfileListItemDiffCallback()
+    ) {
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -23,7 +27,8 @@ class ProfileHorizontalListAdapter(private val itemList: List<ProfileListItem>) 
     }
 
     override fun onBindViewHolder(holder: ProfileHorizontalListsViewHolder, position: Int) {
-        val item = itemList[position]
+        val item = getItem(position) // Ottieni l'elemento corrente utilizzando getItem(position)
+
         holder.listName.text = item.title
         if (item.imageURL1 != "") {
             holder.firstListPoster.visibility = View.VISIBLE
@@ -60,9 +65,6 @@ class ProfileHorizontalListAdapter(private val itemList: List<ProfileListItem>) 
         }
     }
 
-    override fun getItemCount(): Int {
-        return itemList.size
-    }
 
     inner class ProfileHorizontalListsViewHolder(itemView: View) :
         RecyclerView.ViewHolder(itemView) {
@@ -70,5 +72,21 @@ class ProfileHorizontalListAdapter(private val itemList: List<ProfileListItem>) 
         val firstListPoster: ShapeableImageView = itemView.findViewById(R.id.first_list_poster)
         val secondListPoster: ShapeableImageView = itemView.findViewById(R.id.second_list_poster)
         val thirdListPoster: ShapeableImageView = itemView.findViewById(R.id.third_list_poster)
+    }
+
+    class ProfileListItemDiffCallback : DiffUtil.ItemCallback<ProfileListItem>() {
+        override fun areItemsTheSame(oldItem: ProfileListItem, newItem: ProfileListItem): Boolean {
+            // Implementa questa funzione per determinare se due oggetti rappresentano lo stesso elemento.
+            // Ad esempio, se i tuoi elementi hanno ID unici, puoi comparare gli ID qui.
+            return oldItem.title == newItem.title
+        }
+
+        override fun areContentsTheSame(
+            oldItem: ProfileListItem,
+            newItem: ProfileListItem
+        ): Boolean {
+            // Implementa questa funzione per determinare se i contenuti di due oggetti sono gli stessi.
+            return oldItem == newItem
+        }
     }
 }
