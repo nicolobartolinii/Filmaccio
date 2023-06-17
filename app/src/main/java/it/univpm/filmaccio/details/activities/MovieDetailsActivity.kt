@@ -7,7 +7,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
-import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
@@ -16,6 +15,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
@@ -35,9 +35,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var releaseDateTextView: TextView
     private lateinit var durationTextView: TextView
     private lateinit var directorTextView: TextView
-    private lateinit var buttonWatched: Button
-    private lateinit var buttonWatchlist: Button
-    private lateinit var buttonFavorite: Button
+    private lateinit var buttonWatched: MaterialButton
+    private lateinit var buttonWatchlist: MaterialButton
+    private lateinit var buttonFavorite: MaterialButton
     private lateinit var overviewFullText: String
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var movieDirectors: List<Director>
@@ -70,7 +70,6 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         val typedValuePrimary = TypedValue()
         val typedValueSecondary = TypedValue()
-        val typedValueOnSurface = TypedValue()
         val theme = this.theme
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorPrimary,
@@ -82,14 +81,9 @@ class MovieDetailsActivity : AppCompatActivity() {
             typedValueSecondary,
             true
         )
-        theme.resolveAttribute(
-            com.google.android.material.R.attr.colorOnSurface,
-            typedValueOnSurface,
-            true
-        )
         val color = typedValuePrimary.data
         val colorSecondary = typedValueSecondary.data
-        val colorOnSurface = typedValueOnSurface.data
+        val buttonColor = buttonWatched.backgroundTintList
 
         movieDetailsViewModel.currentMovie.observe(this) {
             it.credits.cast = it.credits.cast.take(50)
@@ -175,25 +169,31 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         movieDetailsViewModel.isMovieWatched.observe(this, Observer { isWatched ->
             if (isWatched) {
-                buttonWatched.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0)
-            } else {
-                buttonWatched.setBackgroundColor(colorOnSurface)
-            }
-        })
-
-        movieDetailsViewModel.isMovieInWatchlist.observe(this, Observer { isInWatchlist ->
-            if (isInWatchlist) {
                 buttonWatched.setBackgroundColor(colorSecondary)
+                buttonWatched.setIconResource(R.drawable.ic_check)
             } else {
-                buttonWatched.setBackgroundColor(colorOnSurface)
+                buttonWatched.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonWatched.setIconResource(R.drawable.round_remove_red_eye_24)
             }
         })
 
         movieDetailsViewModel.isMovieFavorited.observe(this, Observer { isFavorited ->
             if (isFavorited) {
-                buttonWatched.setBackgroundColor(colorSecondary)
+                buttonFavorite.setBackgroundColor(colorSecondary)
+                buttonFavorite.setIconResource(R.drawable.ic_check)
             } else {
-                buttonWatched.setBackgroundColor(colorOnSurface)
+                buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonFavorite.setIconResource(R.drawable.round_favorite_24)
+            }
+        })
+
+        movieDetailsViewModel.isMovieInWatchlist.observe(this, Observer { isInWatchlist ->
+            if (isInWatchlist) {
+                buttonWatchlist.setBackgroundColor(colorSecondary)
+                buttonWatchlist.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
             }
         })
 

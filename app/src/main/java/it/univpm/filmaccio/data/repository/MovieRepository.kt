@@ -1,5 +1,6 @@
 package it.univpm.filmaccio.data.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import it.univpm.filmaccio.data.api.TmdbApiClient
@@ -7,7 +8,9 @@ import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.take
 
 class MovieRepository {
 
@@ -45,17 +48,17 @@ class MovieRepository {
     }
 
     suspend fun isMovieWatched(userId: String, movieId: Int): Boolean {
-        val watchedMovies = FirestoreService.getList(userId, "watched").first()
-        return movieId in watchedMovies
+        val watchedMovies: List<Any> = FirestoreService.getList(userId, "watched_m").first()
+        return movieId.toLong() in watchedMovies
     }
 
     suspend fun isMovieInWatchlist(userId: String, movieId: Int): Boolean {
-        val watchlistMovies = FirestoreService.getList(userId, "watchlist").first()
-        return movieId in watchlistMovies
+        val watchlistMovies: List<Any> = FirestoreService.getList(userId, "watchlist_m").first()
+        return movieId.toLong() in watchlistMovies
     }
 
     suspend fun isMovieFavorited(userId: String, movieId: Int): Boolean {
-        val favoriteMovies = FirestoreService.getList(userId, "favorite").first()
-        return movieId in favoriteMovies
+        val favoriteMovies: List<Any> = FirestoreService.getList(userId, "favorite_m").first()
+        return movieId.toLong() in favoriteMovies
     }
 }

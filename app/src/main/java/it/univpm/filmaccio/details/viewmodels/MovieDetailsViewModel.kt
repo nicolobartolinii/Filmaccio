@@ -1,6 +1,8 @@
 package it.univpm.filmaccio.details.viewmodels
 
+import android.util.Log
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
@@ -16,42 +18,58 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
 
     private val userId = UserUtils.getCurrentUserUid()!!
 
-    val isMovieWatched: LiveData<Boolean> = liveData {
-        emit(movieRepository.isMovieWatched(userId, movieId))
-    }
+    private val _isMovieWatched = MutableLiveData<Boolean>()
+    val isMovieWatched: LiveData<Boolean> = _isMovieWatched
 
-    val isMovieInWatchlist: LiveData<Boolean> = liveData {
-        emit(movieRepository.isMovieInWatchlist(userId, movieId))
-    }
+    private val _isMovieInWatchlist = MutableLiveData<Boolean>()
+    val isMovieInWatchlist: LiveData<Boolean> = _isMovieInWatchlist
 
-    val isMovieFavorited: LiveData<Boolean> = liveData {
-        emit(movieRepository.isMovieFavorited(userId, movieId))
+    private val _isMovieFavorited = MutableLiveData<Boolean>()
+    val isMovieFavorited: LiveData<Boolean> = _isMovieFavorited
+
+    init {
+        viewModelScope.launch {
+            _isMovieWatched.value = movieRepository.isMovieWatched(userId, movieId)
+        }
+        viewModelScope.launch {
+            _isMovieInWatchlist.value = movieRepository.isMovieInWatchlist(userId, movieId)
+        }
+        viewModelScope.launch {
+            _isMovieFavorited.value = movieRepository.isMovieFavorited(userId, movieId)
+        }
     }
 
     fun toggleWatched(movieId: Int) = viewModelScope.launch {
-        if (movieRepository.isMovieWatched(userId, movieId)) {
+        if (_isMovieWatched.value == true) {
             movieRepository.removeFromList(userId, "watched", movieId)
+            _isMovieWatched.value = false
         } else {
             movieRepository.addToList(userId, "watched", movieId)
-            if (movieRepository.isMovieInWatchlist(userId, movieId)) {
+            if (_isMovieInWatchlist.value == true) {
                 movieRepository.removeFromList(userId, "watchlist", movieId)
+                _isMovieInWatchlist.value = false
             }
+            _isMovieWatched.value = true
         }
     }
 
     fun toggleWatchlist(movieId: Int) = viewModelScope.launch {
-        if (movieRepository.isMovieInWatchlist(userId, movieId)) {
+        if (_isMovieInWatchlist.value == true) {
             movieRepository.removeFromList(userId, "watchlist", movieId)
+            _isMovieInWatchlist.value = false
         } else {
             movieRepository.addToList(userId, "watchlist", movieId)
+            _isMovieInWatchlist.value = true
         }
     }
 
     fun toggleFavorite(movieId: Int) = viewModelScope.launch {
-        if (movieRepository.isMovieFavorited(userId, movieId)) {
+        if (_isMovieFavorited.value == true) {
             movieRepository.removeFromList(userId, "favorite", movieId)
+            _isMovieFavorited.value = false
         } else {
             movieRepository.addToList(userId, "favorite", movieId)
+            _isMovieFavorited.value = true
         }
     }
 
