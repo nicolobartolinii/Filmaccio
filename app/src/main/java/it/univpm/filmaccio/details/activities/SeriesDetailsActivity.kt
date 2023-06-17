@@ -114,6 +114,13 @@ class SeriesDetailsActivity : AppCompatActivity() {
             }
             seasonsRecyclerView.adapter = SeasonsAdapter(it.seasons, this)
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
+
+            titleTextView.setOnClickListener {_ ->
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(it.title)
+                    .setPositiveButton("Ok", null)
+                    .show()
+            }
         }
 
         overviewTextView.setOnClickListener {

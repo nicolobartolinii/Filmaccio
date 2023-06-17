@@ -34,7 +34,6 @@ class ProfileFragment : Fragment() {
                     Glide.with(this@ProfileFragment)
                         .load(user.profileImage)
                         .into(binding.profileImage)
-
                 }
             }
         }

@@ -1,6 +1,7 @@
 package it.univpm.filmaccio.main.utils
 
 import com.google.android.gms.tasks.Task
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.QuerySnapshot
 import it.univpm.filmaccio.data.models.User
@@ -33,5 +34,49 @@ object FirestoreService {
             .await()
         val users = snapshot.toObjects(User::class.java)
         emit(users)
+    }
+
+    fun getFollowers(uid: String) = flow {
+        val doc = FirebaseFirestore.getInstance().collection("follow").document(uid).get().await()
+        val followers = doc.get("followers") as List<String>
+        emit(followers)
+    }
+
+    fun getFollowing(uid: String) = flow {
+        val doc = FirebaseFirestore.getInstance().collection("follow").document(uid).get().await()
+        val following = doc.get("following") as List<String>
+        emit(following)
+    }
+
+    fun followUser(uid: String, targetUid: String) {
+        val followRef = FirebaseFirestore.getInstance().collection("follow").document(uid)
+        followRef.update("following", FieldValue.arrayUnion(targetUid))
+
+        val followerRef = FirebaseFirestore.getInstance().collection("follow").document(targetUid)
+        followerRef.update("followers", FieldValue.arrayUnion(uid))
+    }
+
+    fun unfollowUser(uid: String, targetUid: String) {
+        val followRef = FirebaseFirestore.getInstance().collection("follow").document(uid)
+        followRef.update("following", FieldValue.arrayRemove(targetUid))
+
+        val followerRef = FirebaseFirestore.getInstance().collection("follow").document(targetUid)
+        followerRef.update("followers", FieldValue.arrayRemove(uid))
+    }
+
+    fun addToList(uid: String, listName: String, itemId: Int) {
+        val listsRef = FirebaseFirestore.getInstance().collection("lists").document(uid)
+        listsRef.update(listName, FieldValue.arrayUnion(itemId))
+    }
+
+    fun removeFromList(uid: String, listName: String, itemId: Int) {
+        val listsRef = FirebaseFirestore.getInstance().collection("lists").document(uid)
+        listsRef.update(listName, FieldValue.arrayRemove(itemId))
+    }
+
+    fun getList(uid: String, listName: String) = flow {
+        val doc = FirebaseFirestore.getInstance().collection("lists").document(uid).get().await()
+        val list = doc.get(listName) as List<Int>
+        emit(list)
     }
 }

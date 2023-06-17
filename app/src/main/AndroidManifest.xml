@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Filmaccio"
         tools:targetApi="31">
         <activity
+            android:name=".details.activities.UserDetailsActivity"
+            android:exported="false" />
+        <activity
             android:name=".details.activities.SeriesDetailsActivity"
             android:exported="false" />
         <activity

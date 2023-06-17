@@ -7,9 +7,11 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -18,9 +20,9 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Director
+import it.univpm.filmaccio.details.adapters.CastAdapter
 import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModelFactory
-import it.univpm.filmaccio.details.adapters.CastAdapter
 
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -33,6 +35,9 @@ class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var releaseDateTextView: TextView
     private lateinit var durationTextView: TextView
     private lateinit var directorTextView: TextView
+    private lateinit var buttonWatched: Button
+    private lateinit var buttonWatchlist: Button
+    private lateinit var buttonFavorite: Button
     private lateinit var overviewFullText: String
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var movieDirectors: List<Director>
@@ -51,19 +56,40 @@ class MovieDetailsActivity : AppCompatActivity() {
         posterImage = findViewById(R.id.poster_image)
         backdropImage = findViewById(R.id.backdrop_image)
         titleTextView = findViewById(R.id.title_text_view)
-        overviewTextView = findViewById(R.id.overview_text_view)
         releaseDateTextView = findViewById(R.id.release_date_text_view)
         durationTextView = findViewById(R.id.duration_text_view)
         directorTextView = findViewById(R.id.director_text_view)
+        buttonWatched = findViewById(R.id.button_watched)
+        buttonWatchlist = findViewById(R.id.button_watchlist)
+        buttonFavorite = findViewById(R.id.button_favorite)
+        overviewTextView = findViewById(R.id.overview_text_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
 
         castRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
-        val typedValue = TypedValue()
+        val typedValuePrimary = TypedValue()
+        val typedValueSecondary = TypedValue()
+        val typedValueOnSurface = TypedValue()
         val theme = this.theme
-        theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true)
-        val color = typedValue.data
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorPrimary,
+            typedValuePrimary,
+            true
+        )
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorSecondary,
+            typedValueSecondary,
+            true
+        )
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorOnSurface,
+            typedValueOnSurface,
+            true
+        )
+        val color = typedValuePrimary.data
+        val colorSecondary = typedValueSecondary.data
+        val colorOnSurface = typedValueOnSurface.data
 
         movieDetailsViewModel.currentMovie.observe(this) {
             it.credits.cast = it.credits.cast.take(50)
@@ -99,6 +125,13 @@ class MovieDetailsActivity : AppCompatActivity() {
             movieDirectors = it.credits.crew
             directorTextView.text = movieDirectors.joinToString(", ") { director -> director.name }
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
+
+            titleTextView.setOnClickListener { _ ->
+                MaterialAlertDialogBuilder(this)
+                    .setTitle(it.title)
+                    .setPositiveButton("Ok", null)
+                    .show()
+            }
         }
 
         overviewTextView.setOnClickListener {
@@ -139,5 +172,42 @@ class MovieDetailsActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        movieDetailsViewModel.isMovieWatched.observe(this, Observer { isWatched ->
+            if (isWatched) {
+                buttonWatched.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic_check, 0, 0, 0)
+            } else {
+                buttonWatched.setBackgroundColor(colorOnSurface)
+            }
+        })
+
+        movieDetailsViewModel.isMovieInWatchlist.observe(this, Observer { isInWatchlist ->
+            if (isInWatchlist) {
+                buttonWatched.setBackgroundColor(colorSecondary)
+            } else {
+                buttonWatched.setBackgroundColor(colorOnSurface)
+            }
+        })
+
+        movieDetailsViewModel.isMovieFavorited.observe(this, Observer { isFavorited ->
+            if (isFavorited) {
+                buttonWatched.setBackgroundColor(colorSecondary)
+            } else {
+                buttonWatched.setBackgroundColor(colorOnSurface)
+            }
+        })
+
+        buttonWatched.setOnClickListener {
+            movieDetailsViewModel.toggleWatched(movieId)
+        }
+
+        buttonWatchlist.setOnClickListener {
+            movieDetailsViewModel.toggleWatchlist(movieId)
+        }
+
+        buttonFavorite.setOnClickListener {
+            movieDetailsViewModel.toggleFavorite(movieId)
+        }
     }
+
 }
