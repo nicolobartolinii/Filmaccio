@@ -79,4 +79,10 @@ object FirestoreService {
         val list = doc.get(listName) as List<Int>
         emit(list)
     }
+
+    fun getLists(uid: String) = flow {
+        val doc = FirebaseFirestore.getInstance().collection("lists").document(uid).get().await()
+        val lists = doc.data
+        emit(lists)
+    }
 }

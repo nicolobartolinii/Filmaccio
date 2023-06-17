@@ -9,6 +9,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
+import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.launch
 
@@ -18,6 +19,8 @@ class ProfileFragment : Fragment() {
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
+    private lateinit var profileListsAdapter: ProfileHorizontalListAdapter
+    private lateinit var lists: Map<String, Any>
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -25,6 +28,20 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding
             .inflate(inflater, container, false)
+
+        lists = profileViewModel.lists.value ?: emptyMap()
+        for (list in lists) {
+            val listName = list.key
+            val content = list.value as List<*>
+            val posters = listOf("", "", "")
+            if (listName.last() == 'm') {
+                for (movie in content) {
+                    val poster = movie
+                    posters[i] = poster
+                }
+            }
+        }
+        profileListsAdapter = ProfileHorizontalListAdapter()
 
         viewLifecycleOwner.lifecycleScope.launch {
             profileViewModel.currentUser.collect { user ->

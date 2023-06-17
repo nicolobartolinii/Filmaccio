@@ -5,30 +5,70 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.ProfileListItem
 
 class ProfileHorizontalListAdapter(private val itemList: List<ProfileListItem>) :
-    RecyclerView.Adapter<ProfileHorizontalListAdapter.ViewHolder>() {
+    RecyclerView.Adapter<ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>() {
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): ProfileHorizontalListsViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.profile_list_item, parent, false)
-        return ViewHolder(view)
+            .inflate(R.layout.profile_lists_item, parent, false)
+        return ProfileHorizontalListsViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ProfileHorizontalListsViewHolder, position: Int) {
         val item = itemList[position]
-        holder.bind(item)
+        holder.listName.text = item.title
+        if (item.imageURL1 != "") {
+            holder.firstListPoster.visibility = View.VISIBLE
+            if (item.imageURL1 != null) Glide.with(holder.firstListPoster.context)
+                .load("https://image.tmdb.org/t/p/w92${item.imageURL1}")
+                .into(holder.firstListPoster)
+            else Glide.with(holder.firstListPoster.context)
+                .load(R.drawable.error_404)
+                .into(holder.firstListPoster)
+            if (item.imageURL2 != "") {
+                holder.secondListPoster.visibility = View.VISIBLE
+                if (item.imageURL2 != null) Glide.with(holder.secondListPoster.context)
+                    .load("https://image.tmdb.org/t/p/w92${item.imageURL2}")
+                    .into(holder.secondListPoster)
+                else Glide.with(holder.secondListPoster.context)
+                    .load(R.drawable.error_404)
+                    .into(holder.secondListPoster)
+                if (item.imageURL3 != "") {
+                    holder.thirdListPoster.visibility = View.VISIBLE
+                    if (item.imageURL3 != null) Glide.with(holder.thirdListPoster.context)
+                        .load("https://image.tmdb.org/t/p/w92${item.imageURL3}")
+                        .into(holder.thirdListPoster)
+                    else Glide.with(holder.thirdListPoster.context)
+                        .load(R.drawable.error_404)
+                        .into(holder.thirdListPoster)
+                }
+            }
+            Glide.with(holder.secondListPoster.context)
+                .load("https://image.tmdb.org/t/p/w92${item.imageURL2}")
+                .into(holder.secondListPoster)
+            Glide.with(holder.thirdListPoster.context)
+                .load("https://image.tmdb.org/t/p/w92${item.imageURL3}")
+                .into(holder.thirdListPoster)
+        }
     }
 
     override fun getItemCount(): Int {
         return itemList.size
     }
 
-    inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
-        fun bind(item: ProfileListItem) {
-        }
+    inner class ProfileHorizontalListsViewHolder(itemView: View) :
+        RecyclerView.ViewHolder(itemView) {
+        val listName: TextView = itemView.findViewById(R.id.list_name)
+        val firstListPoster: ShapeableImageView = itemView.findViewById(R.id.first_list_poster)
+        val secondListPoster: ShapeableImageView = itemView.findViewById(R.id.second_list_poster)
+        val thirdListPoster: ShapeableImageView = itemView.findViewById(R.id.third_list_poster)
     }
 }
