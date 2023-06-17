@@ -10,9 +10,11 @@ import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
@@ -33,6 +35,9 @@ class SeriesDetailsActivity : AppCompatActivity() {
     private lateinit var releaseDateTextView: TextView
     private lateinit var durationTextView: TextView
     private lateinit var directorTextView: TextView
+    private lateinit var buttonWatching: MaterialButton
+    private lateinit var buttonWatchlist: MaterialButton
+    private lateinit var buttonFavorite: MaterialButton
     private lateinit var overviewFullText: String
     private lateinit var seasonsRecyclerView: RecyclerView
     private lateinit var castRecyclerView: RecyclerView
@@ -52,17 +57,32 @@ class SeriesDetailsActivity : AppCompatActivity() {
         posterImage = findViewById(R.id.poster_image)
         backdropImage = findViewById(R.id.backdrop_image)
         titleTextView = findViewById(R.id.title_text_view)
-        overviewTextView = findViewById(R.id.overview_text_view)
         releaseDateTextView = findViewById(R.id.release_date_text_view)
         durationTextView = findViewById(R.id.duration_text_view)
         directorTextView = findViewById(R.id.director_text_view)
+        buttonWatching = findViewById(R.id.button_watching)
+        buttonWatchlist = findViewById(R.id.button_watchlist)
+        buttonFavorite = findViewById(R.id.button_favorite)
+        overviewTextView = findViewById(R.id.overview_text_view)
         seasonsRecyclerView = findViewById(R.id.seasons_recycler_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
 
-        val typedValue = TypedValue()
+        val typedValuePrimary = TypedValue()
+        val typedValueSecondary = TypedValue()
         val theme = this.theme
-        theme.resolveAttribute(com.google.android.material.R.attr.colorPrimary, typedValue, true)
-        val color = typedValue.data
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorPrimary,
+            typedValuePrimary,
+            true
+        )
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorSecondary,
+            typedValueSecondary,
+            true
+        )
+        val color = typedValuePrimary.data
+        val colorSecondary = typedValueSecondary.data
+        val buttonColor = buttonWatching.backgroundTintList
 
         seriesDetailsViewModel.currentSeries.observe(this) {
             it.credits.cast = it.credits.cast.take(50)
@@ -161,6 +181,48 @@ class SeriesDetailsActivity : AppCompatActivity() {
                     .setNegativeButton("Annulla", null)
                     .show()
             }
+        }
+
+        seriesDetailsViewModel.isSeriesInWatching.observe(this, Observer { isWatched ->
+            if (isWatched) {
+                buttonWatching.setBackgroundColor(colorSecondary)
+                buttonWatching.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonWatching.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonWatching.setIconResource(R.drawable.round_remove_red_eye_24)
+            }
+        })
+
+        seriesDetailsViewModel.isSeriesFavorited.observe(this, Observer { isFavorited ->
+            if (isFavorited) {
+                buttonFavorite.setBackgroundColor(colorSecondary)
+                buttonFavorite.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonFavorite.setIconResource(R.drawable.round_favorite_24)
+            }
+        })
+
+        seriesDetailsViewModel.isSeriesInWatchlist.observe(this, Observer { isInWatchlist ->
+            if (isInWatchlist) {
+                buttonWatchlist.setBackgroundColor(colorSecondary)
+                buttonWatchlist.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
+            }
+        })
+
+        buttonWatching.setOnClickListener {
+            seriesDetailsViewModel.toggleInWatching(seriesId)
+        }
+
+        buttonWatchlist.setOnClickListener {
+            seriesDetailsViewModel.toggleWatchlist(seriesId)
+        }
+
+        buttonFavorite.setOnClickListener {
+            seriesDetailsViewModel.toggleFavorite(seriesId)
         }
     }
 }

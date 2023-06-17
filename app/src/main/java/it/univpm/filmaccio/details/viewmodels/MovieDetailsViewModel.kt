@@ -41,12 +41,12 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
 
     fun toggleWatched(movieId: Int) = viewModelScope.launch {
         if (_isMovieWatched.value == true) {
-            movieRepository.removeFromList(userId, "watched", movieId)
+            movieRepository.removeFromList(userId, "watched_m", movieId)
             _isMovieWatched.value = false
         } else {
-            movieRepository.addToList(userId, "watched", movieId)
+            movieRepository.addToList(userId, "watched_m", movieId)
             if (_isMovieInWatchlist.value == true) {
-                movieRepository.removeFromList(userId, "watchlist", movieId)
+                movieRepository.removeFromList(userId, "watchlist_m", movieId)
                 _isMovieInWatchlist.value = false
             }
             _isMovieWatched.value = true
@@ -55,20 +55,20 @@ class MovieDetailsViewModel(private var movieId: Int = 0) : ViewModel() {
 
     fun toggleWatchlist(movieId: Int) = viewModelScope.launch {
         if (_isMovieInWatchlist.value == true) {
-            movieRepository.removeFromList(userId, "watchlist", movieId)
+            movieRepository.removeFromList(userId, "watchlist_m", movieId)
             _isMovieInWatchlist.value = false
         } else {
-            movieRepository.addToList(userId, "watchlist", movieId)
+            movieRepository.addToList(userId, "watchlist_m", movieId)
             _isMovieInWatchlist.value = true
         }
     }
 
     fun toggleFavorite(movieId: Int) = viewModelScope.launch {
         if (_isMovieFavorited.value == true) {
-            movieRepository.removeFromList(userId, "favorite", movieId)
+            movieRepository.removeFromList(userId, "favorite_m", movieId)
             _isMovieFavorited.value = false
         } else {
-            movieRepository.addToList(userId, "favorite", movieId)
+            movieRepository.addToList(userId, "favorite_m", movieId)
             _isMovieFavorited.value = true
         }
     }

@@ -116,8 +116,8 @@
                     app:layout_constraintTop_toBottomOf="@+id/title_text_view"
                     app:layout_constraintVertical_bias="0.0" />
 
-                <Button
-                    android:id="@+id/button_watched"
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/button_watching"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -133,12 +133,12 @@
                     android:layout_width="wrap_content"
                     android:layout_height="0dp"
                     android:layout_weight="1"
-                    android:text="Guardato"
-                    app:layout_constraintEnd_toEndOf="@id/button_watched"
-                    app:layout_constraintStart_toStartOf="@id/button_watched"
-                    app:layout_constraintTop_toBottomOf="@id/button_watched" />
+                    android:text="In visione"
+                    app:layout_constraintEnd_toEndOf="@id/button_watching"
+                    app:layout_constraintStart_toStartOf="@id/button_watching"
+                    app:layout_constraintTop_toBottomOf="@id/button_watching" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_favorite"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
@@ -147,7 +147,7 @@
                     android:layout_weight="1"
                     app:icon="@drawable/round_favorite_24"
                     app:layout_constraintEnd_toEndOf="@id/button_watchlist"
-                    app:layout_constraintStart_toEndOf="@id/button_watched"
+                    app:layout_constraintStart_toEndOf="@id/button_watching"
                     app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -160,7 +160,7 @@
                     app:layout_constraintStart_toStartOf="@id/button_favorite"
                     app:layout_constraintTop_toBottomOf="@id/button_favorite" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_watchlist"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
@@ -181,7 +181,7 @@
                     app:layout_constraintStart_toStartOf="@id/button_watchlist"
                     app:layout_constraintTop_toBottomOf="@id/button_watchlist" />
 
-                <Button
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/button_lists"
                     style="@style/Widget.Material3.Button.IconButton.Filled"
                     android:layout_width="wrap_content"
