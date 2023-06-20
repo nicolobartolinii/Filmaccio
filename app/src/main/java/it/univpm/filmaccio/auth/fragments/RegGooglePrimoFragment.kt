@@ -16,9 +16,14 @@ import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.databinding.FragmentRegGooglePrimoBinding
+import it.univpm.filmaccio.main.utils.FirestoreService
 import java.util.Calendar
 
 class RegGooglePrimoFragment : Fragment() {
+
+    private var _binding: FragmentRegGooglePrimoBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var buttonBack: Button
     private lateinit var buttonAvanti: Button
@@ -32,19 +37,20 @@ class RegGooglePrimoFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_reg_google_primo, container, false)
+        _binding = FragmentRegGooglePrimoBinding.inflate(inflater, container, false)
 
-        buttonBack = view.findViewById(R.id.buttonBack)
-        buttonAvanti = view.findViewById(R.id.buttonAvanti)
-        usernameRegInputTextLayout = view.findViewById(R.id.usernameRegInputLayout)
-        usernameRegInputTextEdit = view.findViewById(R.id.usernameRegInputTextEdit)
-        genereRadioGroup = view.findViewById(R.id.genereRadioGroup)
-        dataNascitaDatePicker = view.findViewById(R.id.spinnerData)
+        buttonBack = binding.buttonBack
+        buttonAvanti = binding.buttonAvanti
+        usernameRegInputTextLayout = binding.usernameRegInputLayout
+        usernameRegInputTextEdit = binding.usernameRegInputTextEdit
+        genereRadioGroup = binding.genereRadioGroup
+        dataNascitaDatePicker = binding.spinnerData
 
         buttonBack.setOnClickListener {
-            Navigation.findNavController(view)
+            Navigation.findNavController(binding.root)
                 .navigate(R.id.action_regGooglePrimoFragment_to_loginFragment)
         }
+
         buttonAvanti.setOnClickListener {
             val username = usernameRegInputTextEdit.text.toString().lowercase()
             usernameRegInputTextLayout.isErrorEnabled = false
@@ -64,17 +70,6 @@ class RegGooglePrimoFragment : Fragment() {
                 usernameRegInputTextLayout.isErrorEnabled = true
                 usernameRegInputTextLayout.error =
                     "Il nome utente deve essere lungo almeno 3 caratteri, deve contenere almeno una lettera e può contenere solo lettere, numeri e i caratteri '.' e '_'"
-                return@setOnClickListener
-            }
-
-            isUsernameAlreadyRegistered(username) { usernameExists ->
-                if (usernameExists) {
-                    usernameRegInputTextLayout.isErrorEnabled = true
-                    usernameRegInputTextLayout.error = "Il nome utente non è disponibile"
-                }
-            }
-
-            if (usernameRegInputTextLayout.isErrorEnabled) {
                 return@setOnClickListener
             }
 
@@ -101,7 +96,7 @@ class RegGooglePrimoFragment : Fragment() {
             if (!isValidAge) {
                 Toast.makeText(
                     requireContext(),
-                    "Inserisci una data di nascita valida (almeno 14 anni)",
+                    "Inserisci una data di nascita valida (almeno $minimumAge anni)",
                     Toast.LENGTH_LONG
                 ).show()
                 return@setOnClickListener
@@ -119,9 +114,16 @@ class RegGooglePrimoFragment : Fragment() {
                     gender,
                     birthDate
                 )
-            Navigation.findNavController(view).navigate(action)
+            isUsernameAlreadyRegistered(username) { usernameExists ->
+                if (usernameExists) {
+                    usernameRegInputTextLayout.isErrorEnabled = true
+                    usernameRegInputTextLayout.error = "Il nome utente non è disponibile"
+                } else {
+                    Navigation.findNavController(binding.root).navigate(action)
+                }
+            }
         }
-        return view
+        return binding.root
     }
 
     private fun isUsernameValid(username: String): Boolean {
@@ -131,13 +133,13 @@ class RegGooglePrimoFragment : Fragment() {
     }
 
     private fun isUsernameAlreadyRegistered(username: String, callback: (Boolean) -> Unit) {
-        db.collection("users").whereEqualTo("username", username).get()
+        FirestoreService.getWhereEqualTo("users", "username", username).get()
             .addOnSuccessListener { querySnapshot ->
                 val exists = !querySnapshot.isEmpty
                 callback(exists)
             }
             .addOnFailureListener {
-                callback(false)
+                callback(true)
             }
     }
 

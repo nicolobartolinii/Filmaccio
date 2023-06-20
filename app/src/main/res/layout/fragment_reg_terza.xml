@@ -120,12 +120,14 @@
             android:inputType="textShortMessage" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/propicSetImageView"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_marginTop="12dp"
         android:contentDescription="@string/imposta_propic_description"
+        android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay"
         android:src="@drawable/default_propic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

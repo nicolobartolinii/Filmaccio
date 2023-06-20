@@ -12,7 +12,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -22,14 +21,16 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.databinding.FragmentRegGoogleSecondoBinding
 import it.univpm.filmaccio.main.MainActivity
+import it.univpm.filmaccio.main.utils.FirestoreService
+import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.File
 import java.io.FileOutputStream
 
@@ -37,14 +38,17 @@ import java.io.FileOutputStream
 class RegGoogleSecondoFragment : Fragment() {
 
     companion object {
-        private const val PICK_IMAGE_REQUEST = 7
+        private const val PICK_IMAGE_REQUEST = 8
     }
+
+    private var _binding: FragmentRegGoogleSecondoBinding? = null
+    private val binding get() = _binding!!
 
     private lateinit var buttonBack: Button
     private lateinit var buttonFine: Button
     private lateinit var nomeVisualizzatoTextInputEditText: TextInputEditText
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
-    private lateinit var propicImageView: ImageView
+    private lateinit var propicImageView: ShapeableImageView
     private lateinit var selectedImageUri: Uri
     private lateinit var username: String
     private lateinit var gender: String
@@ -56,15 +60,14 @@ class RegGoogleSecondoFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_reg_google_secondo, container, false)
+    ): View {
+        _binding = FragmentRegGoogleSecondoBinding.inflate(inflater, container, false)
 
-        buttonBack = view.findViewById(R.id.buttonBack)
-        buttonFine = view.findViewById(R.id.buttonFine)
-        nomeVisualizzatoTextInputEditText =
-            view.findViewById(R.id.nomeVisualizzatoTextInputEditText)
-        nomeVisualizzatoTectInputLayout = view.findViewById(R.id.nomeVisualizatoTextInputLayout)
-        propicImageView = view.findViewById(R.id.propicSetImageView)
+        buttonBack = binding.buttonBack
+        buttonFine = binding.buttonFine
+        nomeVisualizzatoTextInputEditText = binding.nomeVisualizzatoTextInputEditText
+        nomeVisualizzatoTectInputLayout = binding.nomeVisualizatoTextInputLayout
+        propicImageView = binding.propicSetImageView
 
         val args: RegGoogleSecondoFragmentArgs by navArgs()
         username = args.username
@@ -74,7 +77,7 @@ class RegGoogleSecondoFragment : Fragment() {
         nomeVisualizzatoTextInputEditText.setText(username, TextView.BufferType.EDITABLE)
 
         buttonBack.setOnClickListener {
-            Navigation.findNavController(view)
+            Navigation.findNavController(binding.root)
                 .navigate(R.id.action_regGoogleSecondoFragment_to_regGooglePrimoFragment)
         }
 
@@ -89,7 +92,7 @@ class RegGoogleSecondoFragment : Fragment() {
                 return@setOnClickListener
             }
 
-            val firebaseUser = FirebaseAuth.getInstance().currentUser
+            val firebaseUser = UserUtils.auth.currentUser
             email = firebaseUser?.email.toString()
             val uid = firebaseUser?.uid
             uploadPropicAndUser(uid)
@@ -97,11 +100,14 @@ class RegGoogleSecondoFragment : Fragment() {
 
         propicImageView.setOnClickListener { onPropicClick() }
 
-        return view
+        return binding.root
     }
 
+    // Metodo che viene chiamato quando l'utente clicca sull'immagine profilo da impostare
     private fun onPropicClick() {
+        // Creiamo un intent per aprire la galleria in modo da permettere all'utente di scegliere un'immagine profilo
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        // Avviamo l'activity per scegliere un'immagine profilo (qui usiamo il metodo deprecato e usiamo il codice contenuto nel companion object così come abbiamo fatto nel fragment del login)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
@@ -110,7 +116,9 @@ class RegGoogleSecondoFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+            // Se l'utente ha scelto un'immagine profilo correttamente, recuperiamo l'uri dell'immagine profilo scelta
             selectedImageUri = data.data!!
+            // Chiamiamo il metodo per caricare l'immagine profilo scelta dall'utente in un ImageView
             loadImageWithCircularCrop(selectedImageUri)
         }
     }
@@ -139,7 +147,7 @@ class RegGoogleSecondoFragment : Fragment() {
     }
 
     private fun saveBitmapToFile(bitmap: Bitmap): File {
-        val file = File(requireContext().cacheDir, "propic.jpg")
+        val file = File(requireContext().cacheDir, "propic.png")
         val outputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         outputStream.flush()
@@ -150,7 +158,7 @@ class RegGoogleSecondoFragment : Fragment() {
     private fun uploadPropicAndUser(uid: String?) {
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
-        val propicRef = storageRef.child("propic/${uid}.jpg")
+        val propicRef = storageRef.child("propic/${uid}.png")
         val imageUri = if (croppedImageFile != null) {
             Uri.fromFile(croppedImageFile)
         } else {
@@ -173,7 +181,7 @@ class RegGoogleSecondoFragment : Fragment() {
                     .show()
             }
 
-            // Ottieni l'URL del download dell'immagine
+            // Ottiene l'URL del download dell'immagine
             propicRef.downloadUrl
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -181,7 +189,7 @@ class RegGoogleSecondoFragment : Fragment() {
                 val imageURL = downloadUri.toString()
                 addNewUserToFirestore(uid, imageURL)
             } else {
-                // Si è verificato un errore durante il recupero dell'URL di download dell'immagine
+                // Si è verificato un errore durante il caricamento dell'immagine
                 val exception = task.exception
                 Toast.makeText(
                     requireContext(),
@@ -194,9 +202,6 @@ class RegGoogleSecondoFragment : Fragment() {
     }
 
     private fun addNewUserToFirestore(uid: String?, imageURL: String) {
-        val firestore = FirebaseFirestore.getInstance()
-        val usersCollection = firestore.collection("users")
-
         val user = hashMapOf(
             "uid" to uid,
             "email" to email,
@@ -206,19 +211,57 @@ class RegGoogleSecondoFragment : Fragment() {
             "nameShown" to nameShown,
             "profileImage" to imageURL
         )
+        val followDocument = hashMapOf(
+            "followers" to arrayListOf<String>(),
+            "following" to arrayListOf()
+        )
+        val listsDocument = hashMapOf(
+            "watchlist_m" to arrayListOf<Long>(),
+            "watchlist_t" to arrayListOf(),
+            "watched_m" to arrayListOf(),
+            "watching_t" to arrayListOf(),
+            "favorite_m" to arrayListOf(),
+            "favorite_t" to arrayListOf()
+        )
 
-        usersCollection.document(uid!!)
+        FirestoreService.collectionUsers.document(uid!!)
             .set(user)
-            .addOnSuccessListener {
-                // Utente aggiunto con successo al database Firestore
-                val intent = Intent(activity, MainActivity::class.java)
-                startActivity(intent)
-                activity?.finish()
-            }
             .addOnFailureListener {
                 // Si è verificato un errore durante l'aggiunta dell'utente al database Firestore
-                Toast.makeText(requireContext(), "Registrazione fallita", Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        FirestoreService.collectionFollow.document(uid)
+            .set(followDocument)
+            .addOnFailureListener {
+                // Si è verificato un errore durante l'aggiunta del documento follow al database Firestore
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        FirestoreService.collectionLists.document(uid)
+            .set(listsDocument)
+            .addOnSuccessListener {
+                navigateToHomeActivity()
+            }
+            .addOnFailureListener {
+                // Si è verificato un errore durante l'aggiunta del documento lists al database Firestore
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
             }
     }
 
+    private fun navigateToHomeActivity() {
+        val intent = Intent(activity, MainActivity::class.java)
+        startActivity(intent)
+        activity?.finish()
+    }
 }

@@ -319,6 +319,7 @@
                 android:layout_width="160dp"
                 android:layout_height="240dp"
                 android:layout_marginTop="-100dp"
+                android:scaleType="centerCrop"
                 android:background="?colorBackgroundFloating"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.063"
