@@ -12,6 +12,8 @@ import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.ProfileListItem
 
+// Questo adapter serve per la RecyclerView che mostra le liste di film e serie TV salvate dall'utente.
+// Non è ancora implementato benissimo infatti è da rivedere perché a volte porta a dei crash.
 class ProfileHorizontalListAdapter :
     ListAdapter<ProfileListItem, ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>(
         ProfileListItemDiffCallback()

@@ -9,6 +9,8 @@ import androidx.fragment.app.viewModels
 import it.univpm.filmaccio.databinding.FragmentFeedBinding
 import it.univpm.filmaccio.main.viewmodels.FeedViewModel
 
+// Questo fragment è la schermata in cui dovrebbe essere mostrato il feed di film, serie TV, persone
+// e altri utenti all'utente. Per ora non è stato implementato nulla.
 class FeedFragment : Fragment() {
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!

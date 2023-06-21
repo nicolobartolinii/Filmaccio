@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import it.univpm.filmaccio.R
 
+// Questa classe me l'ha creata ChatGPT quindi ignoratela, io non l'ho toccata e l'ho aggiunta solo per evitare errori in altre parti del codice.
 class FeedAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     // Lista di dati da visualizzare

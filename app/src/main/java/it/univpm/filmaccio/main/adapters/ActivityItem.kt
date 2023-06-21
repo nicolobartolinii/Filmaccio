@@ -1,5 +1,9 @@
 package it.univpm.filmaccio.main.adapters
 
+// Questa classe rappresenta un item (cioè un elemento, una singola notifica) del feed dell'utente. Ogni item ha un tipo, che può essere
+// FOLLOW_TYPE, REVIEW_TYPE, ecc. e un timestamp che indica quando è stato creato l'item.
+// Era solo un abbozzo di come potrebbe essere implementato il feed, ma non è stato implementato
+// per ora perché è una cosa molto complessa da fare.
 sealed class ActivityItem {
     abstract val type: Int
     abstract val timestamp: Long

@@ -7,6 +7,7 @@ import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
+// Per la spiegazione di questa classe vedere MovieRepository.kt che è molto simile
 class SeriesRepository {
     private val tmdbApi = TmdbApiClient.TMDB_API
 

@@ -2,6 +2,13 @@ package it.univpm.filmaccio.data.models
 
 import com.google.gson.annotations.SerializedName
 
+// Data class che rappresenta i dettagli di una serie TV, leggi il commento alla classe Movie perché
+// tanto sono praticamnete identiche.
+// Qui abbiamo delle info in più però: le stagioni.
+// Per ogni serie TV l'API ci dà una lista di stagioni (facendo una chiamata combinata con
+// append_to_response) e per ogni stagione abbiamo una lista di episodi.
+// I campi delle classi interne Season ed Episode sono abbastanza autoesplicativi. Ci servono
+// per avere nella schermata di dettaglio tutte le informazioni sulla serie TV in questione.
 data class Series(
     @SerializedName("id") val id: Long,
     @SerializedName("name") val title: String,

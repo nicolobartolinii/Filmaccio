@@ -34,6 +34,10 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.File
 import java.io.FileOutputStream
 
+// Questa classe gestisce il secondo passo della registrazione di un utente tramite Google.
+// La differenza con il terzo passo della registrazione tramite email è che qui l'utente non viene creato in FirebaseAuth, perché in questo caso l'utente è già
+// stato creato come ho spiegato in LoginFragment.
+// Questa è la classe in cui ho il giga problema stranissimo di cui ho parlato abbondantemente in RegTerzaFragment, quindi nel caso andate a vedere quel file per la spiegazione (e vedrete anche che i due codici sono letteralmente identici).
 @Suppress("DEPRECATION")
 class RegGoogleSecondoFragment : Fragment() {
 
@@ -49,13 +53,13 @@ class RegGoogleSecondoFragment : Fragment() {
     private lateinit var nomeVisualizzatoTextInputEditText: TextInputEditText
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ShapeableImageView
-    private lateinit var selectedImageUri: Uri
     private lateinit var username: String
     private lateinit var gender: String
     private lateinit var birthDate: Timestamp
     private lateinit var nameShown: String
     private lateinit var email: String
     private var croppedImageFile: File? = null
+    private var selectedImageUri: Uri? = null // Forse qui potrete notare una differenza ma perché sto facendo dei tentativi per risolvere quel problema (tentativi ancora inutili)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -103,11 +107,9 @@ class RegGoogleSecondoFragment : Fragment() {
         return binding.root
     }
 
-    // Metodo che viene chiamato quando l'utente clicca sull'immagine profilo da impostare
-    private fun onPropicClick() {
-        // Creiamo un intent per aprire la galleria in modo da permettere all'utente di scegliere un'immagine profilo
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        // Avviamo l'activity per scegliere un'immagine profilo (qui usiamo il metodo deprecato e usiamo il codice contenuto nel companion object così come abbiamo fatto nel fragment del login)
+    private fun onPropicClick() { // Forse qui potrete notare una differenza ma perché sto facendo dei tentativi per risolvere quel problema (tentativi ancora inutili)
+        val intent = Intent(Intent.ACTION_PICK)
+        intent.type = "image/*"
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
@@ -116,9 +118,7 @@ class RegGoogleSecondoFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            // Se l'utente ha scelto un'immagine profilo correttamente, recuperiamo l'uri dell'immagine profilo scelta
-            selectedImageUri = data.data!!
-            // Chiamiamo il metodo per caricare l'immagine profilo scelta dall'utente in un ImageView
+            selectedImageUri = data.data // Forse qui potrete notare una differenza ma perché sto facendo dei tentativi per risolvere quel problema (tentativi ancora inutili)
             loadImageWithCircularCrop(selectedImageUri)
         }
     }
@@ -131,14 +131,11 @@ class RegGoogleSecondoFragment : Fragment() {
 
         val target = object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                // Salva l'immagine ritagliata in un file temporaneo
                 croppedImageFile = saveBitmapToFile(resource)
-                // Carica l'immagine ritagliata in un ImageView
                 propicImageView.setImageBitmap(resource)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
-                // Rimuove l'immagine caricata in precedenza
                 propicImageView.setImageDrawable(null)
             }
         }
@@ -147,7 +144,7 @@ class RegGoogleSecondoFragment : Fragment() {
     }
 
     private fun saveBitmapToFile(bitmap: Bitmap): File {
-        val file = File(requireContext().cacheDir, "propic.png")
+        val file = File(requireContext().cacheDir, "propic.jpg")
         val outputStream = FileOutputStream(file)
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         outputStream.flush()
@@ -158,7 +155,7 @@ class RegGoogleSecondoFragment : Fragment() {
     private fun uploadPropicAndUser(uid: String?) {
         val storage = FirebaseStorage.getInstance()
         val storageRef = storage.reference
-        val propicRef = storageRef.child("propic/${uid}.png")
+        val propicRef = storageRef.child("propic/${uid}.jpg")
         val imageUri = if (croppedImageFile != null) {
             Uri.fromFile(croppedImageFile)
         } else {
@@ -171,7 +168,6 @@ class RegGoogleSecondoFragment : Fragment() {
 
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
-                // Si è verificato un errore durante il caricamento dell'immagine
                 val exception = task.exception
                 Toast.makeText(
                     requireContext(),
@@ -181,7 +177,6 @@ class RegGoogleSecondoFragment : Fragment() {
                     .show()
             }
 
-            // Ottiene l'URL del download dell'immagine
             propicRef.downloadUrl
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
@@ -189,7 +184,6 @@ class RegGoogleSecondoFragment : Fragment() {
                 val imageURL = downloadUri.toString()
                 addNewUserToFirestore(uid, imageURL)
             } else {
-                // Si è verificato un errore durante il caricamento dell'immagine
                 val exception = task.exception
                 Toast.makeText(
                     requireContext(),
@@ -227,7 +221,6 @@ class RegGoogleSecondoFragment : Fragment() {
         FirestoreService.collectionUsers.document(uid!!)
             .set(user)
             .addOnFailureListener {
-                // Si è verificato un errore durante l'aggiunta dell'utente al database Firestore
                 Toast.makeText(
                     requireContext(),
                     "Registrazione al database fallita, avvisa il nostro team di supporto",
@@ -237,7 +230,6 @@ class RegGoogleSecondoFragment : Fragment() {
         FirestoreService.collectionFollow.document(uid)
             .set(followDocument)
             .addOnFailureListener {
-                // Si è verificato un errore durante l'aggiunta del documento follow al database Firestore
                 Toast.makeText(
                     requireContext(),
                     "Registrazione al database fallita, avvisa il nostro team di supporto",
@@ -250,7 +242,6 @@ class RegGoogleSecondoFragment : Fragment() {
                 navigateToHomeActivity()
             }
             .addOnFailureListener {
-                // Si è verificato un errore durante l'aggiunta del documento lists al database Firestore
                 Toast.makeText(
                     requireContext(),
                     "Registrazione al database fallita, avvisa il nostro team di supporto",

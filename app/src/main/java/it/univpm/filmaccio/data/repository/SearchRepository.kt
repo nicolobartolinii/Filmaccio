@@ -4,6 +4,8 @@ import android.util.Log
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.SearchResponse
 
+// Questa classe è un repository che si occupa di gestire i dati relativi alla ricerca. Effettua
+// semplicemente la chiamata all'endpoint search/multi dell'API di TMDB.
 class SearchRepository {
     private val tmdbApi = TmdbApiClient.TMDB_API
 

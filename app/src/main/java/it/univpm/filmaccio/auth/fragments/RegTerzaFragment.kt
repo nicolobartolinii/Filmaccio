@@ -26,7 +26,9 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegTerzaBinding
 import it.univpm.filmaccio.main.MainActivity
@@ -187,54 +189,73 @@ class RegTerzaFragment : Fragment() {
         }
     }
 
-    // Questo metodo inserisce l'immagine di profilo scelta dall'utente in una ShapeableImageView che ha una forma rotonda, in questo modo, anche se l'immagine scelta dall'utente sarà rettangolare, verrà visualizzata in modo circolare
-    // Piccolo appunto: in tutto il resto dell'app, per visualizzare l'immagine di profilo dell'utente, userò una ShapeableImageView che è un componente di Material Design. Questa ShapeableImageView consente
+    // Questo metodo inserisce l'immagine di profilo scelta dall'utente nella ShapeableImageView propicImageView dopo averla modificata in modo da renderla circolare e averla salvata in un file temporaneo (in modo da poterla caricare nel database)
+    // Se c'è qualcosa che non vi torna in questo metodo (e in quelli che vengono chiamati all'interno) è perché mi sono fatto aiutare da ChatGPT per riuscire a fare questa cosa di ritagliare l'immagine e salvarla. Quindi ci sono alcune cose che non ho capito bene nemmeno io
+    // e forse è anche per questo che non sono riuscito a fare in modo che funzionasse anche nella classe RegGoogleSecondaFragment (che è praticamente identica a questa). Ovviamente ChatGPT può sbarellare
+    // Piccolo appunto: questo è il metodo incriminato che mi ha dato quel problema strano. Se guardate, infatti, nella classe RegGoogleSecondaFragment, a partire dal metodo onPropicClick() fino alla fine del file, il codice è esattamente identico a quello che trovate qui.
+    // Tuttavia, nonostante il codice sia esattamente identico, nell'altra classe non funziona. Ho debuggato line-by-line e ho scoperto che il problema è proprio qui, in questo metodo. Infatti, quando il codice passa alla riga 213, successivamente in questa classe si passa al metodo onResourceReady, mentre nell'altra classe si passa al metodo onLoadFailed e non so perché.
     private fun loadImageWithCircularCrop(imageUri: Uri?) {
+        // Qui usiamo Glide (una libreria per gestire le immagini in Android in modo da caricarle facilmente da internet e modificarle nel codice e altro) per creare una RequestBuilder che ci permette di caricare l'immagine profilo scelta dall'utente dopo averla modificata (ritagliandola in modo circolare)
         val requestBuilder = Glide.with(this)
             .asBitmap()
             .load(imageUri)
             .apply(RequestOptions.circleCropTransform())
 
+        // Con questo codice qui sotto, creiamo un CustomTarget che ci permette di caricare l'immagine profilo modificata in un file temporaneo attraverso il metodo saveBitmapToFile e di caricarla nella ShaepableImageView
+        // Sinceramente non so spiegare bene perché viene fatto in questo modo.
         val target = object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                // Salva l'immagine ritagliata in un file temporaneo
+                // Salviamo l'immagine ritagliata in un file temporaneo
                 croppedImageFile = saveBitmapToFile(resource)
-                // Carica l'immagine ritagliata in un ImageView
+                // Carica l'immagine ritagliata nella ShapeableImageView
                 propicImageView.setImageBitmap(resource)
             }
 
+            // Questo metodo è una delle cose che non so spiegare (come ho scritto sopra). Credo che possa servire a eliminare l'immagine contenuta nella ShapeableImageView per qualche motivo.
             override fun onLoadCleared(placeholder: Drawable?) {
-                // Rimuove l'immagine caricata in precedenza
+                // Rimuoviamo l'immagine caricata in precedenza
                 propicImageView.setImageDrawable(null)
             }
         }
 
+        // Carichiamo l'immagine profilo modificata nella ShapeableImageView dopo averla ritagliata e salvata in un file temporaneo
         requestBuilder.into(target)
     }
 
+    // Questo metodo serve a salvare l'immagine profilo ritagliata in un file temporaneo
     private fun saveBitmapToFile(bitmap: Bitmap): File {
-        val file = File(requireContext().cacheDir, "propic.png")
+        // Creiamo un file temporaneo chiamato propic.jpg nella cache dell'applicazione
+        val file = File(requireContext().cacheDir, "propic.jpg")
+        // Creiamo un FileOutputStream per poter scrivere nel file
         val outputStream = FileOutputStream(file)
+        // Comprimiamo l'immagine profilo ritagliata in modo da ridurne la dimensione
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
         outputStream.flush()
         outputStream.close()
         return file
     }
 
+    // Questo metodo serve a caricare l'immagine profilo ritagliata in Firebase Cloud Storage e i dati dell'utente in Firestore
     private fun uploadPropicAndUser(uid: String?) {
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
-        val propicRef = storageRef.child("propic/${uid}.png")
+        // Creiamo un riferimento al Cloud Storage di Firebase
+        val storageRef = Firebase.storage.reference
+        // Creiamo un riferimento al file che vogliamo caricare nel Cloud Storage
+        val propicRef = storageRef.child("propic/${uid}.jpg")
+        // Creiamo un Uri per poter caricare l'immagine profilo ritagliata nel Cloud Storage
         val imageUri = if (croppedImageFile != null) {
+            // Se l'immagine profilo è stata modificata dall'utente, carichiamo l'immagine profilo ritagliata
             Uri.fromFile(croppedImageFile)
         } else {
+            // Se l'immagine profilo non è stata modificata dall'utente, carichiamo l'immagine profilo di default
             val drawable = propicImageView.drawable as BitmapDrawable
             val bitmap = drawable.bitmap
             val defaultImageFile = saveBitmapToFile(bitmap)
             Uri.fromFile(defaultImageFile)
         }
+        // Creiamo una task per caricare l'immagine profilo nel Cloud Storage
         val uploadTask = propicRef.putFile(imageUri)
 
+        // Facciamo continuare la task per verificare se ci sono problemi e poi aggiungiamo un listener al completamento della task
         uploadTask.continueWithTask { task ->
             if (!task.isSuccessful) {
                 // Si è verificato un errore durante il caricamento dell'immagine
@@ -246,13 +267,14 @@ class RegTerzaFragment : Fragment() {
                 )
                     .show()
             }
-
             // Ottiene l'URL del download dell'immagine
             propicRef.downloadUrl
         }.addOnCompleteListener { task ->
             if (task.isSuccessful) {
+                // Se il caricamento dell'immagine è andato a buon fine, otteniamo l'URI di riferimento dell'immagine caricata in Cloud Storage con task.result che si riferisce a propicRef.downloadUrl di qualche riga sopra
                 val downloadUri = task.result
                 val imageURL = downloadUri.toString()
+                // Qui chiamiamo il metodo per aggiungere i dati dell'utente a Firestore in modo da completare la registrazione
                 addNewUserToFirestore(uid, imageURL)
             } else {
                 // Si è verificato un errore durante il caricamento dell'immagine
@@ -267,7 +289,9 @@ class RegTerzaFragment : Fragment() {
         }
     }
 
+    // Questo metodo serve ad aggiungere i dati dell'utente a Firestore in modo da completare la registrazione
     private fun addNewUserToFirestore(uid: String?, imageURL: String) {
+        // Creiamo un HashMap con i dati dell'utente
         val user = hashMapOf(
             "uid" to uid,
             "email" to email,
@@ -277,10 +301,12 @@ class RegTerzaFragment : Fragment() {
             "nameShown" to nameShown,
             "profileImage" to imageURL
         )
+        // Creiamo una HashMap con due ArrayList vuoti per setuppare il documento follow del nuovo utente
         val followDocument = hashMapOf(
             "followers" to arrayListOf<String>(),
             "following" to arrayListOf()
         )
+        // Creiamo una HashMap con sei ArrayList vuoti per setuppare il documento lists del nuovo utente
         val listsDocument = hashMapOf(
             "watchlist_m" to arrayListOf<Long>(),
             "watchlist_t" to arrayListOf(),
@@ -290,8 +316,24 @@ class RegTerzaFragment : Fragment() {
             "favorite_t" to arrayListOf()
         )
 
-        FirestoreService.collectionUsers.document(uid!!)
-            .set(user)
+        // A tal proposito, forse adesso è il momento migliore di spiegare come ho strutturato il database Firestore.
+        // Abbiamo una collection users, una collection follow e una collection lists.
+        // Tutte queste collection contengono un documento per ogni utente registrato all'app.
+        // I documenti relativi agli utenti hanno sempre come nome l'uid dell'utente corrispondente.
+        // Il documento dell'utente dentro users contiene i dati dell'utente come sono nella HashMap che abbiamo creato sopra.
+        // Il documento dell'utente dentro follow contiene due ArrayList: una per i follower dell'utente e una per gli utenti che l'utente segue (ovviamente sono entrambe inizialmente vuote).
+        // Il documento dell'utente dentro lists contiene sei ArrayList: una per i film da vedere (watchlist_m), una per le serie TV da vedere (watchlist_t), una per i film visti (watched_m),
+        // una per le serie TV che si sta guardando (watching_t), una per i film preferiti (favorite_m) e una per le serie TV preferite (favorite_t).
+        // Per quanto riguarda le liste di film e serie TV, ogni elemento delle liste è un Long che rappresenta l'id del film o della serie TV. Inoltre, il nome delle liste finisce con _m o _t a seconda che la lista sia di film o di serie TV.
+        // Questa cosa dei nomi è necessaria perché purtroppo l'API che usiamo non distingue gli id dei film da quelli delle serie TV, quindi passando un'id di un film alla chiamata che ti da i dettagli di una serie TV, non darà errore 404 ma darà i dettagli di una serie TV "a caso".
+        // Quindi poi come vedrete nel codice successivo quando si va a lavorare con le liste, useremo l'attributo last() per prendere l'ultimo carattere del nome della lista e capire se è una lista di film o di serie TV e in base a quello faremo la chiamata giusta all'API.
+        // Questo ovviamente andrà fatto anche per le eventuali nuove liste create dall'utente. Infatti l'utente, oltre a scegliere il nome della sua lista (che non dovrà superare i 12 caratteri), dovrà anche scegliere se la lista sarà di film o di serie TV e in base a quello nell'aggiunta
+        // della lista al database Firestore, si aggiungerà alla collection lists un nuovo campo con il nome della lista e il suffisso _m o _t a seconda che la lista sia di film o di serie TV.
+
+
+        // Aggiungiamo i dati dell'utente al documento dell'utente dentro la collection users
+        FirestoreService.collectionUsers.document(uid!!) // Questo .document(uid!!) serve per creare un documento con nome uguale all'uid dell'utente
+            .set(user) // Questo .set(user) serve per aggiungere i dati dell'utente al documento appena creato
             .addOnFailureListener {
                 // Si è verificato un errore durante l'aggiunta dell'utente al database Firestore
                 Toast.makeText(
@@ -300,6 +342,7 @@ class RegTerzaFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        // Aggiungiamo i dati del documento follow del nuovo utente alla collection follow
         FirestoreService.collectionFollow.document(uid)
             .set(followDocument)
             .addOnFailureListener {
@@ -310,9 +353,11 @@ class RegTerzaFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        // Aggiungiamo i dati del documento lists del nuovo utente alla collection lists
         FirestoreService.collectionLists.document(uid)
             .set(listsDocument)
             .addOnSuccessListener {
+                // A questo punto la registrazione è completata, quindi possiamo navigare alla HomeActivity
                 navigateToHomeActivity()
             }
             .addOnFailureListener {
@@ -325,6 +370,7 @@ class RegTerzaFragment : Fragment() {
             }
     }
 
+    // Questo metodo serve per navigare alla HomeActivity, viene chiamato quando la registrazione è completata
     private fun navigateToHomeActivity() {
         val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)

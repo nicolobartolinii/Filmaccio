@@ -16,15 +16,25 @@ import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 
+// Questa classe è un adapter per la RecyclerView che mostra i risultati della ricerca.
+// Ho spiegato a cosa servono gli adapter nei commenti di SearchFragment.
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
+    // Questo companion object contiene delle costanti che rappresentano i tipi di risultati
+    // che possono essere mostrati nella RecyclerView.
+    // Se il risultato è una TMDBEntity, allora il tipo è RESULT_TYPE_TMDB_ENTITY e quindi il layout
+    // dell'elemento della lista sarà del tipo per le entity. Se il risultato è un utente, allora
+    // il tipo è RESULT_TYPE_USER e quindi il layout dell'elemento della lista sarà del tipo per gli
+    // utenti.
     companion object {
         const val RESULT_TYPE_TMDB_ENTITY = 0
         const val RESULT_TYPE_USER = 1
     }
 
+    // Qui inizializziamo la variabile dei risultati di ricerca con una lista vuota.
     private var searchResults: List<Any> = listOf()
 
+    // Questo metodo serve per aggiornare i risultati di ricerca (viene chiamato in SearchFragment).
     @SuppressLint("NotifyDataSetChanged")
     fun updateSearchResults(newSearchResults: List<Any>) {
         searchResults = newSearchResults
@@ -33,6 +43,7 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = when (viewType) {
+            // Qui viene scelto il layout da usare in base al tipo di risultato.
             RESULT_TYPE_TMDB_ENTITY -> LayoutInflater.from(parent.context)
                 .inflate(R.layout.search_result_entity, parent, false)
 
@@ -44,6 +55,10 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
         return ViewHolder(view)
     }
 
+    // In questo metodo impostiamo le varie informazioni sul risultato di ricerca nel corrispondente
+    // layout in modo da poterle visualizzare correttamente nella RecyclerView.
+    // Quindi se il risultato è TmdbEntiy impostiamo il titolo e l'immagine, se è un utente impostiamo
+    // la foto profilo e il nome (visualizzato).
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val result = searchResults[position]) {
             is TmdbEntity -> {
@@ -84,6 +99,7 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
         }
     }
 
+    // Con questo metodo ricaviamo di che tipo si tratta il risultato di un certo elemento della lista.
     override fun getItemViewType(position: Int): Int {
         return when (searchResults[position]) {
             is TmdbEntity -> RESULT_TYPE_TMDB_ENTITY

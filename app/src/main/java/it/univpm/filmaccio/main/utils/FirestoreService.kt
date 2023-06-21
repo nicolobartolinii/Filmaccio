@@ -11,6 +11,11 @@ import it.univpm.filmaccio.data.models.User
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
+// Questo oggetto singleton si occupa di gestire tutte le operazioni che riguardano il database
+// Firestore. In particolare, contiene un oggetto FirebaseFirestore che rappresenta il database
+// e contiene i riferimenti alle collezioni del database.
+// Poi ci sono parecchi metodi che permettono di effettuare operazioni sul database. Sono abbastanza
+// autoesplicativi, quindi non mi metterò a commentarli.
 object FirestoreService {
 
     val db: FirebaseFirestore by lazy { Firebase.firestore }
