@@ -1,0 +1,32 @@
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <SwitchPreferenceCompat
+        app:key="notifications"
+        app:title="Enable notifications"
+        app:summary="Receive notifications about new releases"
+        app:defaultValue="true"/>
+
+    <ListPreference
+        app:key="theme"
+        app:title="App Theme"
+        app:summary="Choose your preferred theme"
+        app:defaultValue="system"/>
+<!--        app:entries="@array/theme_entries"-->
+<!--        app:entryValues="@array/theme_values"-->
+
+
+    <ListPreference
+        app:key="video_quality"
+        app:title="Video Quality"
+        app:summary="Choose the default video quality"
+        app:defaultValue="hd"/>
+<!--        app:entries="@array/quality_entries"-->
+<!--        app:entryValues="@array/quality_values"-->
+
+
+    <Preference
+        app:key="logout"
+        app:title="Logout"
+        app:summary="Logout from the app"/>
+
+</PreferenceScreen>

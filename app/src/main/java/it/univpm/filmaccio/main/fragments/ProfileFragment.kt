@@ -1,16 +1,21 @@
 package it.univpm.filmaccio.main.fragments
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
+import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
+import it.univpm.filmaccio.main.SettingsActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.launch
@@ -27,11 +32,16 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var modifyProfile: Button // bottone per la pagina di modifica
+    private lateinit var settingsButton: Button // bottone per le impostazioni
+
+
     private val profileViewModel: ProfileViewModel by viewModels()
 
     // Qui ci riferiamo ai repository per poter convertire le liste in ProfileListItem
     private val movieRepository = MovieRepository()
     private val seriesRepository = SeriesRepository()
+
 
     // Anche qui abbiamo un adapter per la recycler view delle liste
     private lateinit var profileListsAdapter: ProfileHorizontalListAdapter
@@ -44,6 +54,22 @@ class ProfileFragment : Fragment() {
             .inflate(inflater, container, false)
 
         profileListsAdapter = ProfileHorizontalListAdapter()
+        //inizializzazione varibili (comento di piccia proabible stronzate)
+
+//        modifyProfile = binding.modifyProfileButton
+//
+////        modifyProfile.setOnClickListener {
+////            Navigation.findNavController(binding.root)
+////                .navigate(R.id.action_loginFragment_to_regPrimaFragment)
+////        }
+
+        settingsButton = binding.settingsButton
+
+        settingsButton.setOnClickListener {
+            val intent = Intent(requireContext(),SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
 
         // Qui lanciamo una coroutine per ottenere le liste dell'utente corrente
         viewLifecycleOwner.lifecycleScope.launch {
