@@ -93,6 +93,7 @@
 
                     <Button
                         style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:id="@+id/modify_profile_button"
                         android:layout_width="130dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
