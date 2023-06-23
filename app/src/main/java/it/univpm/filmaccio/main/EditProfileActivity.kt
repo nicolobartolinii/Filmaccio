@@ -31,16 +31,23 @@ class EditProfileActivity : AppCompatActivity() {
         saveButton.setOnClickListener {
             //nomeVisualizzatoTectInputLayout.isErrorEnabled = false
             var newNameShown = usernameTextView.text.toString()
-            if (nameShown.length > 50 || nameShown.isEmpty() || nameShown.length < 3) {
-                usernameTextView.isErrorEnabled = true
-                usernameTextView.error = "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
-                return@setOnClickListener
-            }
-            val updateSuccesful = FirestoreService.updateUserField(currentUser.uid, "nameShown", newNameShown)
-            if (updateSuccesful) {
-                Toast.makeText(this, "Modifiche avvenute con successo", Toast.LENGTH_LONG).show()
-            } else {
-                Toast.makeText(this, "C'è stato un problema con le modifiche, riprova.", Toast.LENGTH_LONG).show()
-                }
+//            if (nameShown.length > 50 || nameShown.isEmpty() || nameShown.length < 3) {
+//                usernameTextView.isErrorEnabled = true
+//                usernameTextView.error =
+//                    "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
+//                return@setOnClickListener
+//            }
+//            val updateSuccesful =
+//                FirestoreService.updateUserField(currentUser.uid, "nameShown", newNameShown)
+//            if (updateSuccesful) {
+//                Toast.makeText(this, "Modifiche avvenute con successo", Toast.LENGTH_LONG).show()
+//            } else {
+//                Toast.makeText(
+//                    this,
+//                    "C'è stato un problema con le modifiche, riprova.",
+//                    Toast.LENGTH_LONG
+//                ).show()
+//            }
         }
+    }
 }
