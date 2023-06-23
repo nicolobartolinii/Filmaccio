@@ -25,7 +25,8 @@ import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
-import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegGoogleSecondoBinding
 import it.univpm.filmaccio.main.MainActivity
@@ -53,13 +54,13 @@ class RegGoogleSecondoFragment : Fragment() {
     private lateinit var nomeVisualizzatoTextInputEditText: TextInputEditText
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ShapeableImageView
+    private lateinit var selectedImageUri: Uri
+    private lateinit var email: String
     private lateinit var username: String
     private lateinit var gender: String
     private lateinit var birthDate: Timestamp
     private lateinit var nameShown: String
-    private lateinit var email: String
     private var croppedImageFile: File? = null
-    private var selectedImageUri: Uri? = null // Forse qui potrete notare una differenza ma perché sto facendo dei tentativi per risolvere quel problema (tentativi ancora inutili)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -107,9 +108,8 @@ class RegGoogleSecondoFragment : Fragment() {
         return binding.root
     }
 
-    private fun onPropicClick() { // Forse qui potrete notare una differenza ma perché sto facendo dei tentativi per risolvere quel problema (tentativi ancora inutili)
-        val intent = Intent(Intent.ACTION_PICK)
-        intent.type = "image/*"
+    private fun onPropicClick() {
+        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)
     }
 
@@ -118,7 +118,7 @@ class RegGoogleSecondoFragment : Fragment() {
         super.onActivityResult(requestCode, resultCode, data)
 
         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data // Forse qui potrete notare una differenza ma perché sto facendo dei tentativi per risolvere quel problema (tentativi ancora inutili)
+            selectedImageUri = data.data!!
             loadImageWithCircularCrop(selectedImageUri)
         }
     }
@@ -153,8 +153,7 @@ class RegGoogleSecondoFragment : Fragment() {
     }
 
     private fun uploadPropicAndUser(uid: String?) {
-        val storage = FirebaseStorage.getInstance()
-        val storageRef = storage.reference
+        val storageRef = Firebase.storage.reference
         val propicRef = storageRef.child("propic/${uid}.jpg")
         val imageUri = if (croppedImageFile != null) {
             Uri.fromFile(croppedImageFile)
@@ -239,7 +238,7 @@ class RegGoogleSecondoFragment : Fragment() {
         FirestoreService.collectionLists.document(uid)
             .set(listsDocument)
             .addOnSuccessListener {
-                navigateToHomeActivity()
+                navigateToMainActivity()
             }
             .addOnFailureListener {
                 Toast.makeText(
@@ -250,7 +249,7 @@ class RegGoogleSecondoFragment : Fragment() {
             }
     }
 
-    private fun navigateToHomeActivity() {
+    private fun navigateToMainActivity() {
         val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity?.finish()
