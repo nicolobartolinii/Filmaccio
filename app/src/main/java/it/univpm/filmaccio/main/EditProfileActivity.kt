@@ -15,6 +15,7 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.main.utils.FirestoreService
+import it.univpm.filmaccio.main.utils.UserUtils
 
 class EditProfileActivity : AppCompatActivity() {
 
@@ -57,13 +58,14 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 }
             }
-        val auth = FirebaseAuth.getInstance()
+       val auth= UserUtils.auth
 // funzione per cambiare la password, prendo da email la mail di ogni utente e chiamo metodo predefinito di firebase
         cambioPassword.setOnClickListener {
             val email = intent.getStringExtra("email")
             auth.sendPasswordResetEmail(email!!)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
+                        Toast.makeText(this, "Email Inviata", Toast.LENGTH_LONG).show()
                         Log.d(TAG, "Email sent.")
                     }
                 }
