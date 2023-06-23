@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import it.univpm.filmaccio.R
 
@@ -26,28 +27,20 @@ class EditProfileActivity : AppCompatActivity() {
         usernameTextView.setText(nameShown, TextView.BufferType.EDITABLE)
 
         saveButton = findViewById(R.id.buttonSaveChanges)
+
         saveButton.setOnClickListener {
-            // Ottieni il testo inserito dall'utente
-            val newUsername = usernameTextView.text.toString()
-
-            // Ottieni un'istanza del database Firebase
-            val database = FirebaseDatabase.getInstance()
-
-            // Ottieni un riferimento al percorso del tuo nodo utente nel database
-            val userRef: DatabaseReference = database.getReference("utenti")
-
-            // Salva il nuovo username nel database
-            val userId = "id_utente"  // Specifica l'ID dell'utente appropriato
-            userRef.child(userId).child("username").setValue(newUsername)
-                .addOnSuccessListener {
-                    // Salvataggio completato con successo
-                    Log.e("LogSave", "Nuovo username salvato nel database: $newUsername")
-                }
-                .addOnFailureListener { error ->
-                    // Errore durante il salvataggio
-                    Log.e("LogSave", "Errore durante il salvataggio del nuovo username: ${error.message}")
+            //nomeVisualizzatoTectInputLayout.isErrorEnabled = false
+            var newNameShown = usernameTextView.text.toString()
+            if (nameShown.length > 50 || nameShown.isEmpty() || nameShown.length < 3) {
+                usernameTextView.isErrorEnabled = true
+                usernameTextView.error = "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
+                return@setOnClickListener
+            }
+            val updateSuccesful = FirestoreService.updateUserField(currentUser.uid, "nameShown", newNameShown)
+            if (updateSuccesful) {
+                Toast.makeText(this, "Modifiche avvenute con successo", Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(this, "C'è stato un problema con le modifiche, riprova.", Toast.LENGTH_LONG).show()
                 }
         }
-
-    }
 }
