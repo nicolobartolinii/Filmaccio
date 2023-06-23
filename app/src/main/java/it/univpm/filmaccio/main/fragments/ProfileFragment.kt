@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
@@ -33,6 +34,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var editProfileButton: Button // bottone per la pagina di modifica
     private lateinit var settingsButton: Button // bottone per le impostazioni
+    private lateinit var currentUser: User
 
 
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -68,6 +70,7 @@ class ProfileFragment : Fragment() {
 
         editProfileButton.setOnClickListener {
             val intent = Intent(requireContext(),EditProfileActivity::class.java)
+            intent.putExtra("user", currentUser.nameShown)
             startActivity(intent)
         }
 
@@ -126,6 +129,7 @@ class ProfileFragment : Fragment() {
                     // Se l'utente corrente non è nullo allora possiamo procedere con mostrare
                     // le informazioni dell'utente corrente
                     // Nello specifico mostriamo: il nome visualizzato, lo username e la foto profilo
+                    currentUser= user
                     binding.displayNameText.text = user.nameShown
                     binding.usernameText.text = user.username
                     Glide.with(this@ProfileFragment)

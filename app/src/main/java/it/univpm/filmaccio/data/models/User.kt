@@ -1,6 +1,7 @@
 package it.univpm.filmaccio.data.models
 
 import com.google.firebase.Timestamp
+import java.io.Serializable
 
 // Data class che rappresenta un utente dell'applicazione. Questa classe ci serve sia per
 // mostrare gli utenti nella funzionalità di ricerca che per mostrari le informazioni
