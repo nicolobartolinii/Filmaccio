@@ -9,6 +9,7 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.android.material.textfield.TextInputEditText
@@ -65,8 +66,15 @@ class EditProfileActivity : AppCompatActivity() {
             auth.sendPasswordResetEmail(email!!)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        Toast.makeText(this, "Email Inviata", Toast.LENGTH_LONG).show()
+                        val snackbar = Snackbar.make(findViewById(R.id.buttonChangePassword), "Email inviata", Snackbar.LENGTH_LONG)
+                        snackbar.setAction("Indietro") {
+                            // codice per tornare indietro
+                        }
+                        snackbar.show()
                         Log.d(TAG, "Email sent.")
+                        snackbar.setAction("Indietro") {
+                            finish()
+                        }
                     }
                 }
         }
