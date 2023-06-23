@@ -70,8 +70,10 @@ class ProfileFragment : Fragment() {
 
         editProfileButton.setOnClickListener {
             val intent = Intent(requireContext(),EditProfileActivity::class.java)
+            intent.putExtra("uid", currentUser.uid)
             intent.putExtra("user", currentUser.nameShown)
             startActivity(intent)
+
         }
 
 

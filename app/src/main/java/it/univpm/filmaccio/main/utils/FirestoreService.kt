@@ -44,18 +44,17 @@ object FirestoreService {
         return db.collection(collection).whereEqualTo(field, value)
     }
 
-    fun updateUserField(uid: String, field: String, value: Any): Boolean {
-        var completed = false
+    fun updateUserField(uid: String, field: String, value: Any, callback: (Boolean) -> Unit) {
         val userRef = collectionUsers.document(uid)
         userRef.update(field, value)
             .addOnCompleteListener {
-                completed = it.isSuccessful
+                callback(it.isSuccessful)
             }
             .addOnFailureListener {
-                completed = false
+                callback(false)
             }
-        return completed
     }
+
 
     fun getFollowers(uid: String) = flow {
         val doc = collectionFollow.document(uid).get().await()
