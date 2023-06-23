@@ -72,6 +72,7 @@ class ProfileFragment : Fragment() {
             val intent = Intent(requireContext(),EditProfileActivity::class.java)
             intent.putExtra("uid", currentUser.uid)
             intent.putExtra("user", currentUser.nameShown)
+            intent.putExtra("email",currentUser.email)
             startActivity(intent)
 
         }

@@ -1,6 +1,7 @@
 package it.univpm.filmaccio.main
 
 import android.annotation.SuppressLint
+import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
@@ -20,6 +21,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var nameShownEditText: EditText
     private lateinit var nameShownTextInputLayout: TextInputLayout
     private lateinit var saveButton: Button
+    private lateinit var cambioPassword : Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,6 +33,7 @@ class EditProfileActivity : AppCompatActivity() {
         // Inizializza il TextView (sostituisci con l'ID del tuo TextView)
         nameShownEditText = findViewById(R.id.nomeVisualizzatoTextInputEditText)
         nameShownTextInputLayout = findViewById(R.id.nomeVisualizzatoTextInputLayout)
+        cambioPassword =  findViewById(R.id.buttonChangePassword)
         nameShownEditText.setText(nameShown, TextView.BufferType.EDITABLE)
 
         saveButton = findViewById(R.id.buttonSaveChanges)
@@ -44,7 +47,7 @@ class EditProfileActivity : AppCompatActivity() {
                     "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
                 return@setOnClickListener
             }
-
+// richiama la funzione chew fa un update del nome utente
                 FirestoreService.updateUserField(uid!!, "nameShown", newNameShown) { updateSuccessful ->
                     if (updateSuccessful) {
                         Toast.makeText(this, "Modifiche avvenute con successo", Toast.LENGTH_LONG).show()
@@ -54,6 +57,17 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 }
             }
+        val auth = FirebaseAuth.getInstance()
+// funzione per cambiare la password, prendo da email la mail di ogni utente e chiamo metodo predefinito di firebase
+        cambioPassword.setOnClickListener {
+            val email = intent.getStringExtra("email")
+            auth.sendPasswordResetEmail(email!!)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d(TAG, "Email sent.")
+                    }
+                }
+        }
         }
     }
 
