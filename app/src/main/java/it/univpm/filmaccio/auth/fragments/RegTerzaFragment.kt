@@ -27,7 +27,6 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegTerzaBinding
@@ -358,7 +357,7 @@ class RegTerzaFragment : Fragment() {
             .set(listsDocument)
             .addOnSuccessListener {
                 // A questo punto la registrazione è completata, quindi possiamo navigare alla HomeActivity
-                navigateToHomeActivity()
+                navigateToMainActivity()
             }
             .addOnFailureListener {
                 // Si è verificato un errore durante l'aggiunta del documento lists al database Firestore
@@ -371,7 +370,7 @@ class RegTerzaFragment : Fragment() {
     }
 
     // Questo metodo serve per navigare alla HomeActivity, viene chiamato quando la registrazione è completata
-    private fun navigateToHomeActivity() {
+    private fun navigateToMainActivity() {
         val intent = Intent(activity, MainActivity::class.java)
         startActivity(intent)
         activity?.finish()
