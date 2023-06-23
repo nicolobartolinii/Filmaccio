@@ -1,3 +1,5 @@
+<!--sempre da material design-->
+
 <resources>
 
     <style name="Theme.Filmaccio" parent="Theme.MaterialComponents.Light.NoActionBar">

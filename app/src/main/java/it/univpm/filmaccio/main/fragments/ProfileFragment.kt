@@ -9,12 +9,11 @@ import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.Navigation
 import com.bumptech.glide.Glide
-import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
+import it.univpm.filmaccio.main.EditProfileActivity
 import it.univpm.filmaccio.main.SettingsActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
@@ -32,7 +31,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
-    private lateinit var modifyProfile: Button // bottone per la pagina di modifica
+    private lateinit var editProfileButton: Button // bottone per la pagina di modifica
     private lateinit var settingsButton: Button // bottone per le impostazioni
 
 
@@ -56,17 +55,19 @@ class ProfileFragment : Fragment() {
         profileListsAdapter = ProfileHorizontalListAdapter()
         //inizializzazione varibili (comento di piccia proabible stronzate)
 
-//        modifyProfile = binding.modifyProfileButton
-//
-////        modifyProfile.setOnClickListener {
-////            Navigation.findNavController(binding.root)
-////                .navigate(R.id.action_loginFragment_to_regPrimaFragment)
-////        }
 
+
+        // dichiarazione bottoni
         settingsButton = binding.settingsButton
+        editProfileButton=binding.modifyProfileButton
 
         settingsButton.setOnClickListener {
             val intent = Intent(requireContext(),SettingsActivity::class.java)
+            startActivity(intent)
+        }
+
+        editProfileButton.setOnClickListener {
+            val intent = Intent(requireContext(),EditProfileActivity::class.java)
             startActivity(intent)
         }
 

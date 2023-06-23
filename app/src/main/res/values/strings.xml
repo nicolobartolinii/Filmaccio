@@ -98,4 +98,6 @@
     <string name="new_person_product">Un nuovo prodotto relativo a {person_name} è ora disponibile!</string>
     <string name="user_reviews_product">{name_shown} ha recensito {product_name}</string>
     <string name="follow">SEGUI</string>
+    <string name="salva">Salva</string>
+    <string name="cambio_password">Cambio password</string>
 </resources>

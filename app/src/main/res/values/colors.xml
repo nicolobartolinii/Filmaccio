@@ -1,3 +1,5 @@
+<!--fatto da material design e poi modificato, serve per rendere i colori affini sull'app-->
+
 <resources>
     <color name="seed">#3C91E6</color>
     <color name="md_theme_light_primary">#0060A7</color>

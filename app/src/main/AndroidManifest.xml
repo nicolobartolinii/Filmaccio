@@ -18,6 +18,9 @@
         android:theme="@style/Theme.Filmaccio"
         tools:targetApi="31">
         <activity
+            android:name=".main.EditProfileActivity"
+            android:exported="false" />
+        <activity
             android:name=".main.SettingsActivity"
             android:exported="false" />
         <activity
