@@ -11,9 +11,9 @@ import com.google.gson.annotations.SerializedName
 // per avere nella schermata di dettaglio tutte le informazioni sulla serie TV in questione.
 data class Series(
     @SerializedName("id") val id: Long,
-    @SerializedName("name") val title: String,
+    @SerializedName("name") var title: String,
     @SerializedName("poster_path") val posterPath: String?,
-    @SerializedName("overview") val overview: String,
+    @SerializedName("overview") var overview: String,
     @SerializedName("first_air_date") val releaseDate: String,
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("number_of_episodes") val duration: Int,
@@ -40,7 +40,7 @@ data class Series(
         @SerializedName("runtime") val duration: Int,
         @SerializedName("air_date") val releaseDate: String,
         @SerializedName("still_path") val imagePath: String?,
-        @SerializedName("overview") val overview: String,
-        @SerializedName("name") val name: String
+        @SerializedName("overview") var overview: String,
+        @SerializedName("name") var name: String
     )
 }

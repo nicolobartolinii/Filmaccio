@@ -24,9 +24,18 @@ class SeriesRepository {
     }
 
     suspend fun getSeriesDetails(seriesId: Long): Series {
-        val series = tmdbApi.getSeriesDetails(seriesId = seriesId)
+        val series = tmdbApi.getSeriesDetails(seriesId = seriesId, language = "it-IT")
+        if (seriesHasMissingDetails(series)) {
+            val seriesInEnglish = tmdbApi.getSeriesDetails(seriesId = seriesId, language = "en-US")
+            fillMissingDetails(series, seriesInEnglish)
+        }
         series.seasons = series.seasons.map {
-            tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number)
+            val season = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number, language = "it-IT")
+            if (seasonHasMissingDetails(season)) {
+                val seasonInEnglish = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number, language = "en-US")
+                fillMissingSeasonDetails(season, seasonInEnglish)
+            }
+            season
         }
         return series
     }
@@ -94,5 +103,34 @@ class SeriesRepository {
             imageURL2 = movie2.posterPath ?: "",
             imageURL3 = movie3.posterPath ?: ""
         )
+    }
+
+    // Controlla se la serie o la stagione ha dettagli mancanti
+    private fun seriesHasMissingDetails(series: Series): Boolean {
+        return series.title.isEmpty() || series.overview.isEmpty()
+    }
+
+    private fun seasonHasMissingDetails(season: Series.Season): Boolean {
+        return season.name.isEmpty() || season.overview.isEmpty() || season.episodes.any { it.name.isEmpty() || it.name == "Episodio ${it.number}" || it.overview.isEmpty() }
+    }
+
+    // Riempi i dettagli mancanti dalla versione inglese della serie o della stagione
+    private fun fillMissingDetails(series: Series, seriesInEnglish: Series) {
+        if (series.title.isEmpty()) series.title = seriesInEnglish.title
+        if (series.overview.isEmpty()) series.overview = seriesInEnglish.overview
+    }
+
+    private fun fillMissingSeasonDetails(season: Series.Season, seasonInEnglish: Series.Season) {
+        if (season.name.isEmpty()) season.name = seasonInEnglish.name
+        if (season.overview.isEmpty()) season.overview = seasonInEnglish.overview
+        season.episodes.forEachIndexed { index, episode ->
+            if (episode.name.isEmpty()) episode.name = seasonInEnglish.episodes.getOrNull(index)?.name.toString()
+            if (episode.name == "Episodio ${episode.number}") {
+                if (seasonInEnglish.episodes.getOrNull(index)?.name.toString() != "Episode ${episode.number}") {
+                    episode.name = seasonInEnglish.episodes.getOrNull(index)?.name.toString()
+                }
+            }
+            if (episode.overview.isEmpty()) episode.overview = seasonInEnglish.episodes.getOrNull(index)?.overview.toString()
+        }
     }
 }
