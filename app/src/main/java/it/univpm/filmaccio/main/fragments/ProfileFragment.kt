@@ -1,5 +1,6 @@
 package it.univpm.filmaccio.main.fragments
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -19,6 +20,7 @@ import it.univpm.filmaccio.main.SettingsActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 // Questo fragment è la schermata in cui viene mostrato il profilo dell'utente corrente (non degli altri utenti).
 // In questa schermata abbiamo in alto il backdrop scelto dall'utente (per ora è un placeholder)
@@ -35,6 +37,12 @@ class ProfileFragment : Fragment() {
     private lateinit var editProfileButton: Button // bottone per la pagina di modifica
     private lateinit var settingsButton: Button // bottone per le impostazioni
     private lateinit var currentUser: User
+    private var movieMinutes = 0
+    private var tvMinutes = 0
+    private var movieNumber = 0
+    private var tvNumber = 0
+    private var followersNumber = 0
+    private var followingNumber = 0
 
 
     private val profileViewModel: ProfileViewModel by viewModels()
@@ -46,6 +54,7 @@ class ProfileFragment : Fragment() {
 
     // Anche qui abbiamo un adapter per la recycler view delle liste
     private lateinit var profileListsAdapter: ProfileHorizontalListAdapter
+    @SuppressLint("SetTextI18n")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -90,6 +99,50 @@ class ProfileFragment : Fragment() {
                         // otteniamo il titolo e la lista di id in variabili separate
                         val listTitle = entry.key
                         val ids = entry.value
+
+                        if (listTitle == "watched_m") {
+                            // Se la lista è quella dei film visti allora aggiorniamo le variabili
+                            // movieMinutes e movieNumber con i valori corretti
+                            movieMinutes = ids.sumOf { movieRepository.getMovieDetails(it).duration }
+                            movieNumber = ids.size
+                        } else if (listTitle == "watching_t") {
+                            // Se la lista è quella delle serie viste allora aggiorniamo le variabili
+                            // tvMinutes e tvNumber con i valori corretti
+                            tvMinutes = ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.sumOf {episode -> episode.duration}} }
+                            tvNumber = ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.size}}
+                        }
+
+                        val movieTime = convertMinutesToMonthsDaysHours(movieMinutes)
+                        val tvTime = convertMinutesToMonthsDaysHours(tvMinutes)
+
+                        binding.movieTimeMonths.text = movieTime.first
+                        binding.movieTimeDays.text = movieTime.second
+                        binding.movieTimeHours.text = movieTime.third
+                        binding.tvTimeMonths.text = tvTime.first
+                        binding.tvTimeDays.text = tvTime.second
+                        binding.tvTimeHours.text = tvTime.third
+                        binding.moviesSeenNumber.text = movieNumber.toString()
+                        binding.episodesSeenNumber.text = tvNumber.toString()
+
+                        if (movieTime.first == "01") {
+                            binding.movieTimeMonthsText.text = "mese"
+                        }
+                        if (movieTime.second == "01") {
+                            binding.movieTimeDaysText.text = "giorno"
+                        }
+                        if (movieTime.third == "01") {
+                            binding.movieTimeHoursText.text = "ora"
+                        }
+                        if (tvTime.first == "01") {
+                            binding.tvTimeMonthsText.text = "mese"
+                        }
+                        if (tvTime.second == "01") {
+                            binding.tvTimeDaysText.text = "giorno"
+                        }
+                        if (tvTime.third == "01") {
+                            binding.tvTimeHoursText.text = "ora"
+                        }
+
                         if (ids.size >= 3) {
                             // Se la lista di id è lunga almeno 3 allora possiamo creare una lista
                             // di ProfileListItem con i primi 3 id della lista di id e il titolo
@@ -143,5 +196,16 @@ class ProfileFragment : Fragment() {
         }
 
         return binding.root
+    }
+
+    private fun convertMinutesToMonthsDaysHours(minutes: Int): Triple<String, String, String> {
+        // Questo metodo converte i minuti in mesi, giorni e ore
+        var months = (minutes / 43200).toString()
+        var days = ((minutes % 43200) / 1440).toString()
+        var hours = ((minutes % 1440) / 60).toString()
+        if (months.length == 1) months = months.padStart(2, '0')
+        if (days.length == 1) days = days.padStart(2, '0')
+        if (hours.length == 1) hours = hours.padStart(2, '0')
+        return Triple(months, days, hours)
     }
 }

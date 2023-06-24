@@ -11,7 +11,6 @@ import kotlinx.coroutines.launch
 
 // Questa classe è il ViewModel della schermata del profilo dell'applicazione, quindi si occupa di gestire
 // i dati relativi all'utente che vengono mostrati nella schermata del profilo.
-@Suppress("UNCHECKED_CAST")
 class ProfileViewModel : ViewModel() {
 
     // Qui creiamo un oggetto MutableStateFlow che conterrà l'utente corrente.

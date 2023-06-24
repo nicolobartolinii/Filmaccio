@@ -96,13 +96,13 @@ object FirestoreService {
 
     fun getList(uid: String, listName: String) = flow {
         val doc = collectionLists.document(uid).get().await()
-        val list = doc.get(listName) as List<Int>
+        val list = doc.get(listName) as List<Long>
         emit(list)
     }
 
     fun getLists(uid: String) = flow {
         val doc = collectionLists.document(uid).get().await()
-        val lists = doc.data as Map<String, List<Int>>
+        val lists = doc.data as Map<String, List<Long>>
         emit(lists)
     }
 }
