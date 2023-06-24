@@ -8,6 +8,7 @@ import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.widget.Button
 import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
@@ -33,6 +34,7 @@ class PersonDetailsActivity : AppCompatActivity() {
     private lateinit var biographyTextView: TextView
     private lateinit var productsRecyclerView: RecyclerView
     private lateinit var biographyFullText: String
+    private lateinit var viewFlipperPerson: ViewFlipper
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -41,8 +43,7 @@ class PersonDetailsActivity : AppCompatActivity() {
 
         val personId = intent.getLongExtra("personId", 0L)
         personDetailsViewModel = ViewModelProvider(
-            this,
-            PersonDetailsViewModelFactory(personId)
+            this, PersonDetailsViewModelFactory(personId)
         )[PersonDetailsViewModel::class.java]
 
         personImage = findViewById(R.id.person_image)
@@ -55,6 +56,9 @@ class PersonDetailsActivity : AppCompatActivity() {
         followButton = findViewById(R.id.button_follow)
         biographyTextView = findViewById(R.id.biography_text_view)
         productsRecyclerView = findViewById(R.id.products_recycler_view)
+        viewFlipperPerson = findViewById(R.id.view_flipper_person)
+
+        viewFlipperPerson.displayedChild = 0
 
         val typedValue = TypedValue()
         val theme = this.theme
@@ -63,8 +67,7 @@ class PersonDetailsActivity : AppCompatActivity() {
 
         personDetailsViewModel.currentPerson.observe(this) {
             if (it.profilePath != null) Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w342${it.profilePath}")
-                .into(personImage)
+                .load("https://image.tmdb.org/t/p/w342${it.profilePath}").into(personImage)
             else personImage.setImageResource(R.drawable.error_404)
 
             personNameTextView.text = it.name
@@ -122,6 +125,7 @@ class PersonDetailsActivity : AppCompatActivity() {
                 biographyTextView.text = spannableString
             }
             productsRecyclerView.adapter = ProductsAdapter(it.products)
+            viewFlipperPerson.displayedChild = 1
         }
 
         biographyTextView.setOnClickListener {

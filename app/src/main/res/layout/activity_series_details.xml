@@ -1,375 +1,384 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_flipper_series"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal">
+    android:layout_height="match_parent">
 
-    <ImageView
-        android:id="@+id/backdrop_image"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:background="?colorBackgroundFloating"
-        android:contentDescription="movie backdrop"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <include layout="@layout/loading_screen" />
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:orientation="horizontal">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <ImageView
+            android:id="@+id/backdrop_image"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:background="?colorBackgroundFloating"
+            android:contentDescription="movie backdrop"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <ImageView
-                android:id="@+id/invisible_backdrop_image"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:contentDescription="movie poster"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="16:9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/backdrop_corners" />
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraint_interno_details"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="-140dp"
-                android:background="?attr/colorSurface"
-                app:layout_constraintTop_toBottomOf="@id/poster_image">
+                android:layout_height="wrap_content">
 
-                <TextView
-                    android:id="@+id/title_text_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="192dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="16dp"
-                    android:fontFamily="sans-serif-black"
-                    android:text="Guardiani della Galassia Volume 3"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="?colorPrimary"
+                <ImageView
+                    android:id="@+id/invisible_backdrop_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:contentDescription="movie poster"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintDimensionRatio="16:9"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintVertical_bias="0.0"
-                    android:maxLines="2"
-                    android:ellipsize="end"/>
+                    app:srcCompat="@drawable/backdrop_corners" />
 
-                <TextView
-                    android:id="@+id/release_date_text_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="192dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="2023 | Diretto da"
-                    android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/title_text_view"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/director_text_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="192dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:ellipsize="end"
-                    android:fontFamily="sans-serif-smallcaps"
-                    android:maxLines="1"
-                    android:text="James Gunn"
-                    android:textAllCaps="false"
-                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/release_date_text_view"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <TextView
-                    android:id="@+id/duration_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="150 minuti"
-                    android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
-                    app:layout_constraintBottom_toTopOf="@+id/director_text_view"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"
-                    app:layout_constraintStart_toEndOf="@+id/release_date_text_view"
-                    app:layout_constraintTop_toBottomOf="@+id/title_text_view"
-                    app:layout_constraintVertical_bias="0.0" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_watching"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="148dp"
-                    android:layout_weight="1"
-                    app:icon="@drawable/round_remove_red_eye_24"
-                    app:layout_constraintEnd_toStartOf="@id/button_favorite"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView_watched"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="In visione"
-                    app:layout_constraintEnd_toEndOf="@id/button_watching"
-                    app:layout_constraintStart_toStartOf="@id/button_watching"
-                    app:layout_constraintTop_toBottomOf="@id/button_watching" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_favorite"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="148dp"
-                    android:layout_weight="1"
-                    app:icon="@drawable/round_favorite_24"
-                    app:layout_constraintEnd_toEndOf="@id/button_watchlist"
-                    app:layout_constraintStart_toEndOf="@id/button_watching"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView_favorite"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Preferiti"
-                    app:layout_constraintEnd_toEndOf="@id/button_favorite"
-                    app:layout_constraintStart_toStartOf="@id/button_favorite"
-                    app:layout_constraintTop_toBottomOf="@id/button_favorite" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_watchlist"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="148dp"
-                    app:icon="@drawable/round_more_time_24"
-                    app:layout_constraintEnd_toStartOf="@id/button_lists"
-                    app:layout_constraintStart_toEndOf="@id/button_favorite"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView_watchlist"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Watchlist"
-                    app:layout_constraintEnd_toEndOf="@id/button_watchlist"
-                    app:layout_constraintStart_toStartOf="@id/button_watchlist"
-                    app:layout_constraintTop_toBottomOf="@id/button_watchlist" />
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/button_lists"
-                    style="@style/Widget.Material3.Button.IconButton.Filled"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="148dp"
-                    android:layout_weight="1"
-                    app:icon="@drawable/round_view_list_24"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toEndOf="@id/button_watchlist"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <TextView
-                    android:id="@+id/textView_lists"
-                    android:layout_width="wrap_content"
-                    android:layout_height="0dp"
-                    android:layout_weight="1"
-                    android:text="Altro"
-                    app:layout_constraintEnd_toEndOf="@id/button_lists"
-                    app:layout_constraintStart_toStartOf="@id/button_lists"
-                    app:layout_constraintTop_toBottomOf="@id/button_lists" />
-
-                <View
-                    android:id="@+id/divider_buttons_overview"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/textView_watchlist" />
-
-                <TextView
-                    android:id="@+id/overview_title_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:text="Descrizione"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-                    android:textColor="?colorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/divider_buttons_overview" />
-
-                <TextView
-                    android:id="@+id/overview_text_view"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:text="Peter Quill, ancora provato dalla perdita di Gamora, deve riunire la sua squadra per difendere l'universo e proteggere uno di loro. Una missione che, se non sarà portata a termine con successo, potrebbe portare alla fine dei Guardiani così come li conosciamo."
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/overview_title_text_view" />
-
-                <View
-                    android:id="@+id/divider_overview_seasons"
-                    style="@style/Widget.Material3.MaterialDivider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/overview_text_view" />
-
-                <TextView
-                    android:id="@+id/seasons_title_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Stagioni"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="?colorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider_overview_seasons" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/seasons_recycler_view"
-                    android:layout_width="0dp"
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraint_interno_details"
+                    android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginHorizontal="16dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="vertical"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    android:layout_marginTop="-140dp"
+                    android:background="?attr/colorSurface"
+                    app:layout_constraintTop_toBottomOf="@id/poster_image">
+
+                    <TextView
+                        android:id="@+id/title_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="192dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="16dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-black"
+                        android:maxLines="2"
+                        android:text="Guardiani della Galassia Volume 3"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/release_date_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="192dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="2023 | Diretto da"
+                        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/title_text_view"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/director_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="192dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:ellipsize="end"
+                        android:fontFamily="sans-serif-smallcaps"
+                        android:maxLines="1"
+                        android:text="James Gunn"
+                        android:textAllCaps="false"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/release_date_text_view"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <TextView
+                        android:id="@+id/duration_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="150 minuti"
+                        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"
+                        app:layout_constraintBottom_toTopOf="@+id/director_text_view"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="1.0"
+                        app:layout_constraintStart_toEndOf="@+id/release_date_text_view"
+                        app:layout_constraintTop_toBottomOf="@+id/title_text_view"
+                        app:layout_constraintVertical_bias="0.0" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_watching"
+                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="148dp"
+                        android:layout_weight="1"
+                        app:icon="@drawable/round_remove_red_eye_24"
+                        app:layout_constraintEnd_toStartOf="@id/button_favorite"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_watched"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="In visione"
+                        app:layout_constraintEnd_toEndOf="@id/button_watching"
+                        app:layout_constraintStart_toStartOf="@id/button_watching"
+                        app:layout_constraintTop_toBottomOf="@id/button_watching" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_favorite"
+                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="148dp"
+                        android:layout_weight="1"
+                        app:icon="@drawable/round_favorite_24"
+                        app:layout_constraintEnd_toEndOf="@id/button_watchlist"
+                        app:layout_constraintStart_toEndOf="@id/button_watching"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_favorite"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Preferiti"
+                        app:layout_constraintEnd_toEndOf="@id/button_favorite"
+                        app:layout_constraintStart_toStartOf="@id/button_favorite"
+                        app:layout_constraintTop_toBottomOf="@id/button_favorite" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_watchlist"
+                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="148dp"
+                        app:icon="@drawable/round_more_time_24"
+                        app:layout_constraintEnd_toStartOf="@id/button_lists"
+                        app:layout_constraintStart_toEndOf="@id/button_favorite"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_watchlist"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Watchlist"
+                        app:layout_constraintEnd_toEndOf="@id/button_watchlist"
+                        app:layout_constraintStart_toStartOf="@id/button_watchlist"
+                        app:layout_constraintTop_toBottomOf="@id/button_watchlist" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/button_lists"
+                        style="@style/Widget.Material3.Button.IconButton.Filled"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="148dp"
+                        android:layout_weight="1"
+                        app:icon="@drawable/round_view_list_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/button_watchlist"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/textView_lists"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:layout_weight="1"
+                        android:text="Altro"
+                        app:layout_constraintEnd_toEndOf="@id/button_lists"
+                        app:layout_constraintStart_toStartOf="@id/button_lists"
+                        app:layout_constraintTop_toBottomOf="@id/button_lists" />
+
+                    <View
+                        android:id="@+id/divider_buttons_overview"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/textView_watchlist" />
+
+                    <TextView
+                        android:id="@+id/overview_title_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Descrizione"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/divider_buttons_overview" />
+
+                    <TextView
+                        android:id="@+id/overview_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:text="Peter Quill, ancora provato dalla perdita di Gamora, deve riunire la sua squadra per difendere l'universo e proteggere uno di loro. Una missione che, se non sarà portata a termine con successo, potrebbe portare alla fine dei Guardiani così come li conosciamo."
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/overview_title_text_view" />
+
+                    <View
+                        android:id="@+id/divider_overview_seasons"
+                        style="@style/Widget.Material3.MaterialDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/overview_text_view" />
+
+                    <TextView
+                        android:id="@+id/seasons_title_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Stagioni"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_overview_seasons" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/seasons_recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="vertical"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/seasons_title_text_view">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <View
+                        android:id="@+id/divider_seasons_cast"
+                        style="@style/Widget.Material3.MaterialDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/seasons_recycler_view" />
+
+                    <TextView
+                        android:id="@+id/cast_title_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Cast"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_seasons_cast" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/cast_recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="16dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cast_title_text_view">
+
+                    </androidx.recyclerview.widget.RecyclerView>
+
+                    <View
+                        android:id="@+id/divider_cast_valutations"
+                        style="@style/Widget.Material3.MaterialDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/cast_recycler_view" />
+
+                    <TextView
+                        android:id="@+id/valutations_title_text_view"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Opinioni del pubblico"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_cast_valutations" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/poster_image"
+                    android:layout_width="160dp"
+                    android:layout_height="240dp"
+                    android:layout_marginTop="-100dp"
+                    android:background="?colorBackgroundFloating"
                     app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="0.063"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/seasons_title_text_view">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <View
-                    android:id="@+id/divider_seasons_cast"
-                    style="@style/Widget.Material3.MaterialDivider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/seasons_recycler_view" />
-
-                <TextView
-                    android:id="@+id/cast_title_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Cast"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="?colorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider_seasons_cast" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/cast_recycler_view"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginEnd="16dp"
-                    android:orientation="horizontal"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cast_title_text_view">
-
-                </androidx.recyclerview.widget.RecyclerView>
-
-                <View
-                    android:id="@+id/divider_cast_valutations"
-                    style="@style/Widget.Material3.MaterialDivider"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="32dp"
-                    android:layout_marginTop="16dp"
-                    android:layout_marginEnd="32dp"
-                    android:background="?android:attr/listDivider"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/cast_recycler_view" />
-
-                <TextView
-                    android:id="@+id/valutations_title_text_view"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Opinioni del pubblico"
-                    android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
-                    android:textColor="?colorPrimary"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider_cast_valutations" />
+                    app:layout_constraintTop_toBottomOf="@id/invisible_backdrop_image"
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/poster_image"
-                android:layout_width="160dp"
-                android:layout_height="240dp"
-                android:layout_marginTop="-100dp"
-                android:background="?colorBackgroundFloating"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.063"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/invisible_backdrop_image"
-                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
+        </ScrollView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ViewFlipper>

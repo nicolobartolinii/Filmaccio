@@ -9,8 +9,8 @@ import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -19,10 +19,10 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Director
-import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModel
-import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModelFactory
 import it.univpm.filmaccio.details.adapters.CastAdapter
 import it.univpm.filmaccio.details.adapters.SeasonsAdapter
+import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModel
+import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModelFactory
 
 class SeriesDetailsActivity : AppCompatActivity() {
 
@@ -42,6 +42,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
     private lateinit var seasonsRecyclerView: RecyclerView
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var seriesDirectors: List<Director>
+    private lateinit var viewFlipperSeries: ViewFlipper
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,8 +51,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
 
         val seriesId = intent.getLongExtra("seriesId", 0L)
         seriesDetailsViewModel = ViewModelProvider(
-            this,
-            SeriesDetailsViewModelFactory(seriesId)
+            this, SeriesDetailsViewModelFactory(seriesId)
         )[SeriesDetailsViewModel::class.java]
 
         posterImage = findViewById(R.id.poster_image)
@@ -66,19 +66,18 @@ class SeriesDetailsActivity : AppCompatActivity() {
         overviewTextView = findViewById(R.id.overview_text_view)
         seasonsRecyclerView = findViewById(R.id.seasons_recycler_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
+        viewFlipperSeries = findViewById(R.id.view_flipper_series)
+
+        viewFlipperSeries.displayedChild = 0
 
         val typedValuePrimary = TypedValue()
         val typedValueSecondary = TypedValue()
         val theme = this.theme
         theme.resolveAttribute(
-            com.google.android.material.R.attr.colorPrimary,
-            typedValuePrimary,
-            true
+            com.google.android.material.R.attr.colorPrimary, typedValuePrimary, true
         )
         theme.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondary,
-            typedValueSecondary,
-            true
+            com.google.android.material.R.attr.colorSecondary, typedValueSecondary, true
         )
         val color = typedValuePrimary.data
         val colorSecondary = typedValueSecondary.data
@@ -89,12 +88,10 @@ class SeriesDetailsActivity : AppCompatActivity() {
             it.credits.crew =
                 it.credits.crew.filter { crewMember -> crewMember.job == "Creator" || crewMember.job == "Series Director" }
             if (it.posterPath != null) Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w342${it.posterPath}")
-                .into(posterImage)
+                .load("https://image.tmdb.org/t/p/w342${it.posterPath}").into(posterImage)
             else posterImage.setImageResource(R.drawable.error_404)
             if (it.backdropPath != null) Glide.with(this)
-                .load("https://image.tmdb.org/t/p/w780${it.backdropPath}")
-                .into(backdropImage)
+                .load("https://image.tmdb.org/t/p/w780${it.backdropPath}").into(backdropImage)
             else backdropImage.setImageResource(R.drawable.error_404)
 
             titleTextView.text = it.title
@@ -135,12 +132,11 @@ class SeriesDetailsActivity : AppCompatActivity() {
             seasonsRecyclerView.adapter = SeasonsAdapter(it.seasons, this)
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
 
-            titleTextView.setOnClickListener {_ ->
-                MaterialAlertDialogBuilder(this)
-                    .setTitle(it.title)
-                    .setPositiveButton("Ok", null)
+            titleTextView.setOnClickListener { _ ->
+                MaterialAlertDialogBuilder(this).setTitle(it.title).setPositiveButton("Ok", null)
                     .show()
             }
+            viewFlipperSeries.displayedChild = 1
         }
 
         overviewTextView.setOnClickListener {
@@ -169,17 +165,14 @@ class SeriesDetailsActivity : AppCompatActivity() {
                 intent.putExtra("personId", directorId)
                 startActivity(intent)
             } else if (seriesDirectors.size > 1) {
-                MaterialAlertDialogBuilder(this)
-                    .setTitle("Scegli un creatore")
+                MaterialAlertDialogBuilder(this).setTitle("Scegli un creatore")
                     .setItems(seriesDirectors.map { director -> director.name }
                         .toTypedArray()) { _, which ->
                         val directorId = seriesDirectors[which].id
                         val intent = Intent(this, PersonDetailsActivity::class.java)
                         intent.putExtra("personId", directorId)
                         startActivity(intent)
-                    }
-                    .setNegativeButton("Annulla", null)
-                    .show()
+                    }.setNegativeButton("Annulla", null).show()
             }
         }
 

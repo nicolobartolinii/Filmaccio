@@ -1,232 +1,241 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/view_flipper_person"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <include layout="@layout/loading_screen" />
+
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        tools:context=".details.activities.PersonDetailsActivity">
+        android:layout_height="match_parent">
 
-        <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/person_image"
-            android:layout_width="160dp"
-            android:layout_height="240dp"
-            android:layout_margin="16dp"
-            android:background="?colorBackgroundFloating"
-            android:scaleType="centerCrop"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
-
-        <TextView
-            android:id="@+id/person_name"
-            android:layout_width="0dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="16dp"
-            android:fontFamily="sans-serif-black"
-            android:text="Nome personaggio fantastico"
-            android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
-            android:textColor="?attr/colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toTopOf="parent" />
+            tools:context=".details.activities.PersonDetailsActivity">
 
-        <TextView
-            android:id="@+id/known_for_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Conociuto per"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/person_name" />
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/person_image"
+                android:layout_width="160dp"
+                android:layout_height="240dp"
+                android:layout_margin="16dp"
+                android:background="?colorBackgroundFloating"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
-        <TextView
-            android:id="@+id/known_for"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="Recitazione"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/known_for_label" />
+            <TextView
+                android:id="@+id/person_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif-black"
+                android:text="Nome personaggio fantastico"
+                android:textAppearance="@style/TextAppearance.Material3.TitleLarge"
+                android:textColor="?attr/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/birth_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Nascita"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/gender" />
+            <TextView
+                android:id="@+id/known_for_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Conociuto per"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/person_name" />
 
-        <TextView
-            android:id="@+id/birth"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="02/05/1972 (Hayward, California, USA)"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/birth_label" />
+            <TextView
+                android:id="@+id/known_for"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Recitazione"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/known_for_label" />
 
-        <TextView
-            android:id="@+id/death_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Morte"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/birth" />
+            <TextView
+                android:id="@+id/birth_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Nascita"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/gender" />
 
-        <TextView
-            android:id="@+id/death"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="02/05/1972"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-            android:visibility="invisible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/death_label" />
+            <TextView
+                android:id="@+id/birth"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="02/05/1972 (Hayward, California, USA)"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/birth_label" />
 
-        <TextView
-            android:id="@+id/gender_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Genere"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/known_for" />
+            <TextView
+                android:id="@+id/death_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Morte"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/birth" />
 
-        <TextView
-            android:id="@+id/gender"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:text="Maschile"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toEndOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/gender_label" />
+            <TextView
+                android:id="@+id/death"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="02/05/1972"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:visibility="invisible"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/death_label" />
 
-        <Button
-            android:id="@+id/button_follow"
-            style="@style/Widget.Material3.Button.OutlinedButton"
-            android:layout_width="120dp"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="8dp"
-            android:text="SEGUI"
-            app:layout_constraintEnd_toEndOf="@id/person_image"
-            app:layout_constraintStart_toStartOf="@id/person_image"
-            app:layout_constraintTop_toBottomOf="@id/person_image" />
+            <TextView
+                android:id="@+id/gender_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Genere"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/known_for" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_button_biography"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/button_follow" />
+            <TextView
+                android:id="@+id/gender"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:text="Maschile"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toEndOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/gender_label" />
 
-        <TextView
-            android:id="@+id/biography_title_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Biografia"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            android:textColor="?colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider_button_biography" />
+            <Button
+                android:id="@+id/button_follow"
+                style="@style/Widget.Material3.Button.OutlinedButton"
+                android:layout_width="120dp"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="8dp"
+                android:text="SEGUI"
+                app:layout_constraintEnd_toEndOf="@id/person_image"
+                app:layout_constraintStart_toStartOf="@id/person_image"
+                app:layout_constraintTop_toBottomOf="@id/person_image" />
 
-        <TextView
-            android:id="@+id/biography_text_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:text="Dwayne Douglas Johnson, conosciuto anche come The Rock (Hayward, 2 maggio 1972), è un attore, wrestler e produttore cinematografico statunitense di origini canadesi e samoane. Figlio e nipote d'arte rispettivamente di Rocky Johnson e di Peter Maivia, entrambi wrestler e membri della famiglia Anoa'i, Dwayne è pertanto definito un wrestler di terza generazione; inoltre diversi suoi zii, cugini e nipoti sono stati wrestler."
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/biography_title_text_view" />
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_button_biography"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/button_follow" />
 
-        <com.google.android.material.divider.MaterialDivider
-            android:id="@+id/divider_biography_products"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:background="?android:attr/listDivider"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/biography_text_view" />
+            <TextView
+                android:id="@+id/biography_title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Biografia"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:textColor="?colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_button_biography" />
 
-        <TextView
-            android:id="@+id/products_title_text_view"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Prodotti"
-            android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
-            android:textColor="?colorPrimary"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/divider_biography_products" />
+            <TextView
+                android:id="@+id/biography_text_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:text="Dwayne Douglas Johnson, conosciuto anche come The Rock (Hayward, 2 maggio 1972), è un attore, wrestler e produttore cinematografico statunitense di origini canadesi e samoane. Figlio e nipote d'arte rispettivamente di Rocky Johnson e di Peter Maivia, entrambi wrestler e membri della famiglia Anoa'i, Dwayne è pertanto definito un wrestler di terza generazione; inoltre diversi suoi zii, cugini e nipoti sono stati wrestler."
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/biography_title_text_view" />
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/products_recycler_view"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"
-            android:layout_marginTop="8dp"
-            android:orientation="vertical"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/products_title_text_view" />
+            <com.google.android.material.divider.MaterialDivider
+                android:id="@+id/divider_biography_products"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="16dp"
+                android:background="?android:attr/listDivider"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/biography_text_view" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/products_title_text_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="8dp"
+                android:text="Prodotti"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
+                android:textColor="?colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/divider_biography_products" />
 
-</ScrollView>
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/products_recycler_view"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
+                android:orientation="vertical"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/products_title_text_view" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</ViewFlipper>

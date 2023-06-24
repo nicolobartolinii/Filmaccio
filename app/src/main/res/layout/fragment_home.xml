@@ -1,230 +1,240 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/view_flipper_home"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/scrollview_home"
+    <include layout="@layout/loading_screen" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/linlayout_home"
+        <ScrollView
+            android:id="@+id/scrollview_home"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout
-                android:id="@+id/header_latest_releases_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/title_latest_releases_home"
-                    style="@style/TextAppearance.Material3.HeadlineSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="@string/latest_releases_text"
-                    android:textColor="?attr/colorPrimary" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/button_latest_releases_view_all_home"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/see_all" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/three_latest_releases_linlayout_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingHorizontal="8dp">
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/first_latest_release_home"
-                    android:layout_width="110dp"
-                    android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/second_latest_release_home"
-                    android:layout_width="110dp"
-                    android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <com.google.android.material.imageview.ShapeableImageView
-                    android:id="@+id/third_latest_release_home"
-                    android:layout_width="110dp"
-                    android:layout_height="165dp"
-                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider1_home"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:id="@+id/header_feed_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/title_feed_home"
-                    style="@style/TextAppearance.Material3.HeadlineSmall"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="@string/feed"
-                    android:textColor="?attr/colorPrimary" />
-
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-                <Button
-                    android:id="@+id/button_feed_view_all_home"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/see_all" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/three_feeds_linlayout_home"
+                android:id="@+id/linlayout_home"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+                android:paddingHorizontal="16dp"
+                android:paddingTop="16dp">
 
-                <View
+                <LinearLayout
+                    android:id="@+id/header_latest_releases_home"
                     android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimaryDark" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimaryDark" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimaryDark" />
-
-            </LinearLayout>
-
-            <View
-                android:id="@+id/divider2_home"
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginHorizontal="16dp"
-                android:layout_marginVertical="8dp"
-                android:background="?android:attr/listDivider" />
-
-            <LinearLayout
-                android:id="@+id/header_episodes_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/title_episodes_home"
-                    style="@style/TextAppearance.Material3.HeadlineSmall"
-                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:fontFamily="@font/roboto_bold"
-                    android:text="@string/episodes"
-                    android:textColor="?attr/colorPrimary" />
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+                    <TextView
+                        android:id="@+id/title_latest_releases_home"
+                        style="@style/TextAppearance.Material3.HeadlineSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/latest_releases_text"
+                        android:textColor="?attr/colorPrimary" />
 
-                <Button
-                    android:id="@+id/button_episodes_view_all_home"
-                    style="@style/Widget.Material3.Button.TextButton"
-                    android:layout_width="wrap_content"
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/button_latest_releases_view_all_home"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/see_all" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/three_latest_releases_linlayout_home"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/see_all" />
+                    android:paddingHorizontal="8dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/first_latest_release_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/second_latest_release_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/third_latest_release_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider1_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/header_feed_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/title_feed_home"
+                        style="@style/TextAppearance.Material3.HeadlineSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/feed"
+                        android:textColor="?attr/colorPrimary" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/button_feed_view_all_home"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/see_all" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/three_feeds_linlayout_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/colorPrimaryDark" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/colorPrimaryDark" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/colorPrimaryDark" />
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/divider2_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="8dp"
+                    android:background="?android:attr/listDivider" />
+
+                <LinearLayout
+                    android:id="@+id/header_episodes_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/title_episodes_home"
+                        style="@style/TextAppearance.Material3.HeadlineSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto_bold"
+                        android:text="@string/episodes"
+                        android:textColor="?attr/colorPrimary" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <Button
+                        android:id="@+id/button_episodes_view_all_home"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/see_all" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/three_episodes_linlayout_home"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="16dp">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/colorPrimaryDark" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/colorPrimaryDark" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="8dp" />
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="60dp"
+                        android:background="@color/colorPrimaryDark" />
+
+                </LinearLayout>
+
             </LinearLayout>
+        </ScrollView>
 
-            <LinearLayout
-                android:id="@+id/three_episodes_linlayout_home"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:paddingHorizontal="16dp">
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimaryDark" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimaryDark" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="8dp" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="60dp"
-                    android:background="@color/colorPrimaryDark" />
-
-            </LinearLayout>
-
-        </LinearLayout>
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ViewFlipper>

@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
@@ -36,13 +38,17 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
+    private lateinit var moviePostersHome: List<ImageView>
+    private lateinit var viewFlipperHome: ViewFlipper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val moviePostersHome = listOf(
-            _binding?.firstLatestReleaseHome,
-            _binding?.secondLatestReleaseHome,
-            _binding?.thirdLatestReleaseHome
+        moviePostersHome = listOf(
+            binding.firstLatestReleaseHome,
+            binding.secondLatestReleaseHome,
+            binding.thirdLatestReleaseHome
         )
+        viewFlipperHome = binding.viewFlipperHome
+        viewFlipperHome.displayedChild = 0
         // Qui creiamo una lista vuota che poi conterrà gli id dei film in onda.
         val movieIds = mutableListOf(0L, 0L, 0L)
         // Qui osserviamo il LiveData che contiene i film in onda nel viewmodel.
@@ -57,7 +63,7 @@ class HomeFragment : Fragment() {
                 movieIds[i] = it.movies[i].id
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
-                    .into(moviePostersHome[i]!!)
+                    .into(moviePostersHome[i])
                 // Un piccolo dettaglio su questa cosa è il link che viene utilizzato per caricare le immagini.
                 // Questo link è standard fino a dopo il p/ dopo di che abbiamo la definizione della larghezza
                 // dell'immagine da reperire da TMDB. Questa larghezza non è un numero a caso, infatti bisogna
@@ -67,6 +73,7 @@ class HomeFragment : Fragment() {
                 // Nella schermata di dettaglio dei film invece si utilizza una larghezza maggiore perché si vuole
                 // che l'immagine sia più grande (infatti uso w342 se non sbaglio).
             }
+            viewFlipperHome.displayedChild = 1
         }
 
         // Impostazione del listener sul click per il primo poster dei film in onda

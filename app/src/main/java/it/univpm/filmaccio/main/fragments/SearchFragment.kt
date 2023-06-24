@@ -4,10 +4,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,9 +31,12 @@ class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!
     private val searchViewModel: SearchViewModel by viewModels()
+
     // Queste variabili ci servono per gestire al meglio la funzionalità di ricerca.
     private val job = Job()
     private val scope = CoroutineScope(Dispatchers.IO + job)
+
+    private var loadingOperations = 0
 
     // Questa variabile è un adapter che è una classe necessaria per gestire le RecyclerView.
     // Le RecyclerView sono delle liste che permettono di visualizzare una lista di elementi
@@ -44,19 +47,20 @@ class SearchFragment : Fragment() {
     // questo comportamento.
     private val adapter = SearchResultAdapter()
 
+    private lateinit var viewFlipperSearch: ViewFlipper
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentSearchBinding
-            .inflate(inflater, container, false)
+        _binding = FragmentSearchBinding.inflate(inflater, container, false)
 
         binding.searchView.setupWithSearchBar(binding.searchBar)
         // Alla recyclerView deve essere associato il proprio adapter e il proprio layout manager (questo
         // solo se non è stato impostato nel file XML).
         binding.searchRecyclerView.adapter = adapter
         binding.searchRecyclerView.layoutManager = LinearLayoutManager(context)
+
+        viewFlipperSearch = binding.viewFlipperSearch
+        viewFlipperSearch.displayedChild = 0
 
         // Qui aggiungiamo un listener che si accorge dei cambiamenti del testo nella barra di ricerca.
         binding.searchView.editText.addTextChangedListener(object : TextWatcher {
@@ -131,35 +135,51 @@ class SearchFragment : Fragment() {
         val trendingMovieIds = mutableListOf(0L, 0L, 0L)
         val trendingSeriesIds = mutableListOf(0L, 0L, 0L)
         searchViewModel.topRatedMovies.observe(viewLifecycleOwner) {
+            loadingOperations++
             for (i in 0..2) {
                 recommendedMovieIds[i] = it.movies[i].id
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
                     .into(recommendedMoviePosters[i]!!)
+            }
+            loadingOperations--
+            if (loadingOperations == 0) {
+                viewFlipperSearch.displayedChild = 1
             }
         }
         searchViewModel.topRatedSeries.observe(viewLifecycleOwner) {
+            loadingOperations++
             for (i in 0..2) {
                 recommendedSeriesIds[i] = it.series[i].id
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
                     .into(recommendedSeriesPosters[i]!!)
+            }
+            loadingOperations--
+            if (loadingOperations == 0) {
+                viewFlipperSearch.displayedChild = 1
             }
         }
         searchViewModel.trendingMovies.observe(viewLifecycleOwner) {
+            loadingOperations++
             for (i in 0..2) {
                 trendingMovieIds[i] = it.movies[i].id
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
                     .into(trendingMoviePosters[i]!!)
+            }
+            loadingOperations--
+            if (loadingOperations == 0) {
+                viewFlipperSearch.displayedChild = 1
             }
         }
         searchViewModel.trendingSeries.observe(viewLifecycleOwner) {
+            loadingOperations++
             for (i in 0..2) {
                 trendingSeriesIds[i] = it.series[i].id
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
                     .into(trendingSeriesPosters[i]!!)
+            }
+            loadingOperations--
+            if (loadingOperations == 0) {
+                viewFlipperSearch.displayedChild = 1
             }
         }
 
@@ -167,8 +187,7 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra(
-                    "movieId",
-                    recommendedMovieIds[recommendedMoviePosters.indexOf(poster)]
+                    "movieId", recommendedMovieIds[recommendedMoviePosters.indexOf(poster)]
                 )
                 startActivity(intent)
             }
@@ -178,8 +197,7 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, SeriesDetailsActivity::class.java)
                 intent.putExtra(
-                    "seriesId",
-                    recommendedSeriesIds[recommendedSeriesPosters.indexOf(poster)]
+                    "seriesId", recommendedSeriesIds[recommendedSeriesPosters.indexOf(poster)]
                 )
                 startActivity(intent)
             }
@@ -197,8 +215,7 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, SeriesDetailsActivity::class.java)
                 intent.putExtra(
-                    "seriesId",
-                    trendingSeriesIds[trendingSeriesPosters.indexOf(poster)]
+                    "seriesId", trendingSeriesIds[trendingSeriesPosters.indexOf(poster)]
                 )
                 startActivity(intent)
             }

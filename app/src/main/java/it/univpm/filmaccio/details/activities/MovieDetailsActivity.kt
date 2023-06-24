@@ -9,8 +9,8 @@ import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -41,7 +41,7 @@ class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var overviewFullText: String
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var movieDirectors: List<Director>
-
+    private lateinit var viewFlipperMovie: ViewFlipper
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,6 +64,9 @@ class MovieDetailsActivity : AppCompatActivity() {
         buttonFavorite = findViewById(R.id.button_favorite)
         overviewTextView = findViewById(R.id.overview_text_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
+        viewFlipperMovie = findViewById(R.id.view_flipper_movie)
+
+        viewFlipperMovie.displayedChild = 0
 
         castRecyclerView.layoutManager =
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
@@ -126,6 +129,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                     .setPositiveButton("Ok", null)
                     .show()
             }
+            viewFlipperMovie.displayedChild = 1
         }
 
         overviewTextView.setOnClickListener {
