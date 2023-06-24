@@ -1,665 +1,677 @@
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/viewFlipper"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!-- Immagine di sfondo 16:9 -->
-    <ImageView
-        android:id="@+id/backgroundImage"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:contentDescription="@string/backdrop_profile_image_description"
-        android:scaleType="centerCrop"
-        app:layout_constraintDimensionRatio="16:9"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/desert" />
+    <!-- Layout di caricamento -->
+    <include
+        android:id="@+id/loadingScreen"
+        layout="@layout/loading_screen" />
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="match_parent">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <!-- Immagine di sfondo 16:9 -->
+        <ImageView
+            android:id="@+id/backgroundImage"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="0dp"
+            android:contentDescription="@string/backdrop_profile_image_description"
+            android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="16:9"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/desert" />
 
-            <ImageView
-                android:id="@+id/invisibleBackgroundImage"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginBottom="0dp"
-                android:contentDescription="invisible image"
-                android:scaleType="centerCrop"
-                app:layout_constraintDimensionRatio="16:9"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/backdrop_corners" />
-
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/constraintinterno"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="-50dp"
-                android:background="?attr/colorSurface"
-                app:layout_constraintTop_toBottomOf="@id/profileImage">
+                android:layout_height="wrap_content">
 
-                <!-- Nome visualizzato -->
-                <TextView
-                    android:id="@+id/displayNameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="58dp"
-                    android:text="@string/name_shown_text"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-                <!-- Nome utente -->
-                <TextView
-                    android:id="@+id/usernameText"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
-                    android:text="@string/username_text"
-                    android:textSize="14sp"
-                    android:textStyle="normal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/displayNameText" />
-
-                <LinearLayout
-                    android:id="@+id/profileButtonsLinlayout"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal"
-                    app:layout_constraintBottom_toTopOf="@id/horizontalList"
+                <ImageView
+                    android:id="@+id/invisibleBackgroundImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginBottom="0dp"
+                    android:contentDescription="invisible image"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintDimensionRatio="16:9"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/usernameText">
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/backdrop_corners" />
 
-                    <Button
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:id="@+id/modify_profile_button"
-                        android:layout_width="130dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp"
-                        android:padding="0dp"
-                        android:text="@string/edit_profile_text"
-                        android:textSize="11sp" />
 
-                    <Button
-                        android:id="@+id/settings_button"
-                        style="@style/Widget.Material3.Button.OutlinedButton"
-                        android:layout_width="130dp"
-                        android:layout_height="35dp"
-                        android:layout_gravity="center"
-                        android:layout_margin="5dp"
-                        android:padding="0dp"
-                        android:text="@string/app_settings_text"
-                        android:textSize="11sp" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintinterno"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="-50dp"
+                    android:background="?attr/colorSurface"
+                    app:layout_constraintTop_toBottomOf="@id/profileImage">
 
-                </LinearLayout>
+                    <!-- Nome visualizzato -->
+                    <TextView
+                        android:id="@+id/displayNameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="58dp"
+                        android:text="@string/name_shown_text"
+                        android:textSize="20sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
 
-                <HorizontalScrollView
-                    android:id="@+id/horizontalList"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/profileButtonsLinlayout">
+                    <!-- Nome utente -->
+                    <TextView
+                        android:id="@+id/usernameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/username_text"
+                        android:textSize="14sp"
+                        android:textStyle="normal"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/displayNameText" />
 
-                    <!-- Lista orizzontale di rettangoli -->
                     <LinearLayout
+                        android:id="@+id/profileButtonsLinlayout"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:orientation="horizontal">
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/movie_time_card"
-                            style="@style/Widget.MaterialComponents.CardView"
-                            android:layout_width="150dp"
-                            android:layout_height="90dp"
-                            android:layout_marginEnd="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:gravity="center"
-                                    android:text="TEMPO FILM"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1"
-                                        tools:ignore="TooDeepLayout" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/movieTimeMonths"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:gravity="center"
-                                            android:text="@string/months_tvtime_number"
-                                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                            android:textColor="?colorPrimary" />
-
-                                        <TextView
-                                            android:id="@+id/movieTimeMonthsText"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="@string/months_text"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-                                    </LinearLayout>
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/movieTimeDays"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:gravity="center"
-                                            android:text="@string/days_tvtime_number"
-                                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                            android:textColor="?colorPrimary" />
-
-                                        <TextView
-                                            android:id="@+id/movieTimeDaysText"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="@string/days_text"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-                                    </LinearLayout>
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/movieTimeHours"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:gravity="center"
-                                            android:text="@string/hours_tvtime_number"
-                                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                            android:textColor="?colorPrimary" />
-
-                                        <TextView
-                                            android:id="@+id/movieTimeHoursText"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="@string/hours_text"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-
-                                    </LinearLayout>
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/tv_time_card"
-                            style="@style/Widget.MaterialComponents.CardView"
-                            android:layout_width="150dp"
-                            android:layout_height="90dp"
-                            android:layout_marginHorizontal="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:gravity="center"
-                                    android:text="@string/tv_time_text"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-                                <LinearLayout
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:orientation="horizontal">
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1"
-                                        tools:ignore="TooDeepLayout" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/tvTimeMonths"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:gravity="center"
-                                            android:text="@string/months_tvtime_number"
-                                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                            android:textColor="?colorPrimary" />
-
-                                        <TextView
-                                            android:id="@+id/tvTimeMonthsText"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="@string/months_text"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-                                    </LinearLayout>
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/tvTimeDays"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:gravity="center"
-                                            android:text="@string/days_tvtime_number"
-                                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                            android:textColor="?colorPrimary" />
-
-                                        <TextView
-                                            android:id="@+id/tvTimeDaysText"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="@string/days_text"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-                                    </LinearLayout>
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1" />
-
-                                    <LinearLayout
-                                        android:layout_width="wrap_content"
-                                        android:layout_height="wrap_content"
-                                        android:orientation="vertical">
-
-                                        <TextView
-                                            android:id="@+id/tvTimeHours"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:fontFamily="@font/roboto_bold"
-                                            android:gravity="center"
-                                            android:text="@string/hours_tvtime_number"
-                                            android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                            android:textColor="?colorPrimary" />
-
-                                        <TextView
-                                            android:id="@+id/tvTimeHoursText"
-                                            android:layout_width="match_parent"
-                                            android:layout_height="wrap_content"
-                                            android:gravity="center"
-                                            android:text="@string/hours_text"
-                                            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-
-                                    </LinearLayout>
-
-                                    <View
-                                        android:layout_width="0dp"
-                                        android:layout_height="0dp"
-                                        android:layout_weight="1" />
-
-                                </LinearLayout>
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/movies_seen_card"
-                            style="@style/Widget.MaterialComponents.CardView"
-                            android:layout_width="150dp"
-                            android:layout_height="90dp"
-                            android:layout_marginHorizontal="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:gravity="center"
-                                    android:text="@string/movies_seen_text"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-                                <TextView
-                                    android:id="@+id/moviesSeenNumber"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:gravity="center"
-                                    android:text="@string/movies_seen_number"
-                                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                    android:textColor="?colorPrimary" />
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/episodes_seen_card"
-                            style="@style/Widget.MaterialComponents.CardView"
-                            android:layout_width="150dp"
-                            android:layout_height="90dp"
-                            android:layout_marginStart="8dp"
-                            android:layout_marginEnd="4dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:gravity="center"
-                                    android:text="@string/episodes_seen_text"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-                                <TextView
-                                    android:id="@+id/episodesSeenNumber"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:gravity="center"
-                                    android:text="@string/episodes_seen_number"
-                                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                    android:textColor="?colorPrimary" />
-
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/followers_card"
-                            style="@style/Widget.MaterialComponents.CardView"
-                            android:layout_width="150dp"
-                            android:layout_height="90dp"
-                            android:layout_marginStart="4dp"
-                            android:layout_marginEnd="8dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:gravity="center"
-                                    android:text="@string/followers_text"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:gravity="center"
-                                    android:text="@string/followers_numbers"
-                                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                    android:textColor="?colorPrimary" />
-
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <com.google.android.material.card.MaterialCardView
-                            android:id="@+id/following_card"
-                            style="@style/Widget.MaterialComponents.CardView"
-                            android:layout_width="150dp"
-                            android:layout_height="90dp">
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:orientation="vertical">
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:layout_marginTop="4dp"
-                                    android:fontFamily="sans-serif-black"
-                                    android:gravity="center"
-                                    android:text="@string/following_text"
-                                    android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
-
-                                <TextView
-                                    android:layout_width="match_parent"
-                                    android:layout_height="wrap_content"
-                                    android:fontFamily="@font/roboto_bold"
-                                    android:gravity="center"
-                                    android:text="@string/following_number"
-                                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                                    android:textColor="?colorPrimary" />
-
-
-                            </LinearLayout>
-
-                        </com.google.android.material.card.MaterialCardView>
-
-                        <View
-                            android:layout_width="16dp"
-                            android:layout_height="0dp" />
+                        android:orientation="horizontal"
+                        app:layout_constraintBottom_toTopOf="@id/horizontalList"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/usernameText">
+
+                        <Button
+                            android:id="@+id/modify_profile_button"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="130dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:padding="0dp"
+                            android:text="@string/edit_profile_text"
+                            android:textSize="11sp" />
+
+                        <Button
+                            android:id="@+id/settings_button"
+                            style="@style/Widget.Material3.Button.OutlinedButton"
+                            android:layout_width="130dp"
+                            android:layout_height="35dp"
+                            android:layout_gravity="center"
+                            android:layout_margin="5dp"
+                            android:padding="0dp"
+                            android:text="@string/app_settings_text"
+                            android:textSize="11sp" />
 
                     </LinearLayout>
 
-                </HorizontalScrollView>
+                    <HorizontalScrollView
+                        android:id="@+id/horizontalList"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/profileButtonsLinlayout">
 
-                <!-- Testo "Liste" -->
+                        <!-- Lista orizzontale di rettangoli -->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:orientation="horizontal">
 
-                <!-- Lista orizzontale di rettangoli per le liste -->
-                <TextView
-                    android:id="@+id/listeTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="4dp"
-                    android:text="@string/lists_text"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/movie_time_card"
+                                style="@style/Widget.MaterialComponents.CardView"
+                                android:layout_width="150dp"
+                                android:layout_height="90dp"
+                                android:layout_marginEnd="4dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:gravity="center"
+                                        android:text="TEMPO FILM"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1"
+                                            tools:ignore="TooDeepLayout" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/movieTimeMonths"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:gravity="center"
+                                                android:text="@string/months_tvtime_number"
+                                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                                android:textColor="?colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/movieTimeMonthsText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/months_text"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/movieTimeDays"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:gravity="center"
+                                                android:text="@string/days_tvtime_number"
+                                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                                android:textColor="?colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/movieTimeDaysText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/days_text"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/movieTimeHours"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:gravity="center"
+                                                android:text="@string/hours_tvtime_number"
+                                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                                android:textColor="?colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/movieTimeHoursText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/hours_text"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1" />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/tv_time_card"
+                                style="@style/Widget.MaterialComponents.CardView"
+                                android:layout_width="150dp"
+                                android:layout_height="90dp"
+                                android:layout_marginHorizontal="4dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:gravity="center"
+                                        android:text="@string/tv_time_text"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:orientation="horizontal">
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1"
+                                            tools:ignore="TooDeepLayout" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/tvTimeMonths"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:gravity="center"
+                                                android:text="@string/months_tvtime_number"
+                                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                                android:textColor="?colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/tvTimeMonthsText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/months_text"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/tvTimeDays"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:gravity="center"
+                                                android:text="@string/days_tvtime_number"
+                                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                                android:textColor="?colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/tvTimeDaysText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/days_text"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1" />
+
+                                        <LinearLayout
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="wrap_content"
+                                            android:orientation="vertical">
+
+                                            <TextView
+                                                android:id="@+id/tvTimeHours"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:fontFamily="@font/roboto_bold"
+                                                android:gravity="center"
+                                                android:text="@string/hours_tvtime_number"
+                                                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                                android:textColor="?colorPrimary" />
+
+                                            <TextView
+                                                android:id="@+id/tvTimeHoursText"
+                                                android:layout_width="match_parent"
+                                                android:layout_height="wrap_content"
+                                                android:gravity="center"
+                                                android:text="@string/hours_text"
+                                                android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
+
+
+                                        </LinearLayout>
+
+                                        <View
+                                            android:layout_width="0dp"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1" />
+
+                                    </LinearLayout>
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/movies_seen_card"
+                                style="@style/Widget.MaterialComponents.CardView"
+                                android:layout_width="150dp"
+                                android:layout_height="90dp"
+                                android:layout_marginHorizontal="4dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:gravity="center"
+                                        android:text="@string/movies_seen_text"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                                    <TextView
+                                        android:id="@+id/moviesSeenNumber"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:gravity="center"
+                                        android:text="@string/movies_seen_number"
+                                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                        android:textColor="?colorPrimary" />
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/episodes_seen_card"
+                                style="@style/Widget.MaterialComponents.CardView"
+                                android:layout_width="150dp"
+                                android:layout_height="90dp"
+                                android:layout_marginStart="8dp"
+                                android:layout_marginEnd="4dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:gravity="center"
+                                        android:text="@string/episodes_seen_text"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                                    <TextView
+                                        android:id="@+id/episodesSeenNumber"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:gravity="center"
+                                        android:text="@string/episodes_seen_number"
+                                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                        android:textColor="?colorPrimary" />
+
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/followers_card"
+                                style="@style/Widget.MaterialComponents.CardView"
+                                android:layout_width="150dp"
+                                android:layout_height="90dp"
+                                android:layout_marginStart="4dp"
+                                android:layout_marginEnd="8dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:gravity="center"
+                                        android:text="@string/followers_text"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:gravity="center"
+                                        android:text="@string/followers_numbers"
+                                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                        android:textColor="?colorPrimary" />
+
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <com.google.android.material.card.MaterialCardView
+                                android:id="@+id/following_card"
+                                style="@style/Widget.MaterialComponents.CardView"
+                                android:layout_width="150dp"
+                                android:layout_height="90dp">
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:orientation="vertical">
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_marginTop="4dp"
+                                        android:fontFamily="sans-serif-black"
+                                        android:gravity="center"
+                                        android:text="@string/following_text"
+                                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                                    <TextView
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:fontFamily="@font/roboto_bold"
+                                        android:gravity="center"
+                                        android:text="@string/following_number"
+                                        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                                        android:textColor="?colorPrimary" />
+
+
+                                </LinearLayout>
+
+                            </com.google.android.material.card.MaterialCardView>
+
+                            <View
+                                android:layout_width="16dp"
+                                android:layout_height="0dp" />
+
+                        </LinearLayout>
+
+                    </HorizontalScrollView>
+
+                    <!-- Testo "Liste" -->
+
+                    <!-- Lista orizzontale di rettangoli per le liste -->
+                    <TextView
+                        android:id="@+id/listeTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:layout_marginTop="4dp"
+                        android:text="@string/lists_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontalList" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listeHorizontalList"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_marginHorizontal="8dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/listeTitle" />
+
+                    <!-- Divisore -->
+                    <View
+                        android:id="@+id/view"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:background="?android:attr/dividerVertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.5"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/listeHorizontalList" />
+
+                    <!-- Titolo "Film" -->
+
+                    <!-- Lista orizzontale di rettangoli per i film -->
+
+                    <TextView
+                        android:id="@+id/filmTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="@string/seen_movies_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/view" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/filmHorizontalList"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="8dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/filmTitle" />
+
+                    <!-- Divisore -->
+                    <View
+                        android:id="@+id/divider2"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="?android:attr/dividerVertical"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/filmHorizontalList" />
+
+                    <!-- Titolo "Serie TV" -->
+
+                    <!-- Lista orizzontale di rettangoli per le serie TV -->
+                    <TextView
+                        android:id="@+id/serieTVTitle"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="@string/seen_series_text"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.046"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/serieTVHorizontalList"
+                        android:layout_width="0dp"
+                        android:layout_height="120dp"
+                        android:layout_marginTop="8dp"
+                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/serieTVTitle" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <!-- Immagine di profilo rotonda -->
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/profileImage"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="-50dp"
+                    android:background="?colorBackgroundFloating"
+                    android:src="@drawable/default_propic"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/horizontalList" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/listeHorizontalList"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginHorizontal="8dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    android:orientation="horizontal"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/listeTitle" />
-
-                <!-- Divisore -->
-                <View
-                    android:id="@+id/view"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_marginHorizontal="16dp"
-                    android:background="?android:attr/dividerVertical"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.5"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/listeHorizontalList" />
-
-                <!-- Titolo "Film" -->
-
-                <!-- Lista orizzontale di rettangoli per i film -->
-
-                <TextView
-                    android:id="@+id/filmTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:text="@string/seen_movies_text"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.0"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/view" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/filmHorizontalList"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="8dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/filmTitle" />
-
-                <!-- Divisore -->
-                <View
-                    android:id="@+id/divider2"
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:background="?android:attr/dividerVertical"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/filmHorizontalList" />
-
-                <!-- Titolo "Serie TV" -->
-
-                <!-- Lista orizzontale di rettangoli per le serie TV -->
-                <TextView
-                    android:id="@+id/serieTVTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:text="@string/seen_series_text"
-                    android:textSize="18sp"
-                    android:textStyle="bold"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_bias="0.046"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/divider2" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/serieTVHorizontalList"
-                    android:layout_width="0dp"
-                    android:layout_height="120dp"
-                    android:layout_marginTop="8dp"
-                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@id/serieTVTitle" />
+                    app:layout_constraintTop_toBottomOf="@id/invisibleBackgroundImage"
+                    app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 
-            <!-- Immagine di profilo rotonda -->
-            <com.google.android.material.imageview.ShapeableImageView
-                android:id="@+id/profileImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_marginTop="-50dp"
-                android:background="?colorBackgroundFloating"
-                android:src="@drawable/default_propic"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/invisibleBackgroundImage"
-                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay" />
+        </ScrollView>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-    </ScrollView>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ViewFlipper>
