@@ -85,7 +85,7 @@
     <string name="following_number">271</string>
     <string name="lists_text">Liste</string>
     <string name="seen_movies_text">Film visti</string>
-    <string name="seen_series_text">Serie TV viste</string>
+    <string name="seen_series_text">Serie TV completate</string>
     <string name="activity_time">26 m</string>
     <string name="user_started_to_follow_you">{name_shown} ha iniziato a seguirti</string>
     <string name="already_following">SEGUI GIÀ</string>

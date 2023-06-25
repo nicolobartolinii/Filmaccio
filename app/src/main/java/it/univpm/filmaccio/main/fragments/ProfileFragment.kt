@@ -9,11 +9,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ImageView
 import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
@@ -39,8 +41,10 @@ class ProfileFragment : Fragment() {
 
     private lateinit var editProfileButton: Button // bottone per la pagina di modifica
     private lateinit var settingsButton: Button // bottone per le impostazioni
-    private lateinit var currentUser: User
     private lateinit var viewFlipper: ViewFlipper
+    private lateinit var profileImage: ShapeableImageView
+    private lateinit var backdropImage: ImageView
+    private lateinit var currentUser: User
     private var movieMinutes = 0
     private var tvMinutes = 0
     private var movieNumber = 0
@@ -68,8 +72,9 @@ class ProfileFragment : Fragment() {
         // dichiarazione bottoni
         settingsButton = binding.settingsButton
         editProfileButton = binding.modifyProfileButton
-
         viewFlipper = binding.viewFlipper
+        profileImage = binding.profileImage
+        backdropImage = binding.backdropImage
 
         // Qui controlliamo se il fragment sta venendo avviato per la prima volta dall'avvio dell'app
         if (profileViewModel.isFirstLaunch) {
@@ -216,7 +221,9 @@ class ProfileFragment : Fragment() {
                     binding.displayNameText.text = user.nameShown
                     binding.usernameText.text = user.username
                     Glide.with(this@ProfileFragment).load(user.profileImage)
-                        .into(binding.profileImage)
+                        .into(profileImage)
+                    Glide.with(this@ProfileFragment).load(user.backdropImage)
+                        .into(backdropImage)
                 }
             }
         }

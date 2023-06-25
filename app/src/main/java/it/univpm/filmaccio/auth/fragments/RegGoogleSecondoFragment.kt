@@ -214,7 +214,8 @@ class RegGoogleSecondoFragment : Fragment() {
             "watched_m" to arrayListOf(),
             "watching_t" to arrayListOf(),
             "favorite_m" to arrayListOf(),
-            "favorite_t" to arrayListOf()
+            "favorite_t" to arrayListOf(),
+            "finished_t" to arrayListOf()
         )
 
         FirestoreService.collectionUsers.document(uid!!)

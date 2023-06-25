@@ -298,7 +298,8 @@ class RegTerzaFragment : Fragment() {
             "gender" to gender,
             "birthDate" to birthDate,
             "nameShown" to nameShown,
-            "profileImage" to imageURL
+            "profileImage" to imageURL,
+            "backdropImage" to "https://firebasestorage.googleapis.com/v0/b/filmaccio.appspot.com/o/desert.jpg?alt=media&token=a2f60711-b962-40f9-9a8f-1b948e1cd92e"
         )
         // Creiamo una HashMap con due ArrayList vuoti per setuppare il documento follow del nuovo utente
         val followDocument = hashMapOf(
@@ -312,7 +313,8 @@ class RegTerzaFragment : Fragment() {
             "watched_m" to arrayListOf(),
             "watching_t" to arrayListOf(),
             "favorite_m" to arrayListOf(),
-            "favorite_t" to arrayListOf()
+            "favorite_t" to arrayListOf(),
+            "finished_t" to arrayListOf()
         )
 
         // A tal proposito, forse adesso è il momento migliore di spiegare come ho strutturato il database Firestore.

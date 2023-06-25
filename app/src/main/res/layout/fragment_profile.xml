@@ -6,9 +6,6 @@
     android:layout_height="match_parent">
 
     <!-- Layout di caricamento -->
-    <include
-        android:id="@+id/loadingScreen"
-        layout="@layout/loading_screen" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -16,7 +13,7 @@
 
         <!-- Immagine di sfondo 16:9 -->
         <ImageView
-            android:id="@+id/backgroundImage"
+            android:id="@+id/backdropImage"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:contentDescription="@string/backdrop_profile_image_description"
@@ -581,51 +578,14 @@
 
                     <!-- Divisore -->
                     <View
-                        android:id="@+id/view"
-                        android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:background="?android:attr/dividerVertical"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.5"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/listeHorizontalList" />
-
-                    <!-- Titolo "Film" -->
-
-                    <!-- Lista orizzontale di rettangoli per i film -->
-
-                    <TextView
-                        android:id="@+id/filmTitle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="16dp"
-                        android:text="@string/seen_movies_text"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.0"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/view" />
-
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/filmHorizontalList"
-                        android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_marginTop="8dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/filmTitle" />
-
-                    <!-- Divisore -->
-                    <View
                         android:id="@+id/divider2"
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:background="?android:attr/dividerVertical"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/filmHorizontalList" />
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/listeHorizontalList"
+                        tools:layout_editor_absoluteY="569dp" />
 
                     <!-- Titolo "Serie TV" -->
 
@@ -673,5 +633,9 @@
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <include
+        android:id="@+id/loadingScreen"
+        layout="@layout/loading_screen" />
 
 </ViewFlipper>
