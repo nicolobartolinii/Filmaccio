@@ -2,6 +2,7 @@ package it.univpm.filmaccio.data.repository
 
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
+import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.FirestoreService
@@ -61,6 +62,10 @@ class SeriesRepository {
     suspend fun isSeriesFavorited(userId: String, seriesId: Long): Boolean {
         val favoriteSeries: List<Any> = FirestoreService.getList(userId, "favorite_t").first()
         return seriesId in favoriteSeries
+    }
+
+    suspend fun getSeriesImages(seriesId: Long): ImagesResponse {
+        return tmdbApi.getSeriesImages(seriesId = seriesId)
     }
 
     suspend fun convertIdToProfileListItem(id1: Long, id2: Long, id3: Long, listTitle: String): ProfileListItem {

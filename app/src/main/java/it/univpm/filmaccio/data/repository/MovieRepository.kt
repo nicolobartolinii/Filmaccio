@@ -2,6 +2,7 @@ package it.univpm.filmaccio.data.repository
 
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
+import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.main.utils.FirestoreService
@@ -72,6 +73,11 @@ class MovieRepository {
     suspend fun isMovieFavorited(userId: String, movieId: Long): Boolean {
         val favoriteMovies: List<Any> = FirestoreService.getList(userId, "favorite_m").first()
         return movieId in favoriteMovies
+    }
+
+    // Questo metodo implementa la chiamata all'endpoint movie/{movie_id}/images in modo da poterlo usare in altre classi
+    suspend fun getMovieImages(movieId: Long): ImagesResponse {
+        return tmdbApi.getMovieImages(movieId = movieId)
     }
 
     // Questo metodo si occupa di convertire le informazioni di una lista di film da mostrare nella schermata profilo

@@ -7,6 +7,7 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.main.fragments.ProfileFragment
 
 // Questa activity è chiamata come se fosse l'activity principale entry point dell'applicazione.
 // In realtà l'entry point è AuthActivity, che verifica se l'utente è loggato o meno e in base a questo
@@ -27,5 +28,11 @@ class MainActivity : AppCompatActivity() {
         navBar = findViewById(R.id.navigation_bar)
 
         navBar.setupWithNavController(navController)
+
+        if (intent.getBooleanExtra("reloadProfile", false)) {
+            val fragment = ProfileFragment()
+            supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView2, fragment)
+                .commit()
+        }
     }
 }

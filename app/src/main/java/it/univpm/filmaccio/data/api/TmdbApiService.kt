@@ -2,6 +2,7 @@ package it.univpm.filmaccio.data.api
 
 import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
+import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.data.models.SearchResponse
@@ -119,4 +120,20 @@ interface TmdbApiService {
         @Query("region") region: String = "IT",
         @Query("append_to_response") appendToResponse: String = "combined_credits"
     ): Person
+
+    // Endpoint per ottenere le immagini di un film
+    @GET("movie/{movie_id}/images")
+    suspend fun getMovieImages(
+        @Path("movie_id") movieId: Long,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("include_image_language") includeImageLanguage: String = "it,en,null",
+    ): ImagesResponse
+
+    // Endpoint per ottenere le immagini di una serie TV
+    @GET("tv/{series_id}/images")
+    suspend fun getSeriesImages(
+        @Path("series_id") seriesId: Long,
+        @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
+        @Query("include_image_language") includeImageLanguage: String = "it,en,null",
+    ): ImagesResponse
 }

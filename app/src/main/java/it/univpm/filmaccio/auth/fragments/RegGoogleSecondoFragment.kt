@@ -30,6 +30,7 @@ import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegGoogleSecondoBinding
 import it.univpm.filmaccio.main.MainActivity
+import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.File
@@ -202,7 +203,8 @@ class RegGoogleSecondoFragment : Fragment() {
             "gender" to gender,
             "birthDate" to birthDate,
             "nameShown" to nameShown,
-            "profileImage" to imageURL
+            "profileImage" to imageURL,
+            "backdropImage" to Constants.DESERT_BACKDROP_URL
         )
         val followDocument = hashMapOf(
             "followers" to arrayListOf<String>(),

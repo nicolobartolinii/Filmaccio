@@ -31,6 +31,7 @@ import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegTerzaBinding
 import it.univpm.filmaccio.main.MainActivity
+import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.File
@@ -299,7 +300,7 @@ class RegTerzaFragment : Fragment() {
             "birthDate" to birthDate,
             "nameShown" to nameShown,
             "profileImage" to imageURL,
-            "backdropImage" to "https://firebasestorage.googleapis.com/v0/b/filmaccio.appspot.com/o/desert.jpg?alt=media&token=a2f60711-b962-40f9-9a8f-1b948e1cd92e"
+            "backdropImage" to Constants.DESERT_BACKDROP_URL
         )
         // Creiamo una HashMap con due ArrayList vuoti per setuppare il documento follow del nuovo utente
         val followDocument = hashMapOf(

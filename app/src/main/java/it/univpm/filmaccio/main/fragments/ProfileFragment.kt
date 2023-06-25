@@ -97,6 +97,7 @@ class ProfileFragment : Fragment() {
             intent.putExtra("nameShown", currentUser.nameShown)
             intent.putExtra("email", currentUser.email)
             intent.putExtra("propic", currentUser.profileImage)
+            intent.putExtra("backdrop", currentUser.backdropImage)
             startActivity(intent)
         }
 
