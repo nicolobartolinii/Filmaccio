@@ -1,6 +1,5 @@
 package it.univpm.filmaccio.main
 
-import android.annotation.SuppressLint
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
@@ -9,10 +8,9 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.snackbar.Snackbar
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
-import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.main.utils.FirestoreService
@@ -23,22 +21,28 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var nameShownEditText: EditText
     private lateinit var nameShownTextInputLayout: TextInputLayout
     private lateinit var saveButton: Button
-    private lateinit var cambioPassword : Button
+    private lateinit var buttonChangePassword : Button
+    private lateinit var propicImageView: ShapeableImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_edit)
-        val nameShown = intent.getStringExtra("user")
+        val nameShown = intent.getStringExtra("nameShown")
         val uid = intent.getStringExtra("uid")
-        Log.e("LogUser", nameShown!!)
+        val propic = intent.getStringExtra("propic")
 
         // Inizializza il TextView (sostituisci con l'ID del tuo TextView)
         nameShownEditText = findViewById(R.id.nomeVisualizzatoTextInputEditText)
         nameShownTextInputLayout = findViewById(R.id.nomeVisualizzatoTextInputLayout)
-        cambioPassword =  findViewById(R.id.buttonChangePassword)
+        buttonChangePassword =  findViewById(R.id.buttonChangePassword)
+        saveButton = findViewById(R.id.buttonSaveChanges)
+        propicImageView = findViewById(R.id.propicSetImageView)
+
         nameShownEditText.setText(nameShown, TextView.BufferType.EDITABLE)
 
-        saveButton = findViewById(R.id.buttonSaveChanges)
+        Glide.with(this)
+            .load(propic)
+            .into(propicImageView)
 
         saveButton.setOnClickListener {
             nameShownTextInputLayout.isErrorEnabled = false
@@ -61,12 +65,12 @@ class EditProfileActivity : AppCompatActivity() {
             }
        val auth= UserUtils.auth
 // funzione per cambiare la password, prendo da email la mail di ogni utente e chiamo metodo predefinito di firebase
-        cambioPassword.setOnClickListener {
+        buttonChangePassword.setOnClickListener {
             val email = intent.getStringExtra("email")
             auth.sendPasswordResetEmail(email!!)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val snackbar = Snackbar.make(findViewById(R.id.buttonChangePassword), "Email inviata", Snackbar.LENGTH_LONG)
+                        val snackbar = Snackbar.make(buttonChangePassword, "Email inviata", Snackbar.LENGTH_LONG)
                         snackbar.setAction("Indietro") {
                             // codice per tornare indietro
                         }

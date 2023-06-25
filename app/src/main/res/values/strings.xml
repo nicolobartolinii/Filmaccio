@@ -99,4 +99,5 @@
     <string name="user_reviews_product">{name_shown} ha recensito {product_name}</string>
     <string name="follow">SEGUI</string>
     <string name="cambioPassword">Cambio password</string>
+    <string name="salva">Salva</string>
 </resources>

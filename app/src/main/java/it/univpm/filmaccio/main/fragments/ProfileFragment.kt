@@ -3,10 +3,13 @@ package it.univpm.filmaccio.main.fragments
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -37,6 +40,7 @@ class ProfileFragment : Fragment() {
     private lateinit var editProfileButton: Button // bottone per la pagina di modifica
     private lateinit var settingsButton: Button // bottone per le impostazioni
     private lateinit var currentUser: User
+    private lateinit var viewFlipper: ViewFlipper
     private var movieMinutes = 0
     private var tvMinutes = 0
     private var movieNumber = 0
@@ -65,9 +69,17 @@ class ProfileFragment : Fragment() {
         settingsButton = binding.settingsButton
         editProfileButton = binding.modifyProfileButton
 
-        val viewFlipper = binding.viewFlipper
+        viewFlipper = binding.viewFlipper
 
-        viewFlipper.displayedChild = 0
+        // Qui controlliamo se il fragment sta venendo avviato per la prima volta dall'avvio dell'app
+        if (profileViewModel.isFirstLaunch) {
+            // Se è la prima volta allora facciamo comparire la schermata di caricamento con un
+            // breve ritardo di 25 secondi (per qualche motivo questa cosa serve solo al primo avvio)
+            Handler(Looper.getMainLooper()).postDelayed({
+                viewFlipper.displayedChild = 0
+            }, 25)
+            profileViewModel.isFirstLaunch = false
+        }
 
         settingsButton.setOnClickListener {
             val intent = Intent(requireContext(), SettingsActivity::class.java)
@@ -77,10 +89,10 @@ class ProfileFragment : Fragment() {
         editProfileButton.setOnClickListener {
             val intent = Intent(requireContext(), EditProfileActivity::class.java)
             intent.putExtra("uid", currentUser.uid)
-            intent.putExtra("user", currentUser.nameShown)
+            intent.putExtra("nameShown", currentUser.nameShown)
             intent.putExtra("email", currentUser.email)
+            intent.putExtra("propic", currentUser.profileImage)
             startActivity(intent)
-
         }
 
         // Qui lanciamo una coroutine per ottenere le liste dell'utente corrente
@@ -210,12 +222,6 @@ class ProfileFragment : Fragment() {
         }
 
         return binding.root
-    }
-
-    override fun onResume() {
-        super.onResume()
-        binding.viewFlipper.displayedChild =
-            0 // Imposta la schermata di caricamento come schermata iniziale
     }
 
     private fun convertMinutesToMonthsDaysHours(minutes: Int): Triple<String, String, String> {

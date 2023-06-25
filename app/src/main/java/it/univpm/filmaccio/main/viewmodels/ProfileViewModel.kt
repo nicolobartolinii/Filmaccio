@@ -21,6 +21,11 @@ class ProfileViewModel : ViewModel() {
     private val _lists = MutableStateFlow<Map<String, List<Long>>?>(emptyMap())
     val lists: StateFlow<Map<String, List<Long>>?> get() = _lists
 
+    // Questa variabile serve per mostrare la schermata di caricamento anche al primo avvio dell'app
+    // Per qualche motivo infatti la schermata di caricamento si mostrava solo quando si entrava nel
+    // fragment dopo la prima volta.
+    var isFirstLaunch: Boolean = true
+
     // Quando il ViewModel viene iniziato, carichiamo l'utente corrente e le sue liste.
     init {
         loadCurrentUser()
@@ -46,7 +51,7 @@ class ProfileViewModel : ViewModel() {
     private fun getLists() = viewModelScope.launch {
         val currentUserUid = UserUtils.getCurrentUserUid()
         FirestoreService.getLists(currentUserUid!!).collect {
-            _lists.value = it as Map<String, List<Long>>?
+            _lists.value = it
         }
     }
 
