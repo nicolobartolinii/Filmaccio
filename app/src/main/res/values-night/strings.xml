@@ -53,7 +53,7 @@
     <string name="profile_image_description">profile image</string>
     <string name="name_shown_text">Nome Visualizzato</string>
     <string name="username_text">nome_utente</string>
-    <string name="edit_profile_text">MODIFICA PROFILO</string>
+    <string name="edit_profile_text">Modifica profilo</string>
     <string name="app_settings_text">IMPOSTAZIONI APP</string>
     <string name="months_tvtime_number">01</string>
     <string name="months_text">mesi</string>
@@ -86,4 +86,6 @@
     <string name="follow">SEGUI</string>
     <string name="salva">Salva</string>
     <string name="cambioPassword">Cambio password</string>
+    <string name="confirm">Conferma</string>
+    <string name="edit_profile_text_caps">MODIFICA PROFILO</string>
 </resources>

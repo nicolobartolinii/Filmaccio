@@ -21,7 +21,7 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var nameShownEditText: EditText
     private lateinit var nameShownTextInputLayout: TextInputLayout
     private lateinit var saveButton: Button
-    private lateinit var buttonChangePassword : Button
+    private lateinit var buttonChangePassword: Button
     private lateinit var propicImageView: ShapeableImageView
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,9 +34,9 @@ class EditProfileActivity : AppCompatActivity() {
         // Inizializza il TextView (sostituisci con l'ID del tuo TextView)
         nameShownEditText = findViewById(R.id.nomeVisualizzatoTextInputEditText)
         nameShownTextInputLayout = findViewById(R.id.nomeVisualizzatoTextInputLayout)
-        buttonChangePassword =  findViewById(R.id.buttonChangePassword)
-        saveButton = findViewById(R.id.buttonSaveChanges)
-        propicImageView = findViewById(R.id.propicSetImageView)
+        buttonChangePassword = findViewById(R.id.buttonChangePassword)
+        saveButton = findViewById(R.id.button_save_propic)
+        propicImageView = findViewById(R.id.propic_change_simage_view)
 
         nameShownEditText.setText(nameShown, TextView.BufferType.EDITABLE)
 
@@ -54,23 +54,32 @@ class EditProfileActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
 // richiama la funzione chew fa un update del nome utente
-                FirestoreService.updateUserField(uid!!, "nameShown", newNameShown) { updateSuccessful ->
-                    if (updateSuccessful) {
-                        Toast.makeText(this, "Modifiche avvenute con successo", Toast.LENGTH_LONG).show()
+            FirestoreService.updateUserField(uid!!, "nameShown", newNameShown) { updateSuccessful ->
+                if (updateSuccessful) {
+                    Toast.makeText(this, "Modifiche avvenute con successo", Toast.LENGTH_LONG)
+                        .show()
 
-                    } else {
-                        Toast.makeText(this, "C'è stato un problema con le modifiche, riprova.", Toast.LENGTH_LONG).show()
-                    }
+                } else {
+                    Toast.makeText(
+                        this,
+                        "C'è stato un problema con le modifiche, riprova.",
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
-       val auth= UserUtils.auth
+        }
+        val auth = UserUtils.auth
 // funzione per cambiare la password, prendo da email la mail di ogni utente e chiamo metodo predefinito di firebase
         buttonChangePassword.setOnClickListener {
             val email = intent.getStringExtra("email")
             auth.sendPasswordResetEmail(email!!)
                 .addOnCompleteListener { task ->
                     if (task.isSuccessful) {
-                        val snackbar = Snackbar.make(buttonChangePassword, "Email inviata", Snackbar.LENGTH_LONG)
+                        val snackbar = Snackbar.make(
+                            buttonChangePassword,
+                            "Email inviata",
+                            Snackbar.LENGTH_LONG
+                        )
                         snackbar.setAction("Indietro") {
                             // codice per tornare indietro
                         }
@@ -82,7 +91,7 @@ class EditProfileActivity : AppCompatActivity() {
                     }
                 }
         }
-        }
     }
+}
 
 

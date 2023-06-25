@@ -72,7 +72,7 @@ class RegGoogleSecondoFragment : Fragment() {
         buttonFine = binding.buttonFine
         nomeVisualizzatoTextInputEditText = binding.nomeVisualizzatoTextInputEditText
         nomeVisualizzatoTectInputLayout = binding.nomeVisualizatoTextInputLayout
-        propicImageView = binding.propicSetImageView
+        propicImageView = binding.propicSetSimageView
 
         val args: RegGoogleSecondoFragmentArgs by navArgs()
         username = args.username

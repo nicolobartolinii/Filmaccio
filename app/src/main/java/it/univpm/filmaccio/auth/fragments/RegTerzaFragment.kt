@@ -75,7 +75,7 @@ class RegTerzaFragment : Fragment() {
         buttonFine = binding.buttonFine
         nomeVisualizzatoTextInputEditText = binding.nomeVisualizzatoTextInputEditText
         nomeVisualizzatoTectInputLayout = binding.nomeVisualizatoTextInputLayout
-        propicImageView = binding.propicSetImageView
+        propicImageView = binding.propicSetSimageView
 
         // Quì recuperiamo i dati passati dal fragment precedente (RegSecondaFragment) prima rispetto a quando l'abbiamo fatto nel RegSecondaFragment perché ci servirà lo username per inserirlo di default nel campo nome visualizzato
         val args: RegTerzaFragmentArgs by navArgs()
