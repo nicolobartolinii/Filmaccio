@@ -20,8 +20,8 @@ import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
-import it.univpm.filmaccio.main.EditProfileActivity
-import it.univpm.filmaccio.main.SettingsActivity
+import it.univpm.filmaccio.main.activities.EditProfileActivity
+import it.univpm.filmaccio.main.activities.SettingsActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest

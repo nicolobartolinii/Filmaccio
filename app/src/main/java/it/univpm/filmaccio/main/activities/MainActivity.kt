@@ -1,4 +1,4 @@
-package it.univpm.filmaccio.main
+package it.univpm.filmaccio.main.activities
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity

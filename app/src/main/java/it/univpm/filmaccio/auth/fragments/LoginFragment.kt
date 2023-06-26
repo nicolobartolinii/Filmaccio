@@ -16,10 +16,9 @@ import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
-import com.google.firebase.firestore.FirebaseFirestore
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentLoginBinding
-import it.univpm.filmaccio.main.MainActivity
+import it.univpm.filmaccio.main.activities.MainActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 

@@ -29,7 +29,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegGoogleSecondoBinding
-import it.univpm.filmaccio.main.MainActivity
+import it.univpm.filmaccio.main.activities.MainActivity
 import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils

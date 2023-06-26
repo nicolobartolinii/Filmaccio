@@ -5,7 +5,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.main.MainActivity
+import it.univpm.filmaccio.main.activities.MainActivity
 import it.univpm.filmaccio.main.utils.UserUtils
 
 // Questa è l'activity che viene avviata quando si apre l'app. Controlla se l'utente è già loggato e in caso positivo lo reindirizza alla MainActivity

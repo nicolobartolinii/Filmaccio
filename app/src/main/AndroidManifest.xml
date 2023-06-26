@@ -23,13 +23,13 @@
         android:theme="@style/Theme.Filmaccio"
         tools:targetApi="31">
         <activity
-            android:name=".main.ChangeBackdropActivity"
+            android:name=".main.activities.ChangeBackdropActivity"
             android:exported="false" />
         <activity
-            android:name=".main.EditProfileActivity"
+            android:name=".main.activities.EditProfileActivity"
             android:exported="false" />
         <activity
-            android:name=".main.SettingsActivity"
+            android:name=".main.activities.SettingsActivity"
             android:exported="false" />
         <activity
             android:name=".details.activities.UserDetailsActivity"
@@ -44,7 +44,7 @@
             android:name=".details.activities.PersonDetailsActivity"
             android:exported="false" />
         <activity
-            android:name=".main.MainActivity"
+            android:name=".main.activities.MainActivity"
             android:exported="false" />
         <activity
             android:name=".auth.AuthActivity"
@@ -55,6 +55,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".main.activities.ViewAllActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

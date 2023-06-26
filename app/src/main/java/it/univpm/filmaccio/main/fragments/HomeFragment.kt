@@ -10,8 +10,10 @@ import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
+import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.viewmodels.HomeViewModel
 
 // Questo fragment è la schermata home dell'app. In questa schermata vengono mostrati i film attualmente in onda,
@@ -40,6 +42,8 @@ class HomeFragment : Fragment() {
 
     private lateinit var moviePostersHome: List<ImageView>
     private lateinit var viewFlipperHome: ViewFlipper
+
+    private lateinit var latestReleases: List<Movie>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         moviePostersHome = listOf(
@@ -55,6 +59,7 @@ class HomeFragment : Fragment() {
         // Questa è una gestione asincrona dei dati. Si osserva la variabile nowPlayingMovies del viewModel
         // e quando questa cambia si esegue il codice che c'è dentro il blocco di codice.
         homeViewModel.nowPlayingMovies.observe(viewLifecycleOwner) {
+            latestReleases = it.movies
             // Quando la variabile del viewModel cambia (cioè quando il viewModel viene inizializzato, come si
             // può vedere nel file HomeViewModel.kt) eseguiamo un ciclo in cui andiamo ad aggiungere alla
             // lista movieIds gli id dei film in onda e andiamo a caricare le immagini dei poster dei film
@@ -96,6 +101,13 @@ class HomeFragment : Fragment() {
         binding.thirdLatestReleaseHome.setOnClickListener {
             val intent = Intent(context, MovieDetailsActivity::class.java)
             intent.putExtra("movieId", movieIds[2])
+            startActivity(intent)
+        }
+
+        binding.buttonLatestReleasesViewAllHome.setOnClickListener {
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(latestReleases)) // entities è la lista di entità
+            intent.putExtra("title", "Ultime uscite") // title è il titolo della schermata
             startActivity(intent)
         }
     }

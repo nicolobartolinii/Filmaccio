@@ -1,4 +1,4 @@
-package it.univpm.filmaccio.main
+package it.univpm.filmaccio.main.activities
 
 import android.annotation.SuppressLint
 import android.app.Activity
@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
-import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -17,7 +16,6 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.main.adapters.BackdropAdapter
 import it.univpm.filmaccio.main.viewmodels.ChangeBackdropViewModel
-import java.lang.Thread.sleep
 
 class ChangeBackdropActivity : AppCompatActivity(), BackdropAdapter.ImageSelectionListener {
 

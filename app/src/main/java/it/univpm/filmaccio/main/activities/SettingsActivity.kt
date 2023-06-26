@@ -1,4 +1,4 @@
-package it.univpm.filmaccio.main
+package it.univpm.filmaccio.main.activities
 
 import android.content.Intent
 import android.content.SharedPreferences
