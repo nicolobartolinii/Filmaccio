@@ -100,6 +100,10 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                     val context = holder.itemView.context
                     val intent = Intent(context, UserDetailsActivity::class.java)
                     intent.putExtra("uid", result.uid)
+                    intent.putExtra("nameShown",result.nameShown)
+                    intent.putExtra("username",result.username)
+                    intent.putExtra("backdropImage",result.backdropImage)
+                    intent.putExtra("profileImage",result.profileImage)
                     context.startActivity(intent)
                }
 
