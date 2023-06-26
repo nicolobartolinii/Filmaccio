@@ -15,6 +15,7 @@ import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
+import it.univpm.filmaccio.details.activities.UserDetailsActivity
 
 // Questa classe è un adapter per la RecyclerView che mostra i risultati della ricerca.
 // Ho spiegato a cosa servono gli adapter nei commenti di SearchFragment.
@@ -95,6 +96,13 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                 holder.title.text = result.nameShown
                 Glide.with(holder.itemView.context).load(result.profileImage)
                     .into(holder.shapeableImageView)
+                holder.itemView.setOnClickListener {
+                    val context = holder.itemView.context
+                    val intent = Intent(context, UserDetailsActivity::class.java)
+                    intent.putExtra("uid", result.uid)
+                    context.startActivity(intent)
+               }
+
             }
         }
     }
