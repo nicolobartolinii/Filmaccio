@@ -20,11 +20,11 @@ data class Series(
     @SerializedName("credits") var credits: Credits,
     @SerializedName("created_by") var creator: List<Director>,
     @SerializedName("seasons") var seasons: List<Season>
-) {
+) : java.io.Serializable {
     data class Credits(
         @SerializedName("cast") var cast: List<Character>,
         @SerializedName("crew") var crew: List<Director>
-    )
+    ) : java.io.Serializable
 
     data class Season(
         @SerializedName("season_number") var number: Int,
@@ -33,7 +33,7 @@ data class Series(
         @SerializedName("overview") var overview: String,
         @SerializedName("episodes") var episodes: List<Episode> = emptyList(),
         @SerializedName("name") var name: String
-    )
+    ) : java.io.Serializable
 
     data class Episode(
         @SerializedName("episode_number") val number: Int,
@@ -42,5 +42,5 @@ data class Series(
         @SerializedName("still_path") val imagePath: String?,
         @SerializedName("overview") var overview: String,
         @SerializedName("name") var name: String
-    )
+    ) : java.io.Serializable
 }

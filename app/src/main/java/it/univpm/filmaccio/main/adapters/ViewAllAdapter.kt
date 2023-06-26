@@ -73,6 +73,25 @@ class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
                         context.startActivity(intent)
                 }
             }
+            is Series -> {
+                holder.title.text = entity.title
+                if (entity.posterPath != null) {
+                    Glide.with(holder.itemView.context)
+                        .load("https://image.tmdb.org/t/p/w185${entity.posterPath}")
+                        .into(holder.shapeableImageView)
+                } else {
+                    Glide.with(holder.itemView.context)
+                        .load(R.drawable.error_404)
+                        .into(holder.shapeableImageView)
+                }
+
+                holder.itemView.setOnClickListener {
+                    val context = holder.itemView.context
+                    val intent = Intent(context, SeriesDetailsActivity::class.java)
+                    intent.putExtra("seriesId", entity.id)
+                    context.startActivity(intent)
+                }
+            }
 
             is User -> {
                 holder.title.text = entity.nameShown

@@ -16,9 +16,9 @@ data class Movie(
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("runtime") val duration: Int,
     @SerializedName("credits") var credits: Credits,
-) {
+) : java.io.Serializable {
     data class Credits (
         @SerializedName("cast") var cast: List<Character>,
         @SerializedName("crew") var crew: List<Director>
-    )
+    ) : java.io.Serializable
 }

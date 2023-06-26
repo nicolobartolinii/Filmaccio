@@ -12,9 +12,12 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.bumptech.glide.Glide
+import it.univpm.filmaccio.data.models.Movie
+import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.databinding.FragmentSearchBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
+import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.adapters.SearchResultAdapter
 import it.univpm.filmaccio.main.viewmodels.SearchViewModel
 import kotlinx.coroutines.CoroutineScope
@@ -130,15 +133,15 @@ class SearchFragment : Fragment() {
             _binding?.secondTrendingSeriesSearch,
             _binding?.thirdTrendingSeriesSearch
         )
-        val recommendedMovieIds = mutableListOf(0L, 0L, 0L)
-        val recommendedSeriesIds = mutableListOf(0L, 0L, 0L)
-        val trendingMovieIds = mutableListOf(0L, 0L, 0L)
-        val trendingSeriesIds = mutableListOf(0L, 0L, 0L)
+        var recommendedMovies = listOf<Movie>()
+        var recommendedSeries = listOf<Series>()
+        var trendingMovies = listOf<Movie>()
+        var trendingSeries = listOf<Series>()
         searchViewModel.topRatedMovies.observe(viewLifecycleOwner) {
             loadingOperations++
+            recommendedMovies = it.movies
             for (i in 0..2) {
-                recommendedMovieIds[i] = it.movies[i].id
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${recommendedMovies[i].posterPath}")
                     .into(recommendedMoviePosters[i]!!)
             }
             loadingOperations--
@@ -148,9 +151,9 @@ class SearchFragment : Fragment() {
         }
         searchViewModel.topRatedSeries.observe(viewLifecycleOwner) {
             loadingOperations++
+            recommendedSeries = it.series
             for (i in 0..2) {
-                recommendedSeriesIds[i] = it.series[i].id
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${recommendedSeries[i].posterPath}")
                     .into(recommendedSeriesPosters[i]!!)
             }
             loadingOperations--
@@ -160,9 +163,9 @@ class SearchFragment : Fragment() {
         }
         searchViewModel.trendingMovies.observe(viewLifecycleOwner) {
             loadingOperations++
+            trendingMovies = it.movies
             for (i in 0..2) {
-                trendingMovieIds[i] = it.movies[i].id
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${trendingMovies[i].posterPath}")
                     .into(trendingMoviePosters[i]!!)
             }
             loadingOperations--
@@ -172,9 +175,9 @@ class SearchFragment : Fragment() {
         }
         searchViewModel.trendingSeries.observe(viewLifecycleOwner) {
             loadingOperations++
+            trendingSeries = it.series
             for (i in 0..2) {
-                trendingSeriesIds[i] = it.series[i].id
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.series[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${trendingSeries[i].posterPath}")
                     .into(trendingSeriesPosters[i]!!)
             }
             loadingOperations--
@@ -187,7 +190,7 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, MovieDetailsActivity::class.java)
                 intent.putExtra(
-                    "movieId", recommendedMovieIds[recommendedMoviePosters.indexOf(poster)]
+                    "movieId", recommendedMovies[recommendedMoviePosters.indexOf(poster)].id
                 )
                 startActivity(intent)
             }
@@ -197,7 +200,7 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, SeriesDetailsActivity::class.java)
                 intent.putExtra(
-                    "seriesId", recommendedSeriesIds[recommendedSeriesPosters.indexOf(poster)]
+                    "seriesId", recommendedSeries[recommendedSeriesPosters.indexOf(poster)].id
                 )
                 startActivity(intent)
             }
@@ -206,7 +209,7 @@ class SearchFragment : Fragment() {
         for (poster in trendingMoviePosters) {
             poster?.setOnClickListener {
                 val intent = Intent(context, MovieDetailsActivity::class.java)
-                intent.putExtra("movieId", trendingMovieIds[trendingMoviePosters.indexOf(poster)])
+                intent.putExtra("movieId", trendingMovies[trendingMoviePosters.indexOf(poster)].id)
                 startActivity(intent)
             }
         }
@@ -215,10 +218,38 @@ class SearchFragment : Fragment() {
             poster?.setOnClickListener {
                 val intent = Intent(context, SeriesDetailsActivity::class.java)
                 intent.putExtra(
-                    "seriesId", trendingSeriesIds[trendingSeriesPosters.indexOf(poster)]
+                    "seriesId", trendingSeries[trendingSeriesPosters.indexOf(poster)].id
                 )
                 startActivity(intent)
             }
+        }
+
+        binding.buttonRecommeendedMoviesViewAllSearch.setOnClickListener {
+            val intent = Intent(context, ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(recommendedMovies))
+            intent.putExtra("title", "Film consigliati per te")
+            startActivity(intent)
+        }
+
+        binding.buttonRecommendedSeriesViewAllSearch.setOnClickListener {
+            val intent = Intent(context, ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(recommendedSeries))
+            intent.putExtra("title", "Serie TV consigliate per te")
+            startActivity(intent)
+        }
+
+        binding.buttonTrendingMoviesViewAllSearch.setOnClickListener {
+            val intent = Intent(context, ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(trendingMovies))
+            intent.putExtra("title", "Film di tendenza")
+            startActivity(intent)
+        }
+
+        binding.buttonTrendingSeriesViewAllSearch.setOnClickListener {
+            val intent = Intent(context, ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(trendingSeries))
+            intent.putExtra("title", "Serie TV di tendenza")
+            startActivity(intent)
         }
     }
 
