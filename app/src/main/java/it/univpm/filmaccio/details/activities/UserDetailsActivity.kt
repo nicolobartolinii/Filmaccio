@@ -8,13 +8,15 @@ import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
-
+import androidx.lifecycle.lifecycleScope
 import it.univpm.filmaccio.main.utils.FirestoreService.followUser
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModelFactory
 import it.univpm.filmaccio.main.utils.FirestoreService
+import it.univpm.filmaccio.main.utils.FirestoreService.countWatchedMovies
 
 import it.univpm.filmaccio.main.utils.UserUtils
+import kotlinx.coroutines.launch
 
 
 class UserDetailsActivity : AppCompatActivity() {
@@ -25,6 +27,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var usernameTextView: TextView
     private lateinit var backdropImageView: ShapeableImageView
     private lateinit var seguiBotton: Button
+    private lateinit var filmVistiTextView: TextView
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_details)
@@ -36,16 +39,25 @@ class UserDetailsActivity : AppCompatActivity() {
         displayNameTextView = findViewById(R.id.displayNameText)
         usernameTextView = findViewById(R.id.usernameText)
         profileImage = findViewById(R.id.profileImage)
-        //backdropImageView=findViewById(R.id.backdropImage)
+        backdropImageView=findViewById(R.id.backdropImage)
+        filmVistiTextView=findViewById(R.id.filmvisti)
+
 
 
         displayNameTextView.text = nameShown
         usernameTextView.text = username
         Glide.with(this).load(propic).into(profileImage)
+        Glide.with(this).load(backdropImage).into(backdropImageView)
         val auth = UserUtils.auth
         val currentUserUid = auth.uid
         val targetUid = intent.getStringExtra("uid")!!
-        //Glide.with(this).load(backdropImage).into(backdropImageView)
+
+        lifecycleScope.launch {
+            val count = countWatchedMovies(targetUid)
+            filmVistiTextView.text = count.toString()
+        }
+
+
 
         userDetailsViewModel = ViewModelProvider(
             this,

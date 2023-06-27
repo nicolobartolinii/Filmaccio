@@ -2,6 +2,7 @@
 
 package it.univpm.filmaccio.main.utils
 
+import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -83,6 +84,16 @@ object FirestoreService {
         val followerRef = collectionFollow.document(targetUid)
         followerRef.update("followers", FieldValue.arrayRemove(uid))
     }
+
+    suspend fun countWatchedMovies(uid: String): Int {
+        //funzione che estrapola quanti film hai visto
+        val doc = collectionLists.document(uid).get().await()
+        val watchedMovies = doc.get("watched_m")
+        //Log.d("DEBUG", "watched_m: $watchedMovies")
+        val watchedMoviesList = watchedMovies as? List<*>
+        return watchedMoviesList?.size ?: 0
+    }
+
 
     fun addToList(uid: String, listName: String, itemId: Long) {
         val listsRef = collectionLists.document(uid)

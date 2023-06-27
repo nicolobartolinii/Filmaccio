@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <!-- Immagine di sfondo 16:9 -->
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/backdropImage"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -288,6 +288,7 @@
                                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
                                 <TextView
+                                    android:id="@+id/filmvisti"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_bold"
