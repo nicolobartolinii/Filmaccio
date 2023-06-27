@@ -1,5 +1,6 @@
 package it.univpm.filmaccio.details.activities
 
+import android.annotation.SuppressLint
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
@@ -14,6 +15,7 @@ import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModelFactory
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.FirestoreService.countWatchedMovies
+import it.univpm.filmaccio.main.utils.FirestoreService.countfollower
 
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.launch
@@ -28,6 +30,10 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var backdropImageView: ShapeableImageView
     private lateinit var seguiBotton: Button
     private lateinit var filmVistiTextView: TextView
+    private lateinit var followerTextView: TextView
+
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_details)
@@ -41,6 +47,7 @@ class UserDetailsActivity : AppCompatActivity() {
         profileImage = findViewById(R.id.profileImage)
         backdropImageView=findViewById(R.id.backdropImage)
         filmVistiTextView=findViewById(R.id.filmvisti)
+        followerTextView=findViewById(R.id.followers)
 
 
 
@@ -53,8 +60,14 @@ class UserDetailsActivity : AppCompatActivity() {
         val targetUid = intent.getStringExtra("uid")!!
 
         lifecycleScope.launch {
+            // funzione che mette nel textview il numero di film visti
             val count = countWatchedMovies(targetUid)
             filmVistiTextView.text = count.toString()
+        }
+        lifecycleScope.launch {
+            // funzione che mette nel textview il numero di film visti
+            val count = countfollower(targetUid)
+            followerTextView.text = count.toString()
         }
 
 

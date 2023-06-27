@@ -323,6 +323,7 @@
                                     android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
                                 <TextView
+                                    android:id="@+id/followers"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
                                     android:fontFamily="@font/roboto_bold"
