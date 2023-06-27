@@ -14,10 +14,12 @@ import it.univpm.filmaccio.main.utils.FirestoreService.followUser
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModelFactory
 import it.univpm.filmaccio.main.utils.FirestoreService
-import it.univpm.filmaccio.main.utils.FirestoreService.countWatchedMovies
-import it.univpm.filmaccio.main.utils.FirestoreService.countfollower
+import it.univpm.filmaccio.main.utils.FirestoreService.getFollowers
+import it.univpm.filmaccio.main.utils.FirestoreService.getList
 
 import it.univpm.filmaccio.main.utils.UserUtils
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
 
@@ -59,17 +61,22 @@ class UserDetailsActivity : AppCompatActivity() {
         val currentUserUid = auth.uid
         val targetUid = intent.getStringExtra("uid")!!
 
-        lifecycleScope.launch {
-            // funzione che mette nel textview il numero di film visti
-            val count = countWatchedMovies(targetUid)
-            filmVistiTextView.text = count.toString()
-        }
-        lifecycleScope.launch {
-            // funzione che mette nel textview il numero di film visti
-            val count = countfollower(targetUid)
-            followerTextView.text = count.toString()
-        }
 
+        val followersFlow = getFollowers(targetUid) // chiamata alla funzione che ritorna il numero di follower
+        val films=getList("watched_m",targetUid)
+
+        GlobalScope.launch(Dispatchers.Main) {
+            // funzione che mette nel textview il numero di follower
+            followersFlow.collect { followers ->
+                followerTextView.text = followers.size.toString()
+            }
+        }
+        GlobalScope.launch(Dispatchers.Main) {
+            // funzione che mette nel textview il numero di follower
+            followersFlow.collect { films ->
+                filmVistiTextView.text = films.size.toString()
+            }
+        }
 
 
         userDetailsViewModel = ViewModelProvider(

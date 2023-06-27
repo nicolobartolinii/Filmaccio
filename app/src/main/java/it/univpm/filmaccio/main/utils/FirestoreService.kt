@@ -85,23 +85,6 @@ object FirestoreService {
         followerRef.update("followers", FieldValue.arrayRemove(uid))
     }
 
-    suspend fun countWatchedMovies(uid: String): Int {
-        //funzione che estrapola quanti film hai visto
-        val doc = collectionLists.document(uid).get().await()
-        val watchedMovies = doc.get("watched_m")
-        //Log.d("DEBUG", "watched_m: $watchedMovies")
-        val watchedMoviesList = watchedMovies as? List<*>
-        return watchedMoviesList?.size ?: 0
-    }
-    suspend fun countfollower(uid: String): Int {
-        //funzione che estrapola quanti follower hai
-        val doc = collectionFollow.document(uid).get().await()
-        val followers = doc.get("followers")
-        val followersList = followers as? List<*>
-        return followersList?.size ?: 0
-    }
-
-
     fun addToList(uid: String, listName: String, itemId: Long) {
         val listsRef = collectionLists.document(uid)
         listsRef.update(listName, FieldValue.arrayUnion(itemId))
