@@ -59,7 +59,9 @@ class ProfileFragment : Fragment() {
     private var followersNumber = 0
     private var followingNumber = 0
     private lateinit var followingCard: MaterialCardView
+    private lateinit var followersCard: MaterialCardView
     var followersArrayList: ArrayList<String> = arrayListOf()
+    var followeingArrayList: ArrayList<String> = arrayListOf()
 
 
     val auth = UserUtils.auth
@@ -91,7 +93,7 @@ class ProfileFragment : Fragment() {
         followerTextView = binding.followersNumber
         followingTextView = binding.followingNumber
         followingCard = binding.followingCard
-
+        followersCard = binding.followersCard
         val followersFlow = FirestoreService.getFollowers(currentUserUid!!)
         val followingFlow = FirestoreService.getFollowing(currentUserUid!!)
 
@@ -110,16 +112,31 @@ class ProfileFragment : Fragment() {
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            //funzione per ottenere i following in arrau list per passarli successivamente
+            //funzione per ottenere i following in array list per passarli successivamente
             followingFlow.collect { followingFlow ->
-                followersArrayList = ArrayList(followingFlow)
+                followeingArrayList = ArrayList(followingFlow)
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            //funzione per ottenere i follower  in array list per passarli successivamente
+            followersFlow.collect { followersFlow ->
+                followersArrayList = ArrayList(followersFlow)
             }
         }
 
         followingCard.setOnClickListener {
+            // clicco su following e parte il view all
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", followeingArrayList) // entities è la lista di entità
+            intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
+            startActivity(intent)
+        }
+
+        followersCard.setOnClickListener {
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
             intent.putExtra("entities", followersArrayList) // entities è la lista di entità
-            intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
+            intent.putExtra("title", "FOLLOWERS") // title è il titolo della schermata
             startActivity(intent)
         }
 
