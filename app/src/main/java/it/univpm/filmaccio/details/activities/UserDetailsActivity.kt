@@ -53,16 +53,20 @@ class UserDetailsActivity : AppCompatActivity() {
         )[UserDetailsViewModel::class.java]
 
         userDetailsViewModel.isUserFollowed.observe(this) { isUserFollowed ->
-            if (isUserFollowed == true) {
-                seguiBotton.text = "SEGUI GIÀ"
+            //obser vero o falso se l'utente è seguito o meno
+            if (isUserFollowed == true) seguiBotton.text = "SEGUI GIÀ"
+            else seguiBotton.text = "SEGUI"
+
+        }
+        seguiBotton.setOnClickListener {
+            // funzione che implementa il segui stile instagram
+            if (seguiBotton.text == "SEGUI") {
+                FirestoreService.followUser(currentUserUid!!, targetUid)
+                seguiBotton.text = "SEGUI GIA"
             } else {
+                FirestoreService.unfollowUser(currentUserUid!!, targetUid)
                 seguiBotton.text = "SEGUI"
             }
         }
-
-        seguiBotton.setOnClickListener {
-            FirestoreService.followUser(currentUserUid!!, targetUid)
-        }
-
     }
 }
