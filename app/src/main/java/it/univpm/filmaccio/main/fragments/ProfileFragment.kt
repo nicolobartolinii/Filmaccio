@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
+import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
@@ -23,6 +24,7 @@ import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.databinding.FragmentProfileBinding
 import it.univpm.filmaccio.main.activities.EditProfileActivity
 import it.univpm.filmaccio.main.activities.SettingsActivity
+import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -56,6 +58,11 @@ class ProfileFragment : Fragment() {
     private var tvNumber = 0
     private var followersNumber = 0
     private var followingNumber = 0
+    private lateinit var followingCard: MaterialCardView
+    private lateinit var followersCard: MaterialCardView
+    var followersArrayList: ArrayList<String> = arrayListOf()
+    var followeingArrayList: ArrayList<String> = arrayListOf()
+
 
     val auth = UserUtils.auth
     val currentUserUid = auth.uid
@@ -85,7 +92,8 @@ class ProfileFragment : Fragment() {
         backdropImage = binding.backdropImage
         followerTextView = binding.followersNumber
         followingTextView = binding.followingNumber
-
+        followingCard = binding.followingCard
+        followersCard = binding.followersCard
         val followersFlow = FirestoreService.getFollowers(currentUserUid!!)
         val followingFlow = FirestoreService.getFollowing(currentUserUid!!)
 
@@ -103,7 +111,34 @@ class ProfileFragment : Fragment() {
                 followingTextView.text = following?.size?.toString() ?: "0"
             }
         }
+        viewLifecycleOwner.lifecycleScope.launch {
+            //funzione per ottenere i following in array list per passarli successivamente
+            followingFlow.collect { followingFlow ->
+                followeingArrayList = ArrayList(followingFlow)
+            }
+        }
 
+        viewLifecycleOwner.lifecycleScope.launch {
+            //funzione per ottenere i follower  in array list per passarli successivamente
+            followersFlow.collect { followersFlow ->
+                followersArrayList = ArrayList(followersFlow)
+            }
+        }
+
+        followingCard.setOnClickListener {
+            // clicco su following e parte il view all
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", followeingArrayList) // entities è la lista di entità
+            intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
+            startActivity(intent)
+        }
+
+        followersCard.setOnClickListener {
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", followersArrayList) // entities è la lista di entità
+            intent.putExtra("title", "FOLLOWERS") // title è il titolo della schermata
+            startActivity(intent)
+        }
 
 
         // Qui controlliamo se il fragment sta venendo avviato per la prima volta dall'avvio dell'app

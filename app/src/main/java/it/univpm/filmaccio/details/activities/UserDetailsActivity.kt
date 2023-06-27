@@ -39,6 +39,7 @@ class UserDetailsActivity : AppCompatActivity() {
 
 
 
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_user_details)
@@ -107,9 +108,24 @@ class UserDetailsActivity : AppCompatActivity() {
             if (seguiBotton.text == "SEGUI") {
                 FirestoreService.followUser(currentUserUid!!, targetUid)
                 seguiBotton.text = "SEGUI GIA"
+                lifecycleScope.launch(Dispatchers.Main) {
+                    // funzione che mette nel textview il numero di follower
+                    followersFlow.collect { followers ->
+                        followerTextView.text = followers.size.toString()
+                    }
+                }
             } else {
                 FirestoreService.unfollowUser(currentUserUid!!, targetUid)
                 seguiBotton.text = "SEGUI"
+                lifecycleScope.launch(Dispatchers.Main) {
+                    // funzione che mette nel textview il numero di follower
+                    lifecycleScope.launch(Dispatchers.Main) {
+                        // funzione che mette nel textview il numero di follower
+                        followersFlow.collect { followers ->
+                            followerTextView.text = followers.size.toString()
+                        }
+                    }
+                }
             }
         }
     }

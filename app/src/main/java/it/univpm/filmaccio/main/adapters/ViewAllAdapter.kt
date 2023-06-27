@@ -2,6 +2,7 @@ package it.univpm.filmaccio.main.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +20,13 @@ import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.details.activities.UserDetailsActivity
+import it.univpm.filmaccio.main.utils.FirestoreService
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.tasks.await
+import kotlinx.coroutines.withContext
 
 class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
 
@@ -109,6 +117,30 @@ class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
                 }
 
             }
+            is String -> {
+                GlobalScope.launch {
+                    FirestoreService.getUserByUid(entity).collect { user ->
+                        withContext(Dispatchers.Main) {
+                            Log.d("ViewAllAdapter", "User: $user") // Log the user
+                            holder.title.text = user?.nameShown
+                            Glide.with(holder.itemView.context).load(user?.profileImage)
+                                .into(holder.shapeableImageView)
+                            holder.itemView.setOnClickListener {
+                                val context = holder.itemView.context
+                                val intent = Intent(context, UserDetailsActivity::class.java)
+                                intent.putExtra("uid", user?.uid)
+                                intent.putExtra("nameShown",user?.nameShown)
+                                intent.putExtra("username",user?.username)
+                                intent.putExtra("backdropImage",user?.backdropImage)
+                                intent.putExtra("profileImage",user?.profileImage)
+                                context.startActivity(intent)
+                            }
+                        }
+                    }
+                }
+            }
+
+
         }
     }
 
