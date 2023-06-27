@@ -2,7 +2,6 @@
 
 package it.univpm.filmaccio.main.utils
 
-import android.util.Log
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -23,6 +22,7 @@ object FirestoreService {
     val collectionUsers = db.collection("users")
     val collectionFollow = db.collection("follow")
     val collectionLists = db.collection("lists")
+    val collectionEpisodes = db.collection("episodes")
 
     fun getUserByUid(uid: String) = flow {
         val user = collectionUsers.document(uid).get().await()
@@ -105,5 +105,46 @@ object FirestoreService {
         val doc = collectionLists.document(uid).get().await()
         val lists = doc.data as Map<String, List<Long>>
         emit(lists)
+    }
+
+    fun addSeriesToWatching(uid: String, seriesId: Long) {
+        val docRef = collectionEpisodes.document(uid)
+
+        val initialSeriesData = hashMapOf<String, Map<String, List<Long>>>()
+        docRef.update("watchingSeries.$seriesId", initialSeriesData)
+    }
+
+    fun addWatchedEpisode(uid: String, seriesId: Long, seasonNumber: Long, episodeNumber: Long) {
+        val docRef = collectionEpisodes.document(uid)
+        docRef.update(
+            "watchingSeries.$seriesId.$seasonNumber",
+            FieldValue.arrayUnion(episodeNumber)
+        )
+    }
+
+    fun removeEpisodeFromWatched(
+        uid: String,
+        seriesId: Long,
+        seasonNumber: Long,
+        episodeNumber: Long
+    ) {
+        val docRef = collectionEpisodes.document(uid)
+        docRef.update(
+            "watchingSeries.$seriesId.$seasonNumber",
+            FieldValue.arrayRemove(episodeNumber)
+        )
+    }
+
+    fun checkIfEpisodeWatched(
+        uid: String,
+        seriesId: Long,
+        seasonNumber: Long,
+        episodeNumber: Long
+    ) = flow {
+        val doc = collectionEpisodes.document(uid).get().await()
+        val series = doc.get("watchingSeries.$seriesId") as Map<String, List<Long>>
+        val season = series[seasonNumber.toString()]
+        val isWatched = season?.contains(episodeNumber) ?: false
+        emit(isWatched)
     }
 }

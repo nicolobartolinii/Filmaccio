@@ -317,6 +317,9 @@ class RegTerzaFragment : Fragment() {
             "favorite_t" to arrayListOf(),
             "finished_t" to arrayListOf()
         )
+        val episodesDocument = hashMapOf(
+            "watchingSeries" to hashMapOf<String, Any>()
+        )
 
         // A tal proposito, forse adesso è il momento migliore di spiegare come ho strutturato il database Firestore.
         // Abbiamo una collection users, una collection follow e una collection lists.
@@ -349,6 +352,15 @@ class RegTerzaFragment : Fragment() {
             .set(followDocument)
             .addOnFailureListener {
                 // Si è verificato un errore durante l'aggiunta del documento follow al database Firestore
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        FirestoreService.collectionEpisodes.document(uid)
+            .set(episodesDocument)
+            .addOnFailureListener {
                 Toast.makeText(
                     requireContext(),
                     "Registrazione al database fallita, avvisa il nostro team di supporto",

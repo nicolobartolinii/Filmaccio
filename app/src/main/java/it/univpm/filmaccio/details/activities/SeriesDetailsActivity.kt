@@ -44,6 +44,8 @@ class SeriesDetailsActivity : AppCompatActivity() {
     private lateinit var seriesDirectors: List<Director>
     private lateinit var viewFlipperSeries: ViewFlipper
 
+    private var isSeriesInWatching = false
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,17 +73,48 @@ class SeriesDetailsActivity : AppCompatActivity() {
         viewFlipperSeries.displayedChild = 0
 
         val typedValuePrimary = TypedValue()
-        val typedValueSecondary = TypedValue()
+        val typedValueTertiary = TypedValue()
         val theme = this.theme
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorPrimary, typedValuePrimary, true
         )
         theme.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondary, typedValueSecondary, true
+            com.google.android.material.R.attr.colorTertiary, typedValueTertiary, true
         )
         val color = typedValuePrimary.data
-        val colorSecondary = typedValueSecondary.data
+        val colorTertiary = typedValueTertiary.data
         val buttonColor = buttonWatching.backgroundTintList
+
+        seriesDetailsViewModel.isSeriesInWatching.observe(this) { isWatching ->
+            if (isWatching) {
+                isSeriesInWatching = true
+                buttonWatching.setBackgroundColor(colorTertiary)
+                buttonWatching.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonWatching.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonWatching.setIconResource(R.drawable.round_remove_red_eye_24)
+            }
+        }
+
+        seriesDetailsViewModel.isSeriesFavorited.observe(this) { isFavorited ->
+            if (isFavorited) {
+                buttonFavorite.setBackgroundColor(colorTertiary)
+                buttonFavorite.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonFavorite.setIconResource(R.drawable.round_favorite_24)
+            }
+        }
+
+        seriesDetailsViewModel.isSeriesInWatchlist.observe(this) { isInWatchlist ->
+            if (isInWatchlist) {
+                buttonWatchlist.setBackgroundColor(colorTertiary)
+                buttonWatchlist.setIconResource(R.drawable.ic_check)
+            } else {
+                buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
+                buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
+            }
+        }
 
         seriesDetailsViewModel.currentSeries.observe(this) {
             it.credits.cast = it.credits.cast.take(50)
@@ -129,7 +162,8 @@ class SeriesDetailsActivity : AppCompatActivity() {
                     directorTextView.text = "Non disponibile"
                 }
             }
-            seasonsRecyclerView.adapter = SeasonsAdapter(it.seasons, this)
+            seasonsRecyclerView.adapter =
+                SeasonsAdapter(it.id, it.seasons, this, isSeriesInWatching)
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
 
             titleTextView.setOnClickListener { _ ->
@@ -173,36 +207,6 @@ class SeriesDetailsActivity : AppCompatActivity() {
                         intent.putExtra("personId", directorId)
                         startActivity(intent)
                     }.setNegativeButton("Annulla", null).show()
-            }
-        }
-
-        seriesDetailsViewModel.isSeriesInWatching.observe(this) { isWatched ->
-            if (isWatched) {
-                buttonWatching.setBackgroundColor(colorSecondary)
-                buttonWatching.setIconResource(R.drawable.ic_check)
-            } else {
-                buttonWatching.setBackgroundColor(buttonColor!!.defaultColor)
-                buttonWatching.setIconResource(R.drawable.round_remove_red_eye_24)
-            }
-        }
-
-        seriesDetailsViewModel.isSeriesFavorited.observe(this) { isFavorited ->
-            if (isFavorited) {
-                buttonFavorite.setBackgroundColor(colorSecondary)
-                buttonFavorite.setIconResource(R.drawable.ic_check)
-            } else {
-                buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
-                buttonFavorite.setIconResource(R.drawable.round_favorite_24)
-            }
-        }
-
-        seriesDetailsViewModel.isSeriesInWatchlist.observe(this) { isInWatchlist ->
-            if (isInWatchlist) {
-                buttonWatchlist.setBackgroundColor(colorSecondary)
-                buttonWatchlist.setIconResource(R.drawable.ic_check)
-            } else {
-                buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
-                buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
             }
         }
 

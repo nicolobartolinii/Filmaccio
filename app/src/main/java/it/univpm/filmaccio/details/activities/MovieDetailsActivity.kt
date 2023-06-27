@@ -72,7 +72,7 @@ class MovieDetailsActivity : AppCompatActivity() {
             LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
 
         val typedValuePrimary = TypedValue()
-        val typedValueSecondary = TypedValue()
+        val typedValueTertiary = TypedValue()
         val theme = this.theme
         theme.resolveAttribute(
             com.google.android.material.R.attr.colorPrimary,
@@ -80,12 +80,12 @@ class MovieDetailsActivity : AppCompatActivity() {
             true
         )
         theme.resolveAttribute(
-            com.google.android.material.R.attr.colorSecondary,
-            typedValueSecondary,
+            com.google.android.material.R.attr.colorTertiary,
+            typedValueTertiary,
             true
         )
         val color = typedValuePrimary.data
-        val colorSecondary = typedValueSecondary.data
+        val colorTertiary = typedValueTertiary.data
         val buttonColor = buttonWatched.backgroundTintList
 
         movieDetailsViewModel.currentMovie.observe(this) {
@@ -173,7 +173,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         movieDetailsViewModel.isMovieWatched.observe(this) { isWatched ->
             if (isWatched) {
-                buttonWatched.setBackgroundColor(colorSecondary)
+                buttonWatched.setBackgroundColor(colorTertiary)
                 buttonWatched.setIconResource(R.drawable.ic_check)
             } else {
                 buttonWatched.setBackgroundColor(buttonColor!!.defaultColor)
@@ -183,7 +183,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         movieDetailsViewModel.isMovieFavorited.observe(this) { isFavorited ->
             if (isFavorited) {
-                buttonFavorite.setBackgroundColor(colorSecondary)
+                buttonFavorite.setBackgroundColor(colorTertiary)
                 buttonFavorite.setIconResource(R.drawable.ic_check)
             } else {
                 buttonFavorite.setBackgroundColor(buttonColor!!.defaultColor)
@@ -193,7 +193,7 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         movieDetailsViewModel.isMovieInWatchlist.observe(this) { isInWatchlist ->
             if (isInWatchlist) {
-                buttonWatchlist.setBackgroundColor(colorSecondary)
+                buttonWatchlist.setBackgroundColor(colorTertiary)
                 buttonWatchlist.setIconResource(R.drawable.ic_check)
             } else {
                 buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)

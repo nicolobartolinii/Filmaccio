@@ -14,6 +14,8 @@ import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.main.activities.ViewAllActivity
+import it.univpm.filmaccio.main.utils.FirestoreService
+import it.univpm.filmaccio.main.utils.UserUtils
 import it.univpm.filmaccio.main.viewmodels.HomeViewModel
 
 // Questo fragment è la schermata home dell'app. In questa schermata vengono mostrati i film attualmente in onda,
@@ -109,6 +111,11 @@ class HomeFragment : Fragment() {
             intent.putExtra("entities", ArrayList(latestReleases)) // entities è la lista di entità
             intent.putExtra("title", "Ultime uscite") // title è il titolo della schermata
             startActivity(intent)
+        }
+
+
+        binding.buttonFeedViewAllHome.setOnClickListener {
+            FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, 4235)
         }
     }
 }

@@ -27,7 +27,7 @@ data class Series(
     ) : java.io.Serializable
 
     data class Season(
-        @SerializedName("season_number") var number: Int,
+        @SerializedName("season_number") var number: Long,
         @SerializedName("air_date") var releaseDate: String?,
         @SerializedName("poster_path") var posterPath: String?,
         @SerializedName("overview") var overview: String,
@@ -36,7 +36,7 @@ data class Series(
     ) : java.io.Serializable
 
     data class Episode(
-        @SerializedName("episode_number") val number: Int,
+        @SerializedName("episode_number") val number: Long,
         @SerializedName("runtime") val duration: Int,
         @SerializedName("air_date") val releaseDate: String,
         @SerializedName("still_path") val imagePath: String?,

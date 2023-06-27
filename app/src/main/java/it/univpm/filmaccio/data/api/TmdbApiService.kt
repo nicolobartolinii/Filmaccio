@@ -105,7 +105,7 @@ interface TmdbApiService {
     @GET("tv/{series_id}/season/{season_number}")
     suspend fun getSeasonDetails(
         @Path("series_id") seriesId: Long,
-        @Path("season_number") seasonNumber: Int,
+        @Path("season_number") seasonNumber: Long,
         @Query("api_key") apiKey: String = Constants.TMDB_API_KEY,
         @Query("language") language: String = "it-IT",
         @Query("region") region: String = "IT",

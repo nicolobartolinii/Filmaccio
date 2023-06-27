@@ -19,8 +19,10 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Series
 
 class SeasonsAdapter(
+    private val seriesId: Long,
     private val seasons: List<Series.Season>,
-    private val context: Context
+    private val context: Context,
+    private val isSeriesInWatching: Boolean
 ) : RecyclerView.Adapter<SeasonsAdapter.SeasonViewHolder>() {
 
     class SeasonViewHolder(view: View) : RecyclerView.ViewHolder(view) {
@@ -37,8 +39,7 @@ class SeasonsAdapter(
     override fun onBindViewHolder(holder: SeasonViewHolder, position: Int) {
         val season = seasons[position]
         if (season.posterPath != null) Glide.with(context)
-            .load("https://image.tmdb.org/t/p/w185${season.posterPath}")
-            .centerInside()
+            .load("https://image.tmdb.org/t/p/w185${season.posterPath}").centerInside()
             .into(holder.poster)
         else holder.poster.setImageResource(R.drawable.error_404)
         holder.title.text = season.name
@@ -81,7 +82,8 @@ class SeasonsAdapter(
             }
         }
 
-        val episodesAdapter = EpisodesAdapter(season.episodes, season.number)
+        val episodesAdapter =
+            EpisodesAdapter(season.episodes, seriesId, season.number, context, isSeriesInWatching)
         holder.episodesRecyclerView.adapter = episodesAdapter
     }
 
