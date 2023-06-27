@@ -16,6 +16,7 @@ import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModelFactory
 import it.univpm.filmaccio.main.utils.FirestoreService
 
 import it.univpm.filmaccio.main.utils.FirestoreService.getFollowers
+import it.univpm.filmaccio.main.utils.FirestoreService.getFollowing
 import it.univpm.filmaccio.main.utils.FirestoreService.getList
 
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -34,6 +35,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var seguiBotton: Button
     private lateinit var filmVistiTextView: TextView
     private lateinit var followerTextView: TextView
+    private lateinit var followingTextView: TextView
 
 
 
@@ -51,6 +53,7 @@ class UserDetailsActivity : AppCompatActivity() {
         backdropImageView=findViewById(R.id.backdropImage)
         filmVistiTextView=findViewById(R.id.filmvisti)
         followerTextView=findViewById(R.id.followers)
+        followingTextView=findViewById(R.id.following)
 
 
 
@@ -64,17 +67,26 @@ class UserDetailsActivity : AppCompatActivity() {
 
 
         val followersFlow = getFollowers(targetUid) // chiamata alla funzione che ritorna il numero di follower
-        val watchedMoviesFlow = getList(targetUid, "watched_m")
+        val watchedMoviesFlow = getList(targetUid, "watched_m") // chiamata alla funzione che ritorna il numero di film visti
+        val followingFlow= getFollowing(targetUid) // chiamata alla funzione che ritorna il numero di following
 
-        GlobalScope.launch(Dispatchers.Main) {
+
+        lifecycleScope.launch(Dispatchers.Main) {
             // funzione che mette nel textview il numero di follower
             followersFlow.collect { followers ->
                 followerTextView.text = followers.size.toString()
             }
         }
-        GlobalScope.launch(Dispatchers.Main) {
+        lifecycleScope.launch(Dispatchers.Main) {
+            //funzione che mette nel textview il numero di film visti
             watchedMoviesFlow.collect { watchedMovies ->
                 filmVistiTextView.text = watchedMovies.size.toString()
+            }
+        }
+        lifecycleScope.launch(Dispatchers.Main) {
+            //funzione che mette nel textview il numero di follower
+            followingFlow.collect { following ->
+                followingTextView.text = following.size.toString()
             }
         }
 
