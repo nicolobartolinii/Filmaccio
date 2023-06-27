@@ -14,6 +14,7 @@ import it.univpm.filmaccio.main.utils.FirestoreService.followUser
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModelFactory
 import it.univpm.filmaccio.main.utils.FirestoreService
+
 import it.univpm.filmaccio.main.utils.FirestoreService.getFollowers
 import it.univpm.filmaccio.main.utils.FirestoreService.getList
 
@@ -63,7 +64,7 @@ class UserDetailsActivity : AppCompatActivity() {
 
 
         val followersFlow = getFollowers(targetUid) // chiamata alla funzione che ritorna il numero di follower
-        val films=getList("watched_m",targetUid)
+        val watchedMoviesFlow = getList(targetUid, "watched_m")
 
         GlobalScope.launch(Dispatchers.Main) {
             // funzione che mette nel textview il numero di follower
@@ -72,11 +73,11 @@ class UserDetailsActivity : AppCompatActivity() {
             }
         }
         GlobalScope.launch(Dispatchers.Main) {
-            // funzione che mette nel textview il numero di follower
-            followersFlow.collect { films ->
-                filmVistiTextView.text = films.size.toString()
+            watchedMoviesFlow.collect { watchedMovies ->
+                filmVistiTextView.text = watchedMovies.size.toString()
             }
         }
+
 
 
         userDetailsViewModel = ViewModelProvider(
