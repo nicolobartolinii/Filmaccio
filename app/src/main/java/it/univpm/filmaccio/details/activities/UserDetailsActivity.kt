@@ -91,7 +91,6 @@ class UserDetailsActivity : AppCompatActivity() {
         }
 
 
-
         userDetailsViewModel = ViewModelProvider(
             this,
             UserDetailsViewModelFactory(targetUid)

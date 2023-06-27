@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -23,6 +24,8 @@ import it.univpm.filmaccio.databinding.FragmentProfileBinding
 import it.univpm.filmaccio.main.activities.EditProfileActivity
 import it.univpm.filmaccio.main.activities.SettingsActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
+import it.univpm.filmaccio.main.utils.FirestoreService
+import it.univpm.filmaccio.main.utils.UserUtils
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
@@ -45,12 +48,17 @@ class ProfileFragment : Fragment() {
     private lateinit var profileImage: ShapeableImageView
     private lateinit var backdropImage: ImageView
     private lateinit var currentUser: User
+    private lateinit var followerTextView: TextView
+    private lateinit var followingTextView: TextView
     private var movieMinutes = 0
     private var tvMinutes = 0
     private var movieNumber = 0
     private var tvNumber = 0
     private var followersNumber = 0
     private var followingNumber = 0
+
+    val auth = UserUtils.auth
+    val currentUserUid = auth.uid
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -75,6 +83,28 @@ class ProfileFragment : Fragment() {
         viewFlipper = binding.viewFlipper
         profileImage = binding.profileImage
         backdropImage = binding.backdropImage
+        followerTextView = binding.followersNumber
+        followingTextView = binding.followingNumber
+
+        val followersFlow = FirestoreService.getFollowers(currentUserUid!!)
+        val followingFlow = FirestoreService.getFollowing(currentUserUid!!)
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            //funzione per ottenere i followers
+            followersFlow.collect { followers ->
+                followerTextView.text = followers?.size?.toString() ?: "0"
+            }
+        }
+
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            //funzione per ottenere i following
+            followingFlow.collect { following ->
+                followingTextView.text = following?.size?.toString() ?: "0"
+            }
+        }
+
+
 
         // Qui controlliamo se il fragment sta venendo avviato per la prima volta dall'avvio dell'app
         if (profileViewModel.isFirstLaunch) {
