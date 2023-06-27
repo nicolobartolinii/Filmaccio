@@ -12,6 +12,7 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.main.utils.FirestoreService.followUser
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModelFactory
+import it.univpm.filmaccio.main.utils.FirestoreService
 
 import it.univpm.filmaccio.main.utils.UserUtils
 
@@ -38,30 +39,29 @@ class UserDetailsActivity : AppCompatActivity() {
         //backdropImageView=findViewById(R.id.backdropImage)
 
 
-        displayNameTextView.setText(nameShown)
-        usernameTextView.setText(username)
+        displayNameTextView.text = nameShown
+        usernameTextView.text = username
         Glide.with(this).load(propic).into(profileImage)
         val auth = UserUtils.auth
         val currentUserUid = auth.uid
-        val targetUid = intent.getStringExtra("uid")
+        val targetUid = intent.getStringExtra("uid")!!
         //Glide.with(this).load(backdropImage).into(backdropImageView)
 
         userDetailsViewModel = ViewModelProvider(
             this,
-            UserDetailsViewModelFactory(targetUid!!)
+            UserDetailsViewModelFactory(targetUid)
         )[UserDetailsViewModel::class.java]
 
         userDetailsViewModel.isUserFollowed.observe(this) { isUserFollowed ->
             if (isUserFollowed == true) {
-                seguiBotton.text = "Segui"
+                seguiBotton.text = "SEGUI GIÀ"
             } else {
-                seguiBotton.text = "Non seguire"
+                seguiBotton.text = "SEGUI"
             }
         }
 
         seguiBotton.setOnClickListener {
-            followUser(currentUserUid!!, targetUid!!)
-
+            FirestoreService.followUser(currentUserUid!!, targetUid)
         }
 
     }
