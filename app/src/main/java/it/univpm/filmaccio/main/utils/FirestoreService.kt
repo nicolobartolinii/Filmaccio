@@ -142,7 +142,7 @@ object FirestoreService {
         episodeNumber: Long
     ) = flow {
         val doc = collectionEpisodes.document(uid).get().await()
-        val series = doc.get("watchingSeries.$seriesId") as Map<String, List<Long>>
+        val series = doc.get("watchingSeries.$seriesId") as Map<String, List<Long>>? ?: mapOf()
         val season = series[seasonNumber.toString()]
         val isWatched = season?.contains(episodeNumber) ?: false
         emit(isWatched)

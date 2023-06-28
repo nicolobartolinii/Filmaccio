@@ -23,6 +23,8 @@ import it.univpm.filmaccio.details.adapters.CastAdapter
 import it.univpm.filmaccio.details.adapters.SeasonsAdapter
 import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModelFactory
+import it.univpm.filmaccio.main.utils.FirestoreService
+import it.univpm.filmaccio.main.utils.UserUtils
 
 class SeriesDetailsActivity : AppCompatActivity() {
 

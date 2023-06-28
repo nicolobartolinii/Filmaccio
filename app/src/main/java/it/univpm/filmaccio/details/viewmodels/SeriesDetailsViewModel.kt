@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import it.univpm.filmaccio.data.repository.SeriesRepository
+import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -43,6 +44,7 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
             _isSeriesInWatching.value = false
         } else {
             seriesRepository.addToList(userId, "watching_t", seriesId)
+            FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, seriesId)
             if (_isSeriesInWatchlist.value == true) {
                 seriesRepository.removeFromList(userId, "watchlist_t", seriesId)
                 _isSeriesInWatchlist.value = false

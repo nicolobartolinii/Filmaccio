@@ -42,7 +42,8 @@ class EpisodesFragment : Fragment() {
             MaterialAlertDialogBuilder(requireContext()).setTitle("Info")
                 .setMessage("In questa schermata puoi tracciare gli episodi delle serie TV che stai guardando.\n" +
                         "Quando aggiungi una serie TV alla lista delle serie TV in visione, in questa schermata comparirà il primo episodio, nella lista degli episodi della serie TV, che devi vedere.\n" +
-                        "Attraverso la schermata di dettaglio della serie TV (accessibile tramite la schermata di ricerca o cliccando sul nome della serie TV in questa schermata), puoi visualizzare tutti gli episodi della serie TV stessa e puoi segnarli come visti o meno. Questa cosa puoi farla direttamente anche in questa schermata, ma solo per un episodio alla volta.")
+                        "Attraverso la schermata di dettaglio della serie TV (accessibile tramite la schermata di ricerca o cliccando sul nome della serie TV in questa schermata), puoi visualizzare tutti gli episodi della serie TV stessa e puoi segnarli come visti o meno. Questa cosa puoi farla direttamente anche in questa schermata, ma solo per un episodio alla volta.\n\n" +
+                        "N.B.: eventuali episodi \"Speciali\" non vengono considerati.")
                 .setPositiveButton("Ok") { dialog, _ ->
                     dialog.dismiss()
                 }.show()
@@ -50,7 +51,7 @@ class EpisodesFragment : Fragment() {
 
         nextEpisodesViewModel.nextEpisodes.observe(viewLifecycleOwner) {
             if (it.isNullOrEmpty()) {
-                viewFlipper.displayedChild = 0
+                viewFlipper.displayedChild = 2
             }
             else {
                 viewFlipper.displayedChild = 1
