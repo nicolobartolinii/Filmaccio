@@ -1,10 +1,12 @@
 package it.univpm.filmaccio.details.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
@@ -17,6 +19,7 @@ import it.univpm.filmaccio.databinding.ActivityUserDetailsBinding
 import it.univpm.filmaccio.databinding.ActivityViewAllBinding
 import it.univpm.filmaccio.main.utils.FirestoreService.followUser
 import it.univpm.filmaccio.details.viewmodels.UserDetailsViewModel
+import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.FirestoreService.getFollowers
@@ -53,7 +56,9 @@ class UserDetailsActivity : AppCompatActivity() {
     private var tvNumber = 0
     private var followersNumber = 0
     private var followingNumber = 0
-
+    // array per view all
+    var followersArrayList: ArrayList<String> = arrayListOf()
+    var followeingArrayList: ArrayList<String> = arrayListOf()
 
     // aapter
     private lateinit var profileListsAdapter: ProfileHorizontalListAdapter
@@ -72,10 +77,13 @@ class UserDetailsActivity : AppCompatActivity() {
         backdropImageView=binding.backdropImage
         followerTextView=binding.followersNumber
         followingTextView=binding.followingNumber
-
+        followingCard=binding.followingCard
+        followersCard=binding.followersCard
         // Inizializzazione repo
         movieRepository = MovieRepository()
         seriesRepository = SeriesRepository()
+
+        // inizializzaizione degli array
 
 
         displayNameTextView.text = nameShown
@@ -148,7 +156,33 @@ class UserDetailsActivity : AppCompatActivity() {
                 }
             }
         }
+        CoroutineScope(Dispatchers.Main).launch {
+            //funzione per ottenere i following in array list per passarli successivamente
+            followingFlow.collect { followingFlow ->
+                followeingArrayList = ArrayList(followingFlow)
+            }
+        }
+        CoroutineScope(Dispatchers.Main).launch {
+            //funzione per ottenere i followers in array list per passarli successivamente
+            followersFlow.collect { followersFlow ->
+                followersArrayList = ArrayList(followersFlow)
+            }
+        }
 
+        followingCard.setOnClickListener {
+            // clicco su following e parte il view all
+            val intent = Intent(this, ViewAllActivity::class.java)
+            intent.putExtra("entities", followeingArrayList) // entities è la lista di entità
+            intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
+            startActivity(intent)
+        }
+        followersCard.setOnClickListener {
+            // clicco su following e parte il view all
+            val intent = Intent(this, ViewAllActivity::class.java)
+            intent.putExtra("entities", followersArrayList) // entities è la lista di entità
+            intent.putExtra("title", "FOLLOWERS") // title è il titolo della schermata
+            startActivity(intent)
+        }
 //profileListsAdapter = ProfileHorizontalListAdapter()
         // Qui lanciamo una coroutine per ottenere le liste dell'utente corrente
         CoroutineScope(Dispatchers.Main).launch {
