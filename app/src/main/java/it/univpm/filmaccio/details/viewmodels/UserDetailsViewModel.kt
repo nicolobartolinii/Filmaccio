@@ -12,18 +12,33 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import androidx.lifecycle.MutableLiveData
+import it.univpm.filmaccio.main.utils.FirestoreService.getLists
+import it.univpm.filmaccio.main.utils.UserUtils
+
 class UserDetailsViewModel(private val uid: String) : ViewModel() {
 
+    // Qui creiamo un oggetto MutableStateFlow che conterrà l'utente corrente.[ devo cambiarlo nell'user che gli passo]
+    private val _currentUser = MutableStateFlow<User?>(null)
+    val currentUser: StateFlow<User?> get() = _currentUser
 
     private val usersRepository = UsersRepository()
     private val _isUserFollowed = MutableLiveData <Boolean?>(null)
     val isUserFollowed: LiveData<Boolean?> get() = _isUserFollowed
 
+    // Qui creiamo un oggetto MutableStateFlow che conterrà le liste dell'utente corrente.
+    private val _lists = MutableStateFlow<Map<String, List<Long>>?>(emptyMap())
+    val lists: StateFlow<Map<String, List<Long>>?> get() = _lists
     init {
         viewModelScope.launch {
             _isUserFollowed.value = usersRepository.isUserFollowed(uid)
         }
+        getLists()
     }
+    private fun getLists() = viewModelScope.launch {
+
+        FirestoreService.getLists(uid).collect {
+            _lists.value = it
+        }
 
 }
 
@@ -35,4 +50,6 @@ class UserDetailsViewModelFactory(private val uid: String) : ViewModelProvider.F
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }
+}
+
 }
