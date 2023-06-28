@@ -41,6 +41,15 @@ class SeriesRepository {
         return series
     }
 
+    suspend fun getSeasonDetails(seriesId: Long, seasonNumber: Long) : Series.Season {
+        val season = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = seasonNumber, language = "it-IT")
+        if (seasonHasMissingDetails(season)) {
+            val seasonInEnglish = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = seasonNumber, language = "en-US")
+            fillMissingSeasonDetails(season, seasonInEnglish)
+        }
+        return season
+    }
+
     fun addToList(userId: String, listName: String, seriesId: Long) {
         FirestoreService.addToList(userId, listName, seriesId)
     }

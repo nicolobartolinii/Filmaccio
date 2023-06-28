@@ -4,40 +4,81 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <ScrollView
-        android:id="@+id/scrollView"
+
+    <TextView
+        android:id="@+id/episodes_text_view"
         android:layout_width="0dp"
-        android:layout_height="0dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/roboto_bold"
+        android:layout_margin="16dp"
+        android:text="@string/episodes_to_watch"
+        android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+        android:textColor="?attr/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintEnd_toStartOf="@id/button_info"/>
+
+    <Button
+        android:id="@+id/button_info"
+        style="@style/Widget.Material3.Button.IconButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="8dp"
+        android:layout_marginEnd="8dp"
+        android:contentDescription="@string/back"
+        app:icon="@drawable/outline_info_24"
+        app:iconSize="24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <ViewFlipper
+        android:id="@+id/inner_view_flipper_episodes"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_margin="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/episodes_text_view">
 
         <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_marginHorizontal="64dp"
+            android:orientation="vertical"
+            android:gravity="center">
 
             <TextView
-                android:id="@+id/activity_text_view"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:paddingHorizontal="16dp"
-                android:paddingTop="16dp"
-                android:text="@string/episodes_to_watch"
-                android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
-                android:textColor="?attr/colorPrimary"
-                app:layout_constraintTop_toTopOf="parent" />
+                android:text="Non c'è molto da vedere qui"
+                android:gravity="center"
+                android:textAppearance="@style/TextAppearance.Material3.TitleSmall"/>
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="16dp"
-                android:paddingHorizontal="16dp" />
+            <ImageView
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginVertical="8dp"
+                android:contentDescription="Empty Episodes"
+                android:src="@drawable/tumbleweed"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Per iniziare a tracciare gli episodi da guardare, cerca una serie TV nella schermata di ricerca e aggiungila alla tua lista delle serie TV in visione"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:textAlignment="center"/>
 
         </LinearLayout>
 
-    </ScrollView>
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/episodes_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
+
+    </ViewFlipper>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

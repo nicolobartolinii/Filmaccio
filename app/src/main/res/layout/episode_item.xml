@@ -1,58 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="60dp"
-    android:background="?colorBackgroundFloating">
+    android:layout_marginVertical="4dp">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_margin="5dp" />
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:layout_gravity="center"
-        android:layout_marginVertical="5dp"
-        android:orientation="vertical">
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/episode_item_image"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:scaleType="centerCrop"
+            app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <TextView
-            android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/episode_item_series_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginTop="5dp"
+                android:text="@string/series_name"
+                android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                android:textColor="?colorPrimary"
+                android:textStyle="bold"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/episode_item_season_number_episode_number"
+                app:layout_constraintStart_toEndOf="@id/episode_item_image"
+                app:layout_constraintEnd_toStartOf="@id/episode_item_button_watch_episode"/>
+
+            <TextView
+                android:id="@+id/episode_item_season_number_episode_number"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:text="@string/season_number_episode_number"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                android:textStyle="bold"
+                app:layout_constraintTop_toBottomOf="@id/episode_item_series_name"
+                app:layout_constraintBottom_toTopOf="@id/episode_item_episode_name"
+                app:layout_constraintStart_toEndOf="@id/episode_item_image"
+                app:layout_constraintEnd_toStartOf="@id/episode_item_button_watch_episode" />
+
+            <TextView
+                android:id="@+id/episode_item_episode_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="8dp"
+                android:layout_marginBottom="5dp"
+                android:text="@string/episode_name"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+                app:layout_constraintTop_toBottomOf="@id/episode_item_season_number_episode_number"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/episode_item_image"
+                app:layout_constraintEnd_toStartOf="@id/episode_item_button_watch_episode"/>
+
+
+        <Button
+            android:id="@+id/episode_item_button_watch_episode"
+            style="@style/Widget.Material3.Button.IconButton.Filled"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/series_name"
-            android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
-            android:textColor="?colorPrimary"
-            android:textStyle="bold" />
+            android:layout_gravity="center"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@string/back"
+            app:icon="@drawable/round_remove_red_eye_24"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/season_number_episode_number"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
-            android:textStyle="bold" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/episode_name"
-            android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
-
-    </LinearLayout>
-
-    <View
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-    <Button
-        android:id="@+id/episode_item_button_watch_episode"
-        style="@style/Widget.Material3.Button.IconButton.Filled"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_marginEnd="5dp"
-        android:contentDescription="@string/back"
-        app:icon="@drawable/ic_check" />
-
-</LinearLayout>
+</com.google.android.material.card.MaterialCardView>
