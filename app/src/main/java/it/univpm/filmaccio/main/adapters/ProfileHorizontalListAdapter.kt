@@ -78,8 +78,6 @@ class ProfileHorizontalListAdapter :
 
     class ProfileListItemDiffCallback : DiffUtil.ItemCallback<ProfileListItem>() {
         override fun areItemsTheSame(oldItem: ProfileListItem, newItem: ProfileListItem): Boolean {
-            // Implementa questa funzione per determinare se due oggetti rappresentano lo stesso elemento.
-            // Ad esempio, se i tuoi elementi hanno ID unici, puoi comparare gli ID qui.
             return oldItem.title == newItem.title
         }
 
@@ -87,7 +85,6 @@ class ProfileHorizontalListAdapter :
             oldItem: ProfileListItem,
             newItem: ProfileListItem
         ): Boolean {
-            // Implementa questa funzione per determinare se i contenuti di due oggetti sono gli stessi.
             return oldItem == newItem
         }
     }

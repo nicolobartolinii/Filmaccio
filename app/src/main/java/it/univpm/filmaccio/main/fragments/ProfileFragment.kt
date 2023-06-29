@@ -18,6 +18,7 @@ import androidx.lifecycle.lifecycleScope
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
+import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
@@ -44,6 +45,7 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var reloadButton: Button // bottone per ricaricare la pagina
     private lateinit var editProfileButton: Button // bottone per la pagina di modifica
     private lateinit var settingsButton: Button // bottone per le impostazioni
     private lateinit var viewFlipper: ViewFlipper
@@ -56,16 +58,13 @@ class ProfileFragment : Fragment() {
     private var tvMinutes = 0
     private var movieNumber = 0
     private var tvNumber = 0
-    private var followersNumber = 0
-    private var followingNumber = 0
     private lateinit var followingCard: MaterialCardView
     private lateinit var followersCard: MaterialCardView
-    var followersArrayList: ArrayList<String> = arrayListOf()
-    var followeingArrayList: ArrayList<String> = arrayListOf()
+    private var followersArrayList: ArrayList<String> = arrayListOf()
+    private var followingArrayList: ArrayList<String> = arrayListOf()
 
 
-    val auth = UserUtils.auth
-    val currentUserUid = auth.uid
+    private val currentUserUid = UserUtils.getCurrentUserUid()!!
 
     private val profileViewModel: ProfileViewModel by viewModels()
 
@@ -85,6 +84,7 @@ class ProfileFragment : Fragment() {
         profileListsAdapter = ProfileHorizontalListAdapter()
 
         // dichiarazione bottoni
+        reloadButton = binding.reloadButton
         settingsButton = binding.settingsButton
         editProfileButton = binding.modifyProfileButton
         viewFlipper = binding.viewFlipper
@@ -94,13 +94,13 @@ class ProfileFragment : Fragment() {
         followingTextView = binding.followingNumber
         followingCard = binding.followingCard
         followersCard = binding.followersCard
-        val followersFlow = FirestoreService.getFollowers(currentUserUid!!)
-        val followingFlow = FirestoreService.getFollowing(currentUserUid!!)
+        val followersFlow = FirestoreService.getFollowers(currentUserUid)
+        val followingFlow = FirestoreService.getFollowing(currentUserUid)
 
         viewLifecycleOwner.lifecycleScope.launch {
             //funzione per ottenere i followers
             followersFlow.collect { followers ->
-                followerTextView.text = followers?.size?.toString() ?: "0"
+                followerTextView.text = followers.size.toString()
             }
         }
 
@@ -108,13 +108,13 @@ class ProfileFragment : Fragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             //funzione per ottenere i following
             followingFlow.collect { following ->
-                followingTextView.text = following?.size?.toString() ?: "0"
+                followingTextView.text = following.size.toString()
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
             //funzione per ottenere i following in array list per passarli successivamente
             followingFlow.collect { followingFlow ->
-                followeingArrayList = ArrayList(followingFlow)
+                followingArrayList = ArrayList(followingFlow)
             }
         }
 
@@ -128,15 +128,15 @@ class ProfileFragment : Fragment() {
         followingCard.setOnClickListener {
             // clicco su following e parte il view all
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
-            intent.putExtra("entities", followeingArrayList) // entities è la lista di entità
-            intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
+            intent.putExtra("entities", followingArrayList) // entities è la lista di entità
+            intent.putExtra("title", "Seguiti") // title è il titolo della schermata
             startActivity(intent)
         }
 
         followersCard.setOnClickListener {
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
             intent.putExtra("entities", followersArrayList) // entities è la lista di entità
-            intent.putExtra("title", "FOLLOWERS") // title è il titolo della schermata
+            intent.putExtra("title", "Followers") // title è il titolo della schermata
             startActivity(intent)
         }
 
@@ -168,129 +168,26 @@ class ProfileFragment : Fragment() {
 
         // Qui lanciamo una coroutine per ottenere le liste dell'utente corrente
         viewLifecycleOwner.lifecycleScope.launch {
-            // Collezioniamo le liste dell'utente corrente contenute nella variabile lists del view model
-            profileViewModel.lists.collectLatest { lists ->
-                if (lists != null) {
-                    // Se la variabile lists non è vuota allora possiamo procedere con il creare
-                    // la lista di ProfileListItem da passare all'adapter
-                    val profileListItems = lists.flatMap { entry ->
-                        // considerando che ogni lista è una coppia (titolo, lista di id), qui
-                        // otteniamo il titolo e la lista di id in variabili separate
-                        val listTitle = entry.key
-                        val ids = entry.value
-
-                        if (listTitle == "watched_m") {
-                            // Se la lista è quella dei film visti allora aggiorniamo le variabili
-                            // movieMinutes e movieNumber con i valori corretti
-                            movieMinutes =
-                                ids.sumOf { movieRepository.getMovieDetails(it).duration }
-                            movieNumber = ids.size
-                        } else if (listTitle == "watching_t") {
-                            // Se la lista è quella delle serie viste allora aggiorniamo le variabili
-                            // tvMinutes e tvNumber con i valori corretti
-                            tvMinutes =
-                                ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.sumOf { episode -> episode.duration } } }
-                            tvNumber =
-                                ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.size } }
-                        }
-
-                        val movieTime = convertMinutesToMonthsDaysHours(movieMinutes)
-                        val tvTime = convertMinutesToMonthsDaysHours(tvMinutes)
-
-                        binding.movieTimeMonths.text = movieTime.first
-                        binding.movieTimeDays.text = movieTime.second
-                        binding.movieTimeHours.text = movieTime.third
-                        binding.tvTimeMonths.text = tvTime.first
-                        binding.tvTimeDays.text = tvTime.second
-                        binding.tvTimeHours.text = tvTime.third
-                        binding.moviesSeenNumber.text = movieNumber.toString()
-                        binding.episodesSeenNumber.text = tvNumber.toString()
-
-                        if (movieTime.first == "01") {
-                            binding.movieTimeMonthsText.text = "mese"
-                        }
-                        if (movieTime.second == "01") {
-                            binding.movieTimeDaysText.text = "giorno"
-                        }
-                        if (movieTime.third == "01") {
-                            binding.movieTimeHoursText.text = "ora"
-                        }
-                        if (tvTime.first == "01") {
-                            binding.tvTimeMonthsText.text = "mese"
-                        }
-                        if (tvTime.second == "01") {
-                            binding.tvTimeDaysText.text = "giorno"
-                        }
-                        if (tvTime.third == "01") {
-                            binding.tvTimeHoursText.text = "ora"
-                        }
-
-                        if (ids.size >= 3) {
-                            // Se la lista di id è lunga almeno 3 allora possiamo creare una lista
-                            // di ProfileListItem con i primi 3 id della lista di id e il titolo
-                            val id1 = ids[0]
-                            val id2 = ids[1]
-                            val id3 = ids[2]
-                            // Qui controlliamo se il titolo della lista finisce con 'm' o 't' per
-                            // capire se la lista è di film o di serie TV e chiamare il metodo giusto
-                            if (listTitle.last() == 'm') listOf(
-                                movieRepository.convertIdToProfileListItem(
-                                    id1, id2, id3, listTitle
-                                )
-                            )
-                            else listOf(
-                                seriesRepository.convertIdToProfileListItem(
-                                    id1, id2, id3, listTitle
-                                )
-                            )
-                        } else {
-                            // Se la lista di id è più corta di 3 allora creiamo una lista di id
-                            // basata sui primi tre id ma usiamo il metodo getOrNull per impostare
-                            // (con l'operatore elvis) a 0L gli id mancanti. Così poi nel metodo
-                            // convertIdToProfileListItem possiamo gestire il caso in cui l'id sia
-                            // 0L e non esista nessun film/serie con quell'id. Fare riferimento
-                            // alle classi repository per questi metodi.
-                            val id1 = ids.getOrNull(0) ?: 0L
-                            val id2 = ids.getOrNull(1) ?: 0L
-                            val id3 = ids.getOrNull(2) ?: 0L
-                            if (listTitle.last() == 'm') listOf(
-                                movieRepository.convertIdToProfileListItem(
-                                    id1, id2, id3, listTitle
-                                )
-                            )
-                            else listOf(
-                                seriesRepository.convertIdToProfileListItem(
-                                    id1, id2, id3, listTitle
-                                )
-                            )
-                        }
-                    }
-
-                    // una volta creata la lista di ProfileListItem la passiamo all'adapter in modo che
-                    // lui possa fare il resto e mostrare le liste nella recycler view
-                    profileListsAdapter.submitList(profileListItems)
-                    viewFlipper.displayedChild = 1
-                }
-            }
+            loadProfileListsAndTimes()
         }
 
         binding.listeHorizontalList.adapter = profileListsAdapter
 
         // Qui lanciamo una coroutine per ottenere le informazioni dell'utente corrente
         viewLifecycleOwner.lifecycleScope.launch {
-            profileViewModel.currentUser.collectLatest { user ->
-                if (user != null) {
-                    // Se l'utente corrente non è nullo allora possiamo procedere con mostrare
-                    // le informazioni dell'utente corrente
-                    // Nello specifico mostriamo: il nome visualizzato, lo username e la foto profilo
-                    currentUser = user
-                    binding.displayNameText.text = user.nameShown
-                    binding.usernameText.text = user.username
-                    Glide.with(this@ProfileFragment).load(user.profileImage)
-                        .into(profileImage)
-                    Glide.with(this@ProfileFragment).load(user.backdropImage)
-                        .into(backdropImage)
-                }
+            loadCurrentUserDetails()
+        }
+
+        reloadButton.setOnClickListener {
+            // Se l'utente clicca sul bottone di ricarica allora ricarichiamo la pagina
+            viewFlipper.displayedChild = 0
+            viewLifecycleOwner.lifecycleScope.launch {
+                profileViewModel.getLists()
+                loadProfileListsAndTimes()
+            }
+            viewLifecycleOwner.lifecycleScope.launch {
+                profileViewModel.loadCurrentUser()
+                loadCurrentUserDetails()
             }
         }
 
@@ -306,5 +203,133 @@ class ProfileFragment : Fragment() {
         if (days.length == 1) days = days.padStart(2, '0')
         if (hours.length == 1) hours = hours.padStart(2, '0')
         return Triple(months, days, hours)
+    }
+
+    private suspend fun loadProfileListsAndTimes() {
+        // Collezioniamo le liste dell'utente corrente contenute nella variabile lists del view model
+        profileViewModel.lists.collectLatest { lists ->
+            if (lists != null) {
+                // Se la variabile lists non è vuota allora possiamo procedere con il creare
+                // la lista di ProfileListItem da passare all'adapter
+                val profileListItems = lists.flatMap { entry ->
+                    // considerando che ogni lista è una coppia (titolo, lista di id), qui
+                    // otteniamo il titolo e la lista di id in variabili separate
+                    val listTitle = entry.key
+                    val ids = entry.value
+
+                    if (listTitle == "watched_m") {
+                        // Se la lista è quella dei film visti allora aggiorniamo le variabili
+                        // movieMinutes e movieNumber con i valori corretti
+                        movieMinutes =
+                            ids.sumOf { movieRepository.getMovieDetails(it).duration }
+                        movieNumber = ids.size
+                    } else if (listTitle == "finished_t") {
+                        // Se la lista è quella delle serie viste allora aggiorniamo le variabili
+                        // tvMinutes e tvNumber con i valori corretti
+                        tvMinutes =
+                            ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.sumOf { episode -> episode.duration } } }
+                        tvNumber =
+                            ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.size } }
+                    }
+
+                    val movieTime = convertMinutesToMonthsDaysHours(movieMinutes)
+                    val tvTime = convertMinutesToMonthsDaysHours(tvMinutes)
+
+                    binding.movieTimeMonths.text = movieTime.first
+                    binding.movieTimeDays.text = movieTime.second
+                    binding.movieTimeHours.text = movieTime.third
+                    binding.tvTimeMonths.text = tvTime.first
+                    binding.tvTimeDays.text = tvTime.second
+                    binding.tvTimeHours.text = tvTime.third
+                    binding.moviesSeenNumber.text = movieNumber.toString()
+                    binding.episodesSeenNumber.text = tvNumber.toString()
+
+                    if (movieTime.first == "01") {
+                        binding.movieTimeMonthsText.text = "mese"
+                    }
+                    if (movieTime.second == "01") {
+                        binding.movieTimeDaysText.text = "giorno"
+                    }
+                    if (movieTime.third == "01") {
+                        binding.movieTimeHoursText.text = "ora"
+                    }
+                    if (tvTime.first == "01") {
+                        binding.tvTimeMonthsText.text = "mese"
+                    }
+                    if (tvTime.second == "01") {
+                        binding.tvTimeDaysText.text = "giorno"
+                    }
+                    if (tvTime.third == "01") {
+                        binding.tvTimeHoursText.text = "ora"
+                    }
+
+                    if (ids.size >= 3) {
+                        // Se la lista di id è lunga almeno 3 allora possiamo creare una lista
+                        // di ProfileListItem con i primi 3 id della lista di id e il titolo
+                        val id1 = ids[0]
+                        val id2 = ids[1]
+                        val id3 = ids[2]
+                        // Qui controlliamo se il titolo della lista finisce con 'm' o 't' per
+                        // capire se la lista è di film o di serie TV e chiamare il metodo giusto
+                        if (listTitle == "finished_t") {
+                            listOf()
+                        } else if (listTitle.last() == 'm') listOf(
+                            movieRepository.convertIdToProfileListItem(
+                                id1, id2, id3, listTitle
+                            )
+                        )
+                        else listOf(
+                            seriesRepository.convertIdToProfileListItem(
+                                id1, id2, id3, listTitle
+                            )
+                        )
+                    } else {
+                        // Se la lista di id è più corta di 3 allora creiamo una lista di id
+                        // basata sui primi tre id ma usiamo il metodo getOrNull per impostare
+                        // (con l'operatore elvis) a 0L gli id mancanti. Così poi nel metodo
+                        // convertIdToProfileListItem possiamo gestire il caso in cui l'id sia
+                        // 0L e non esista nessun film/serie con quell'id. Fare riferimento
+                        // alle classi repository per questi metodi.
+                        val id1 = ids.getOrNull(0) ?: 0L
+                        val id2 = ids.getOrNull(1) ?: 0L
+                        val id3 = ids.getOrNull(2) ?: 0L
+                        if (listTitle == "finished_t") {
+                            listOf()
+                        } else if (listTitle.last() == 'm') listOf(
+                            movieRepository.convertIdToProfileListItem(
+                                id1, id2, id3, listTitle
+                            )
+                        )
+                        else listOf(
+                            seriesRepository.convertIdToProfileListItem(
+                                id1, id2, id3, listTitle
+                            )
+                        )
+                    }
+                }
+
+                // una volta creata la lista di ProfileListItem la passiamo all'adapter in modo che
+                // lui possa fare il resto e mostrare le liste nella recycler view
+                profileListsAdapter.submitList(profileListItems)
+                viewFlipper.displayedChild = 1
+            }
+        }
+    }
+
+    private suspend fun loadCurrentUserDetails() {
+        profileViewModel.currentUser.collectLatest { user ->
+            if (user != null) {
+                // Se l'utente corrente non è nullo allora possiamo procedere con mostrare
+                // le informazioni dell'utente corrente
+                // Nello specifico mostriamo: il nome visualizzato, lo username e la foto profilo
+                currentUser = user
+                binding.displayNameText.text = user.nameShown
+                binding.usernameText.text = user.username
+                Glide.with(this@ProfileFragment).load(user.profileImage)
+                    .into(profileImage)
+                Glide.with(this@ProfileFragment).load(user.backdropImage)
+                    .into(backdropImage)
+            }
+        }
     }
 }

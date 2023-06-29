@@ -30,9 +30,7 @@ class MainActivity : AppCompatActivity() {
         navBar.setupWithNavController(navController)
 
         if (intent.getBooleanExtra("reloadProfile", false)) {
-            val fragment = ProfileFragment()
-            supportFragmentManager.beginTransaction().replace(R.id.fragmentContainerView2, fragment)
-                .commit()
+            navHostFragment.navController.navigate(R.id.action_navigation_home_to_navigation_profile)
         }
     }
 }

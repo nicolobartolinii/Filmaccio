@@ -29,7 +29,7 @@ class NextEpisodesViewModel : ViewModel() {
     }
 
     @Suppress("UNCHECKED_CAST")
-    private suspend fun loadNextEpisodes() {
+    suspend fun loadNextEpisodes() {
         val watchingSeries = FirestoreService.getWatchingSeries(uid)
             .first() as MutableMap<String, MutableMap<String, List<Long>>>? ?: mutableMapOf()
         var nextEpisodesList = listOf<NextEpisode>()

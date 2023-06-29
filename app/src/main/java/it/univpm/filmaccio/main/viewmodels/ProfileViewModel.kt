@@ -38,7 +38,7 @@ class ProfileViewModel : ViewModel() {
     // _currentUser. Ovviamente cambia solo quando il ViewModel viene inizializzato, perché
     // inizialmente currentUser è null e poi non cambia più (ovviamente a meno che l'utente non
     // effettui il Logout, ma in quel caso verrebbe ricaricato comunque l'intero fragment).
-    private fun loadCurrentUser() = viewModelScope.launch {
+    fun loadCurrentUser() = viewModelScope.launch {
         val currentUserUid = UserUtils.getCurrentUserUid()
         FirestoreService.getUserByUid(currentUserUid!!).collect {
             _currentUser.value = it
@@ -48,7 +48,7 @@ class ProfileViewModel : ViewModel() {
     // Questo metodo si occupa di caricare le liste dell'utente corrente. Sostanzialmente
     // funziona allo stesso modo di loadCurrentUser, ma in questo caso viene utilizzato il
     // metodo getLists del FirestoreService, che restituisce un Flow<Map<String, List<Long>>?>.
-    private fun getLists() = viewModelScope.launch {
+    fun getLists() = viewModelScope.launch {
         val currentUserUid = UserUtils.getCurrentUserUid()
         FirestoreService.getLists(currentUserUid!!).collect {
             _lists.value = it

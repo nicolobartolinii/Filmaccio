@@ -8,12 +8,15 @@ import android.widget.Button
 import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import it.univpm.filmaccio.data.models.NextEpisode
 import it.univpm.filmaccio.databinding.FragmentEpisodesBinding
 import it.univpm.filmaccio.main.adapters.NextEpisodesAdapter
 import it.univpm.filmaccio.main.viewmodels.NextEpisodesViewModel
+import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
 
 // Questo fragment è la schermata in cui dovrebbero venir mostrati gli episodi delle serie TV che l'utente
 // deve vedere. Per ora non è stato implementato nulla.
@@ -23,6 +26,7 @@ class EpisodesFragment : Fragment() {
 
     private val nextEpisodesViewModel: NextEpisodesViewModel by viewModels()
 
+    private lateinit var buttonReload: Button
     private lateinit var buttonInfo: Button
     private lateinit var viewFlipper: ViewFlipper
     private lateinit var episodesList: RecyclerView
@@ -34,9 +38,19 @@ class EpisodesFragment : Fragment() {
         _binding = FragmentEpisodesBinding
             .inflate(inflater, container, false)
 
+        buttonReload = binding.buttonReload
         buttonInfo = binding.buttonInfo
         viewFlipper = binding.innerViewFlipperEpisodes
         episodesList = binding.episodesRecyclerView
+
+        viewFlipper.displayedChild = 0
+
+        buttonReload.setOnClickListener {
+            viewLifecycleOwner.lifecycleScope.launch {
+                nextEpisodesViewModel.loadNextEpisodes()
+            }
+            viewFlipper.displayedChild = 0
+        }
 
         buttonInfo.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext()).setTitle("Info")
@@ -50,10 +64,11 @@ class EpisodesFragment : Fragment() {
         }
 
         nextEpisodesViewModel.nextEpisodes.observe(viewLifecycleOwner) {
-            if (it.isNullOrEmpty()) {
+            if (it == null) {
+                viewFlipper.displayedChild = 0
+            } else if (it.isEmpty()) {
                 viewFlipper.displayedChild = 2
-            }
-            else {
+            } else {
                 viewFlipper.displayedChild = 1
                 episodesList.adapter = NextEpisodesAdapter(it, requireContext())
             }

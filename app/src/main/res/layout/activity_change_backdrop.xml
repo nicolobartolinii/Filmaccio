@@ -41,8 +41,8 @@
         android:id="@+id/backdropRecyclerView"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginVertical="16dp"
         android:layout_marginHorizontal="12dp"
+        android:layout_marginVertical="16dp"
         app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
         app:layout_constraintBottom_toTopOf="@id/navigation_linlayout"
         app:layout_constraintEnd_toEndOf="parent"
@@ -52,27 +52,27 @@
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/confirm_button"
+        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="24dp"
         android:layout_marginVertical="16dp"
         android:clickable="true"
-        app:icon="@drawable/ic_check"
-        android:text="@string/confirm"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="@id/backdropRecyclerView"
         android:contentDescription="FAB"
-        style="@style/Widget.Material3.ExtendedFloatingActionButton.Icon.Tertiary"
-        android:visibility="invisible"/>
+        android:text="@string/confirm"
+        android:visibility="invisible"
+        app:icon="@drawable/ic_check"
+        app:layout_constraintBottom_toBottomOf="@id/backdropRecyclerView"
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <LinearLayout
         android:id="@+id/navigation_linlayout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintVertical_bias="1.0">
 
         <Button
@@ -80,33 +80,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Indietro"
             android:contentDescription="before"
-            app:icon="@drawable/round_navigate_before_24"/>
+            android:text="Indietro"
+            app:icon="@drawable/round_navigate_before_24" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <TextView
             android:id="@+id/textView_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="16dp"/>
+            android:layout_marginHorizontal="16dp" />
 
         <View
             android:layout_width="0dp"
             android:layout_height="1dp"
-            android:layout_weight="1"/>
+            android:layout_weight="1" />
 
         <Button
             android:id="@+id/button_next"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="16dp"
-            android:text="Avanti"
             android:contentDescription="next"
+            android:text="Avanti"
             app:icon="@drawable/round_navigate_next_24"
             app:iconGravity="end" />
     </LinearLayout>
