@@ -31,9 +31,17 @@ class SeriesRepository {
             fillMissingDetails(series, seriesInEnglish)
         }
         series.seasons = series.seasons.map {
-            val season = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number, language = "it-IT")
+            val season = tmdbApi.getSeasonDetails(
+                seriesId = seriesId,
+                seasonNumber = it.number,
+                language = "it-IT"
+            )
             if (seasonHasMissingDetails(season)) {
-                val seasonInEnglish = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = it.number, language = "en-US")
+                val seasonInEnglish = tmdbApi.getSeasonDetails(
+                    seriesId = seriesId,
+                    seasonNumber = it.number,
+                    language = "en-US"
+                )
                 fillMissingSeasonDetails(season, seasonInEnglish)
             }
             season
@@ -41,10 +49,18 @@ class SeriesRepository {
         return series
     }
 
-    suspend fun getSeasonDetails(seriesId: Long, seasonNumber: Long) : Series.Season {
-        val season = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = seasonNumber, language = "it-IT")
+    suspend fun getSeasonDetails(seriesId: Long, seasonNumber: Long): Series.Season {
+        val season = tmdbApi.getSeasonDetails(
+            seriesId = seriesId,
+            seasonNumber = seasonNumber,
+            language = "it-IT"
+        )
         if (seasonHasMissingDetails(season)) {
-            val seasonInEnglish = tmdbApi.getSeasonDetails(seriesId = seriesId, seasonNumber = seasonNumber, language = "en-US")
+            val seasonInEnglish = tmdbApi.getSeasonDetails(
+                seriesId = seriesId,
+                seasonNumber = seasonNumber,
+                language = "en-US"
+            )
             fillMissingSeasonDetails(season, seasonInEnglish)
         }
         return season
@@ -77,8 +93,13 @@ class SeriesRepository {
         return tmdbApi.getSeriesImages(seriesId = seriesId)
     }
 
-    suspend fun convertIdToProfileListItem(id1: Long, id2: Long, id3: Long, listTitle: String): ProfileListItem {
-        val listName = when(listTitle) {
+    suspend fun convertIdToProfileListItem(
+        id1: Long,
+        id2: Long,
+        id3: Long,
+        listTitle: String
+    ): ProfileListItem {
+        val listName = when (listTitle) {
             "watching_t" -> "in visione (TV)__"
             "watchlist_t" -> "watchlist (TV)__"
             "favorite_t" -> "preferiti (TV)__"
@@ -138,13 +159,39 @@ class SeriesRepository {
         if (season.name.isEmpty()) season.name = seasonInEnglish.name
         if (season.overview.isEmpty()) season.overview = seasonInEnglish.overview
         season.episodes.forEachIndexed { index, episode ->
-            if (episode.name.isEmpty()) episode.name = seasonInEnglish.episodes.getOrNull(index)?.name.toString()
+            if (episode.name.isEmpty()) episode.name =
+                seasonInEnglish.episodes.getOrNull(index)?.name.toString()
             if (episode.name == "Episodio ${episode.number}") {
                 if (seasonInEnglish.episodes.getOrNull(index)?.name.toString() != "Episode ${episode.number}") {
                     episode.name = seasonInEnglish.episodes.getOrNull(index)?.name.toString()
                 }
             }
-            if (episode.overview.isEmpty()) episode.overview = seasonInEnglish.episodes.getOrNull(index)?.overview.toString()
+            if (episode.overview.isEmpty()) episode.overview =
+                seasonInEnglish.episodes.getOrNull(index)?.overview.toString()
+        }
+    }
+
+    suspend fun checkIfSeriesFinished(uid: String, seriesId: Long) {
+        val watchingSeries = FirestoreService.getWatchingSeries(uid)
+            .first()[seriesId.toString()] as MutableMap<String, List<Long>>
+        watchingSeries.remove("0")
+        val seriesSeasons = getSeriesDetails(seriesId).seasons as MutableList<Series.Season>
+        seriesSeasons.removeIf { it.number == 0L }
+        if (watchingSeries.size != seriesSeasons.size) {
+            return
+        } else {
+            watchingSeries.forEach { (seasonNumber, episodes) ->
+                if (episodes.size != seriesSeasons[seasonNumber.toInt() - 1].episodes.size) {
+                    val finishedSeries = FirestoreService.getList(uid, "finished_t").first()
+                    if (seriesId in finishedSeries) {
+                        FirestoreService.removeFromList(uid, "finished_t", seriesId)
+                        FirestoreService.addToList(uid, "watching_t", seriesId)
+                    }
+                    return
+                }
+            }
+            FirestoreService.removeFromList(uid, "watching_t", seriesId)
+            FirestoreService.addToList(uid, "finished_t", seriesId)
         }
     }
 }

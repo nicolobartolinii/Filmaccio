@@ -2,6 +2,7 @@ package it.univpm.filmaccio.main.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,19 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.NextEpisode
-import it.univpm.filmaccio.details.adapters.EpisodesAdapter
+import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class NextEpisodesAdapter(
     private val nextEpisodes: List<NextEpisode>,
     private val context: Context
 ) : RecyclerView.Adapter<NextEpisodesAdapter.NextEpisodeViewHolder>() {
+
+    private val seriesRepository = SeriesRepository()
 
     class NextEpisodeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val seriesNameTextView: TextView = view.findViewById(R.id.episode_item_series_name)
@@ -41,6 +47,12 @@ class NextEpisodesAdapter(
     override fun onBindViewHolder(holder: NextEpisodeViewHolder, position: Int) {
         val uid = UserUtils.getCurrentUserUid()!!
         val episode = nextEpisodes[position]
+        val typedValueTertiary = TypedValue()
+        val theme = context.theme
+        theme.resolveAttribute(
+            com.google.android.material.R.attr.colorTertiary, typedValueTertiary, true
+        )
+        val colorTertiary = typedValueTertiary.data
         holder.seriesNameTextView.text = episode.seriesTitle
         holder.seasonEpisodeNumbers.text = "S${episode.seasonNumber} | E${episode.episodeNumber}"
         holder.episodeNameTextView.text = episode.episodeTitle
@@ -56,6 +68,12 @@ class NextEpisodesAdapter(
                 episode.seasonNumber,
                 episode.episodeNumber
             )
+            holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
+            holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)
+            holder.buttonWatchEpisode.isClickable = false
+            CoroutineScope(Dispatchers.Main).launch {
+                seriesRepository.checkIfSeriesFinished(uid, episode.seriesId)
+            }
         }
 
     }

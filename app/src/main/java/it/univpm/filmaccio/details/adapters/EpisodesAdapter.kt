@@ -13,6 +13,7 @@ import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Series
+import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.details.viewmodels.EpisodesViewModel
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -27,6 +28,8 @@ class EpisodesAdapter(
     private val context: Context,
     private val isSeriesInWatching: Boolean
 ) : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>() {
+
+    private val seriesRepository = SeriesRepository()
 
     class EpisodeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.episode_item_name)
@@ -109,6 +112,9 @@ class EpisodesAdapter(
                 holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
                 holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)
                 true
+            }
+            CoroutineScope(Dispatchers.Main).launch {
+                seriesRepository.checkIfSeriesFinished(uid, seriesId)
             }
         }
 
