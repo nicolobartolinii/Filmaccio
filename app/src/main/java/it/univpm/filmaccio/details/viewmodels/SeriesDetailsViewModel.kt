@@ -10,6 +10,7 @@ import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
@@ -26,6 +27,9 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
     private val _isSeriesFavorited = MutableLiveData<Boolean>()
     val isSeriesFavorited: LiveData<Boolean> = _isSeriesFavorited
 
+    private val _isSeriesFinished = MutableLiveData<Boolean>()
+    val isSeriesFinished: LiveData<Boolean> = _isSeriesFinished
+
     init {
         viewModelScope.launch {
             _isSeriesInWatching.value = seriesRepository.isSeriesInWatching(userId, seriesId)
@@ -36,6 +40,9 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
         viewModelScope.launch {
             _isSeriesFavorited.value = seriesRepository.isSeriesFavorited(userId, seriesId)
         }
+        viewModelScope.launch {
+            _isSeriesFinished.value = seriesRepository.isSeriesFinished(userId, seriesId)
+        }
     }
 
     fun toggleInWatching(seriesId: Long) = viewModelScope.launch {
@@ -44,7 +51,7 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
             _isSeriesInWatching.value = false
         } else {
             seriesRepository.addToList(userId, "watching_t", seriesId)
-            FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, seriesId)
+            if (!FirestoreService.getWatchingSeries(userId).first().containsKey(seriesId.toString())) FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, seriesId)
             if (_isSeriesInWatchlist.value == true) {
                 seriesRepository.removeFromList(userId, "watchlist_t", seriesId)
                 _isSeriesInWatchlist.value = false

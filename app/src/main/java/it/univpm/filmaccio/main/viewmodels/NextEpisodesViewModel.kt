@@ -56,17 +56,30 @@ class NextEpisodesViewModel : ViewModel() {
                         } else continue
                     }
                     else {
-                        nextEpisodeNumber = if (season.value.isNotEmpty()) season.value.max().toLong() + 1L
-                        else 1L
-                        if (nextEpisodeNumber == seasonDetails.episodes.size.toLong() + 1L) {
+                        if (season.key.toLong() != 1L && !series.value.containsKey("1")) {
+                            seasonNumber = 1L
+                            while (series.value.containsKey(seasonNumber.toString())) {
+                                seasonNumber++
+                            }
+                            FirestoreService.addSeasonToWatchingSeries(uid, seriesId, seasonNumber)
                             nextEpisodeNumber = 1L
-                            while (season.value.contains(nextEpisodeNumber)) {
-                                nextEpisodeNumber++
+                            break
+                        } else {
+                            nextEpisodeNumber =
+                                if (season.value.isNotEmpty()) season.value.max().toLong() + 1L
+                                else 1L
+                            if (nextEpisodeNumber == seasonDetails.episodes.size.toLong() + 1L) {
+                                nextEpisodeNumber = 1L
+                                while (season.value.contains(nextEpisodeNumber)) {
+                                    nextEpisodeNumber++
+                                }
                             }
                         }
                     }
                     Log.d("NextEpisodesViewModel", "Season: $season, nextEpisodeNumber: $nextEpisodeNumber, seasonDetails.episodes.size: ${seasonDetails.episodes.size},")
-                    if (nextEpisodeNumber != -1L && series.value.size == seriesDetails.seasons.size) break
+                    if (nextEpisodeNumber != -1L && season.value.size == seriesDetails.seasons[seasonNumber.toInt()].episodes.size) continue
+                    else if (nextEpisodeNumber != -1L && series.value.size == seriesDetails.seasons.size) break
+                    else break
                 }
             } else {
                 seasonNumber = 1L

@@ -89,6 +89,11 @@ class SeriesRepository {
         return seriesId in favoriteSeries
     }
 
+    suspend fun isSeriesFinished(userId: String, seriesId: Long): Boolean {
+        val finishedSeries: List<Any> = FirestoreService.getList(userId, "finished_t").first()
+        return seriesId in finishedSeries
+    }
+
     suspend fun getSeriesImages(seriesId: Long): ImagesResponse {
         return tmdbApi.getSeriesImages(seriesId = seriesId)
     }

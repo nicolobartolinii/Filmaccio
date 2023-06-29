@@ -40,6 +40,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
     private lateinit var buttonWatching: MaterialButton
     private lateinit var buttonWatchlist: MaterialButton
     private lateinit var buttonFavorite: MaterialButton
+    private lateinit var watchingTextView: TextView
     private lateinit var overviewFullText: String
     private lateinit var seasonsRecyclerView: RecyclerView
     private lateinit var castRecyclerView: RecyclerView
@@ -67,6 +68,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
         buttonWatching = findViewById(R.id.button_watching)
         buttonWatchlist = findViewById(R.id.button_watchlist)
         buttonFavorite = findViewById(R.id.button_favorite)
+        watchingTextView = findViewById(R.id.textView_watching)
         overviewTextView = findViewById(R.id.overview_text_view)
         seasonsRecyclerView = findViewById(R.id.seasons_recycler_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
@@ -91,7 +93,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
             if (isWatching) {
                 isSeriesInWatching = true
                 buttonWatching.setBackgroundColor(colorTertiary)
-                buttonWatching.setIconResource(R.drawable.ic_check)
+                buttonWatching.setIconResource(R.drawable.round_play_circle_outline_24)
             } else {
                 buttonWatching.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatching.setIconResource(R.drawable.round_remove_red_eye_24)
@@ -115,6 +117,15 @@ class SeriesDetailsActivity : AppCompatActivity() {
             } else {
                 buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
+            }
+        }
+
+        seriesDetailsViewModel.isSeriesFinished.observe(this) { isFinished ->
+            if (isFinished) {
+                buttonWatching.isClickable = false
+                buttonWatching.setBackgroundColor(colorTertiary)
+                buttonWatching.setIconResource(R.drawable.ic_check)
+                watchingTextView.text = "Completata"
             }
         }
 
