@@ -153,4 +153,11 @@ object FirestoreService {
         val watchingSeries = doc.get("watchingSeries") as Map<String, Map<String, List<Long>>>
         emit(watchingSeries)
     }
+
+    fun addSeasonToWatchingSeries(uid: String, seriesId: Long, seasonNumber: Long) {
+        val docRef = collectionEpisodes.document(uid)
+
+        val initialSeasonData = listOf<Long>()
+        docRef.update("watchingSeries.$seriesId.$seasonNumber", initialSeasonData)
+    }
 }

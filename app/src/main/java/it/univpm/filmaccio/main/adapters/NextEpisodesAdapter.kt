@@ -2,6 +2,7 @@ package it.univpm.filmaccio.main.adapters
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
 import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
@@ -14,6 +15,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.NextEpisode
 import it.univpm.filmaccio.data.repository.SeriesRepository
+import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.CoroutineScope
@@ -76,6 +78,11 @@ class NextEpisodesAdapter(
             }
         }
 
+        holder.seriesNameTextView.setOnClickListener {
+            val intent = Intent(context, SeriesDetailsActivity::class.java)
+            intent.putExtra("seriesId", episode.seriesId)
+            context.startActivity(intent)
+        }
     }
 
     override fun getItemCount() = nextEpisodes.size

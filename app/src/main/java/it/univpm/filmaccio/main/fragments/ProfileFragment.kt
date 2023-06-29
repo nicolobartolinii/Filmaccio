@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,12 @@ import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.data.models.ProfileListItem
+import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
@@ -27,10 +30,12 @@ import it.univpm.filmaccio.main.activities.EditProfileActivity
 import it.univpm.filmaccio.main.activities.SettingsActivity
 import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.adapters.ProfileHorizontalListAdapter
+import it.univpm.filmaccio.main.adapters.ViewAllAdapter
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 // Questo fragment è la schermata in cui viene mostrato il profilo dell'utente corrente (non degli altri utenti).
@@ -54,6 +59,8 @@ class ProfileFragment : Fragment() {
     private lateinit var currentUser: User
     private lateinit var followerTextView: TextView
     private lateinit var followingTextView: TextView
+    private lateinit var finishedSeriesRecyclerView: RecyclerView
+    private lateinit var finishedSeriesViewAllButton: Button
     private var movieMinutes = 0
     private var tvMinutes = 0
     private var movieNumber = 0
@@ -62,6 +69,7 @@ class ProfileFragment : Fragment() {
     private lateinit var followersCard: MaterialCardView
     private var followersArrayList: ArrayList<String> = arrayListOf()
     private var followingArrayList: ArrayList<String> = arrayListOf()
+    private lateinit var finishedSeries: List<Series>
 
 
     private val currentUserUid = UserUtils.getCurrentUserUid()!!
@@ -94,6 +102,8 @@ class ProfileFragment : Fragment() {
         followingTextView = binding.followingNumber
         followingCard = binding.followingCard
         followersCard = binding.followersCard
+        finishedSeriesRecyclerView = binding.serieTVHorizontalList
+        finishedSeriesViewAllButton = binding.finishedSeriesButtonViewAll
         val followersFlow = FirestoreService.getFollowers(currentUserUid)
         val followingFlow = FirestoreService.getFollowing(currentUserUid)
 
@@ -103,7 +113,6 @@ class ProfileFragment : Fragment() {
                 followerTextView.text = followers.size.toString()
             }
         }
-
 
         viewLifecycleOwner.lifecycleScope.launch {
             //funzione per ottenere i following
@@ -140,7 +149,6 @@ class ProfileFragment : Fragment() {
             startActivity(intent)
         }
 
-
         // Qui controlliamo se il fragment sta venendo avviato per la prima volta dall'avvio dell'app
         if (profileViewModel.isFirstLaunch) {
             // Se è la prima volta allora facciamo comparire la schermata di caricamento con un
@@ -171,7 +179,7 @@ class ProfileFragment : Fragment() {
             loadProfileListsAndTimes()
         }
 
-        binding.listeHorizontalList.adapter = profileListsAdapter
+        binding.horizontalCardsLists.adapter = profileListsAdapter
 
         // Qui lanciamo una coroutine per ottenere le informazioni dell'utente corrente
         viewLifecycleOwner.lifecycleScope.launch {
@@ -189,6 +197,14 @@ class ProfileFragment : Fragment() {
                 profileViewModel.loadCurrentUser()
                 loadCurrentUserDetails()
             }
+        }
+
+        finishedSeriesViewAllButton.setOnClickListener {
+            Log.d("ViewAll", "Finished series: $finishedSeries")
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(finishedSeries))
+            intent.putExtra("title", "Serie TV completate")
+            startActivity(intent)
         }
 
         return binding.root
@@ -226,10 +242,21 @@ class ProfileFragment : Fragment() {
                     } else if (listTitle == "finished_t") {
                         // Se la lista è quella delle serie viste allora aggiorniamo le variabili
                         // tvMinutes e tvNumber con i valori corretti
-                        tvMinutes =
-                            ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.sumOf { episode -> episode.duration } } }
-                        tvNumber =
-                            ids.sumOf { seriesRepository.getSeriesDetails(it).seasons.sumOf { season -> season.episodes.size } }
+                        val watchingSeries = FirestoreService.getWatchingSeries(currentUser.uid).first()
+                        for (series in watchingSeries) {
+                            val seriesDetails = seriesRepository.getSeriesDetails(series.key.toLong())
+                            for (season in series.value) {
+                                Log.d("Season", "Series: ${seriesDetails.title} Season: ${season.key} Episodes: ${season.value}")
+                                tvMinutes += if (seriesDetails.seasons.any { it.number == 0L }) season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt()].episodes[episode.toInt() - 1].duration }
+                                else season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt() - 1].episodes[episode.toInt() - 1].duration }
+                                tvNumber += season.value.size
+                            }
+                        }
+                        finishedSeries = ids.map { seriesRepository.getSeriesDetails(it) }
+                        val firstThreeFinishedSeries = finishedSeries.take(3)
+                        val adapter = ViewAllAdapter()
+                        adapter.submitList(firstThreeFinishedSeries)
+                        finishedSeriesRecyclerView.adapter = adapter
                     }
 
                     val movieTime = convertMinutesToMonthsDaysHours(movieMinutes)

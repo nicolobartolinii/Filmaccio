@@ -11,4 +11,4 @@ data class Character(
     @SerializedName("name") val name: String,
     @SerializedName("profile_path") val profilePath: String?,
     @SerializedName("character") val character: String,
-)
+) : java.io.Serializable

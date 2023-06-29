@@ -61,10 +61,10 @@
                     android:layout_margin="8dp"
                     android:clickable="true"
                     app:icon="@drawable/round_refresh_24"
-                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintHorizontal_bias="1.0"/>
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -81,9 +81,9 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="58dp"
+                        android:fontFamily="sans-serif-black"
                         android:text="@string/name_shown_text"
-                        android:textSize="20sp"
-                        android:textStyle="bold"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyLarge"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -97,8 +97,7 @@
                         android:layout_marginTop="4dp"
                         android:layout_marginBottom="8dp"
                         android:text="@string/username_text"
-                        android:textSize="14sp"
-                        android:textStyle="normal"
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.5"
                         app:layout_constraintStart_toStartOf="parent"
@@ -110,7 +109,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
                         android:orientation="horizontal"
-                        app:layout_constraintBottom_toTopOf="@id/horizontalList"
+                        app:layout_constraintBottom_toTopOf="@id/horizontal_cards_info"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/usernameText">
@@ -140,7 +139,7 @@
                     </LinearLayout>
 
                     <HorizontalScrollView
-                        android:id="@+id/horizontalList"
+                        android:id="@+id/horizontal_cards_info"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -566,25 +565,34 @@
 
                     </HorizontalScrollView>
 
-                    <!-- Testo "Liste" -->
+                    <!-- Divisore -->
+                    <View
+                        android:id="@+id/divider_info_lists"
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_marginVertical="8dp"
+                        android:background="?android:attr/dividerVertical"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_cards_info" />
 
-                    <!-- Lista orizzontale di rettangoli per le liste -->
                     <TextView
                         android:id="@+id/listeTitle"
+                        style="@style/TextAppearance.Material3.HeadlineSmall"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
-                        android:layout_marginTop="4dp"
+                        android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-black"
                         android:text="@string/lists_text"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
+                        android:textColor="?colorPrimary"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/horizontalList" />
+                        app:layout_constraintTop_toBottomOf="@id/divider_info_lists" />
 
                     <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/listeHorizontalList"
+                        android:id="@+id/horizontal_cards_lists"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
                         android:layout_marginHorizontal="8dp"
@@ -603,31 +611,43 @@
                         android:background="?android:attr/dividerVertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/listeHorizontalList"
+                        app:layout_constraintTop_toBottomOf="@id/horizontal_cards_lists"
                         tools:layout_editor_absoluteY="569dp" />
 
                     <!-- Titolo "Serie TV" -->
 
-                    <!-- Lista orizzontale di rettangoli per le serie TV -->
                     <TextView
                         android:id="@+id/serieTVTitle"
-                        android:layout_width="wrap_content"
+                        style="@style/TextAppearance.Material3.HeadlineSmall"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
                         android:layout_marginTop="8dp"
+                        android:fontFamily="sans-serif-black"
                         android:text="@string/seen_series_text"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintHorizontal_bias="0.046"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toStartOf="@id/finished_series_button_view_all"
+                        app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider2" />
+
+                    <Button
+                        android:id="@+id/finished_series_button_view_all"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/see_all"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider2"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/serieTVHorizontalList"
                         android:layout_width="0dp"
                         android:layout_height="120dp"
-                        android:layout_marginTop="8dp"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginVertical="8dp"
                         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/serieTVTitle" />
@@ -641,8 +661,8 @@
                     android:layout_height="100dp"
                     android:layout_marginTop="-50dp"
                     android:background="?colorBackgroundFloating"
-                    android:src="@drawable/default_propic"
                     android:scaleType="centerCrop"
+                    android:src="@drawable/default_propic"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@id/invisibleBackgroundImage"

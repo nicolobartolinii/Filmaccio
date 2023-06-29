@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import it.univpm.filmaccio.data.models.NextEpisode
+import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -38,26 +39,34 @@ class NextEpisodesViewModel : ViewModel() {
             var nextEpisodeNumber = -1L
             val seriesId = series.key.toLong()
             val seriesDetails = seriesRepository.getSeriesDetails(seriesId)
-            if (seriesDetails.seasons[0].number == 0L) {
-                Collections.rotate(seriesDetails.seasons, -1)
-            }
+            (seriesDetails.seasons as MutableList<Series.Season>).removeIf { it.number == 0L }
             Log.d("NextEpisodesViewModel", "Series: $series")
             if (series.value.containsKey("0")) series.value.remove("0")
             if (series.value.isNotEmpty()) {
                 for (season in series.value) {
+                    Log.d("NextEpisodesViewModel", "Season: $season, Series name: ${seriesDetails.title}")
                     seasonNumber = season.key.toLong()
                     val seasonDetails = seriesRepository.getSeasonDetails(seriesId, seasonNumber)
-                    if (season.value.size == seasonDetails.episodes.size) continue
+                    if (season.value.size == seasonDetails.episodes.size) {
+                        if (series.value.size != seriesDetails.seasons.size && !series.value.containsKey((seasonNumber + 1L).toString())) {
+                            FirestoreService.addSeasonToWatchingSeries(uid, seriesId, seasonNumber + 1L)
+                            seasonNumber++
+                            nextEpisodeNumber = 1L
+                            break
+                        } else continue
+                    }
                     else {
-                        nextEpisodeNumber = season.value.max().toLong() + 1L
+                        nextEpisodeNumber = if (season.value.isNotEmpty()) season.value.max().toLong() + 1L
+                        else 1L
                         if (nextEpisodeNumber == seasonDetails.episodes.size.toLong() + 1L) {
-                            nextEpisodeNumber = 1
+                            nextEpisodeNumber = 1L
                             while (season.value.contains(nextEpisodeNumber)) {
                                 nextEpisodeNumber++
                             }
                         }
                     }
-                    if (nextEpisodeNumber != -1L) break
+                    Log.d("NextEpisodesViewModel", "Season: $season, nextEpisodeNumber: $nextEpisodeNumber, seasonDetails.episodes.size: ${seasonDetails.episodes.size},")
+                    if (nextEpisodeNumber != -1L && series.value.size == seriesDetails.seasons.size) break
                 }
             } else {
                 seasonNumber = 1L

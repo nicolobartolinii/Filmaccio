@@ -25,6 +25,16 @@
                 android:paddingHorizontal="16dp"
                 android:paddingTop="16dp">
 
+                <TextView
+                    android:id="@+id/home_title_text_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/roboto_bold"
+                    android:text="Home"
+                    android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
+                    android:textColor="?attr/colorPrimary"
+                    app:layout_constraintTop_toTopOf="parent" />
+
                 <LinearLayout
                     android:id="@+id/header_latest_releases_home"
                     android:layout_width="match_parent"
