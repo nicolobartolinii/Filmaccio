@@ -15,6 +15,8 @@ class ViewAllActivity : AppCompatActivity() {
         binding = ActivityViewAllBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.viewFlipperViewAll.displayedChild = 0
+
         val entities: List<Any> = intent.getSerializableExtra("entities") as List<Any>
         val title = intent.getStringExtra("title")
         val type = intent.getCharExtra("type", 'm')
@@ -26,6 +28,12 @@ class ViewAllActivity : AppCompatActivity() {
         viewAllAdapter = ViewAllAdapter(type)
         viewAllAdapter.submitList(entities)
         binding.viewAllRecyclerView.adapter = viewAllAdapter
+
+        if (entities.isEmpty()) {
+            binding.viewAllRecyclerViewFlipper.displayedChild = 1
+        } else {
+            binding.viewAllRecyclerViewFlipper.displayedChild = 0
+        }
 
         binding.buttonBack.setOnClickListener {
             finish()
