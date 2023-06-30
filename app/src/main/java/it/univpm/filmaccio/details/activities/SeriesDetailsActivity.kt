@@ -172,6 +172,7 @@ class SeriesDetailsActivity : AppCompatActivity() {
                     directorTextView.text =
                         seriesDirectors.joinToString(", ") { creator -> creator.name }
                 } else {
+                    seriesDirectors = emptyList()
                     directorTextView.text = "Non disponibile"
                 }
             }
@@ -206,12 +207,13 @@ class SeriesDetailsActivity : AppCompatActivity() {
         }
 
         directorTextView.setOnClickListener {
-            if (seriesDirectors.size == 1) {
+            if (seriesDirectors.isEmpty()) return@setOnClickListener
+            else if (seriesDirectors.size == 1) {
                 val directorId = seriesDirectors[0].id
                 val intent = Intent(this, PersonDetailsActivity::class.java)
                 intent.putExtra("personId", directorId)
                 startActivity(intent)
-            } else if (seriesDirectors.size > 1) {
+            } else {
                 MaterialAlertDialogBuilder(this).setTitle("Scegli un creatore")
                     .setItems(seriesDirectors.map { director -> director.name }
                         .toTypedArray()) { _, which ->

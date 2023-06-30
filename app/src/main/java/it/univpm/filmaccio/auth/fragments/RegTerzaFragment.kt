@@ -305,7 +305,8 @@ class RegTerzaFragment : Fragment() {
         // Creiamo una HashMap con due ArrayList vuoti per setuppare il documento follow del nuovo utente
         val followDocument = hashMapOf(
             "followers" to arrayListOf<String>(),
-            "following" to arrayListOf()
+            "following" to arrayListOf(),
+            "people" to arrayListOf()
         )
         // Creiamo una HashMap con sei ArrayList vuoti per setuppare il documento lists del nuovo utente
         val listsDocument = hashMapOf(

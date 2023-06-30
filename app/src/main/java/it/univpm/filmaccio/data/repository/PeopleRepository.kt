@@ -2,6 +2,8 @@ package it.univpm.filmaccio.data.repository
 
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.Person
+import it.univpm.filmaccio.main.utils.FirestoreService
+import kotlinx.coroutines.flow.first
 
 // Questa classe è un repository che si occupa di gestire i dati relativi alle persone.
 // In particolare si occupa di fare le chiamate all'API di TMDB per ottenere i dati relativi alle persone.
@@ -43,5 +45,18 @@ class PeopleRepository {
         if (person.biography.isEmpty()) {
             person.biography = personInEnglish.biography
         }
+    }
+
+    suspend fun isPersonFollowed(userId: String, personId: Long): Boolean {
+        val peopleFollowed: List<Long> = FirestoreService.getPeopleFollowed(userId).first()
+        return personId in peopleFollowed
+    }
+
+    fun followPerson(userId: String, personId: Long) {
+        FirestoreService.followPerson(userId, personId)
+    }
+
+    fun unfollowPerson(userId: String, personId: Long) {
+        FirestoreService.unfollowPerson(userId, personId)
     }
 }

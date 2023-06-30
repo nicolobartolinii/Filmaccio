@@ -208,7 +208,8 @@ class RegGoogleSecondoFragment : Fragment() {
         )
         val followDocument = hashMapOf(
             "followers" to arrayListOf<String>(),
-            "following" to arrayListOf()
+            "following" to arrayListOf(),
+            "people" to arrayListOf()
         )
         val listsDocument = hashMapOf(
             "watchlist_m" to arrayListOf<Long>(),

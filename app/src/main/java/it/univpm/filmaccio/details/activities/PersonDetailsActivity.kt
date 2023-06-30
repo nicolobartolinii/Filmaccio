@@ -11,13 +11,14 @@ import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.details.adapters.ProductsAdapter
 import it.univpm.filmaccio.details.viewmodels.PersonDetailsViewModel
-import it.univpm.filmaccio.details.viewmodels.PersonDetailsViewModelFactory
+import kotlinx.coroutines.launch
 
 class PersonDetailsActivity : AppCompatActivity() {
 
@@ -43,7 +44,7 @@ class PersonDetailsActivity : AppCompatActivity() {
 
         val personId = intent.getLongExtra("personId", 0L)
         personDetailsViewModel = ViewModelProvider(
-            this, PersonDetailsViewModelFactory(personId)
+            this, PersonDetailsViewModel.PersonDetailsViewModelFactory(personId)
         )[PersonDetailsViewModel::class.java]
 
         personImage = findViewById(R.id.person_image)
@@ -144,6 +145,19 @@ class PersonDetailsActivity : AppCompatActivity() {
                     Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
                 )
                 biographyTextView.text = spannableString
+            }
+        }
+
+        personDetailsViewModel.isFollowed.observe(this) {
+            if (it) followButton.text = "SEGUI GIÀ"
+            else followButton.text = "SEGUI"
+        }
+
+        followButton.setOnClickListener {
+            if (followButton.text == "SEGUI") {
+                personDetailsViewModel.followPerson()
+            } else {
+                personDetailsViewModel.unfollowPerson()
             }
         }
     }

@@ -69,6 +69,12 @@ object FirestoreService {
         emit(following)
     }
 
+    fun getPeopleFollowed(uid: String) = flow {
+        val doc = collectionFollow.document(uid).get().await()
+        val people = doc.get("people") as List<Long>
+        emit(people)
+    }
+
     fun followUser(uid: String, targetUid: String) {
         val followRef = collectionFollow.document(uid)
         followRef.update("following", FieldValue.arrayUnion(targetUid))
@@ -83,6 +89,16 @@ object FirestoreService {
 
         val followerRef = collectionFollow.document(targetUid)
         followerRef.update("followers", FieldValue.arrayRemove(uid))
+    }
+
+    fun followPerson(uid: String, personId: Long) {
+        val followRef = collectionFollow.document(uid)
+        followRef.update("people", FieldValue.arrayUnion(personId))
+    }
+
+    fun unfollowPerson(uid: String, personId: Long) {
+        val followRef = collectionFollow.document(uid)
+        followRef.update("people", FieldValue.arrayRemove(personId))
     }
 
     fun addToList(uid: String, listName: String, itemId: Long) {
