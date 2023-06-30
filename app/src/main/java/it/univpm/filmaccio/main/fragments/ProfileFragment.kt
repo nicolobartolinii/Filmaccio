@@ -61,6 +61,7 @@ class ProfileFragment : Fragment() {
     private lateinit var followingTextView: TextView
     private lateinit var finishedSeriesRecyclerView: RecyclerView
     private lateinit var finishedSeriesViewAllButton: Button
+    private lateinit var finishedSeriesViewFlipper: ViewFlipper
     private var movieMinutes = 0
     private var tvMinutes = 0
     private var movieNumber = 0
@@ -103,6 +104,7 @@ class ProfileFragment : Fragment() {
         followersCard = binding.followersCard
         finishedSeriesRecyclerView = binding.serieTVHorizontalList
         finishedSeriesViewAllButton = binding.finishedSeriesButtonViewAll
+        finishedSeriesViewFlipper = binding.finishedSeriesViewFlipper
         val followersFlow = FirestoreService.getFollowers(currentUserUid)
         val followingFlow = FirestoreService.getFollowing(currentUserUid)
 
@@ -244,7 +246,6 @@ class ProfileFragment : Fragment() {
                         for (series in watchingSeries) {
                             val seriesDetails = seriesRepository.getSeriesDetails(series.key.toLong())
                             for (season in series.value) {
-                                Log.d("Season", "Series: ${seriesDetails.title} Season: ${season.key} Episodes: ${season.value}")
                                 tvMinutes += if (seriesDetails.seasons.any { it.number == 0L }) season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt()].episodes[episode.toInt() - 1].duration }
                                 else season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt() - 1].episodes[episode.toInt() - 1].duration }
                                 tvNumber += season.value.size
@@ -339,6 +340,9 @@ class ProfileFragment : Fragment() {
                 binding.horizontalCardsLists.adapter = profileListsAdapter
                 profileListsAdapter.submitList(profileListItems)
                 viewFlipper.displayedChild = 1
+                if (finishedSeriesRecyclerView.adapter?.itemCount == 0) {
+                    finishedSeriesViewFlipper.displayedChild = 1
+                } else finishedSeriesViewFlipper.displayedChild = 0
             }
         }
     }

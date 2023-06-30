@@ -638,19 +638,51 @@
                         android:layout_height="wrap_content"
                         android:text="@string/see_all"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider2"/>
+                        app:layout_constraintTop_toBottomOf="@id/divider2" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/serieTVHorizontalList"
+                    <ViewFlipper
+                        android:id="@+id/finished_series_view_flipper"
                         android:layout_width="0dp"
-                        android:layout_height="120dp"
-                        android:layout_marginHorizontal="16dp"
-                        android:layout_marginVertical="8dp"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                        android:layout_height="wrap_content"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/serieTVTitle" />
+                        app:layout_constraintTop_toBottomOf="@id/serieTVTitle">
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/serieTVHorizontalList"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginVertical="8dp"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="64dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            tools:ignore="UseCompoundDrawables">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="Non c'è molto da vedere qui"
+                                android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
+
+                            <ImageView
+                                android:layout_width="70dp"
+                                android:layout_height="70dp"
+                                android:layout_marginVertical="8dp"
+                                android:contentDescription="Empty Episodes"
+                                android:src="@drawable/tumbleweed" />
+
+                        </LinearLayout>
+
+                    </ViewFlipper>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
