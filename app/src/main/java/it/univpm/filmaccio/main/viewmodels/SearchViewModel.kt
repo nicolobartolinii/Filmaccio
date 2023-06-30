@@ -58,7 +58,11 @@ class SearchViewModel : ViewModel() {
         val multiTmdbSearch = async { searchRepository.searchMulti(query) }
         // Qui invece creiamo un oggetto che contiene la chiamata al repository per la ricerca di utenti (tramite Firestore, perché
         // i dati degli utenti non sono su TMDB ma su Firebase)
-        val usersSearch = FirestoreService.searchUsers(query).toList()[0] // Questo indice 0 è necessario perché la funzione toList() restituisce un flusso di liste, e noi vogliamo solo la prima (e unica) lista
+        val usersSearch = if (query.isNotEmpty()) {
+            FirestoreService.searchUsers(query).toList()[0] // Questo indice 0 è necessario perché la funzione toList() restituisce un flusso di liste, e noi vogliamo solo la prima (e unica) lista
+        } else {
+            listOf()
+        }
 
         // Qui combiniamo i risultati delle due chiamate in un'unica lista
         val combinedSearchResults = multiTmdbSearch.await().entities + usersSearch

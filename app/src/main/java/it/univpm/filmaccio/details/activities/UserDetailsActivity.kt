@@ -94,6 +94,9 @@ class UserDetailsActivity : AppCompatActivity() {
         val currentUserUid = auth.uid
         val targetUid = intent.getStringExtra("uid")!!
 
+        if (targetUid == currentUserUid) {
+            seguiBotton.visibility = Button.GONE
+        }
 
         val followersFlow = getFollowers(targetUid) // chiamata alla funzione che ritorna il numero di follower
         val watchedMoviesFlow = getList(targetUid, "watched_m") // chiamata alla funzione che ritorna il numero di film visti
