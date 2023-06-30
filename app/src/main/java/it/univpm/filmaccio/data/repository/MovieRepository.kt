@@ -5,6 +5,7 @@ import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.ProfileListItem
+import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
@@ -41,7 +42,12 @@ class MovieRepository {
 
     // Questo metodo implementa la chiamata all'endpoint di dettaglio dei film in modo da poterlo usare in altre classi
     suspend fun getMovieDetails(movieId: Long): Movie {
-        return tmdbApi.getMovieDetails(movieId = movieId)
+        val movie = tmdbApi.getMovieDetails(movieId = movieId, language = "it-IT")
+        if (movieHasMissingDetails(movie)) {
+            val movieInEnglish = tmdbApi.getMovieDetails(movieId = movieId, language = "en-US")
+            fillMissingDetails(movie, movieInEnglish)
+        }
+        return movie
     }
 
     // Questo metodo si aggancia all'oggetto FirestoreService per aggiungere un film ad una lista dell'utente
@@ -139,5 +145,16 @@ class MovieRepository {
             imageURL2 = movie2.posterPath ?: "",
             imageURL3 = movie3.posterPath ?: ""
         )
+    }
+
+    // Controlla se il film ha dettagli mancanti
+    private fun movieHasMissingDetails(movie: Movie): Boolean {
+        return movie.title.isEmpty() || movie.overview.isEmpty()
+    }
+
+    // Riempi i dettagli mancanti dalla versione inglese del film
+    private fun fillMissingDetails(movie: Movie, movieInEnglish: Movie) {
+        if (movie.title.isEmpty()) movie.title = movieInEnglish.title
+        if (movie.overview.isEmpty()) movie.overview = movieInEnglish.overview
     }
 }

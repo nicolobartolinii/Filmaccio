@@ -41,7 +41,7 @@ data class Person(
     @SerializedName("id") val id: Long,
     @SerializedName("name") val name: String,
     @SerializedName("profile_path") val profilePath: String?,
-    @SerializedName("biography") val biography: String,
+    @SerializedName("biography") var biography: String,
     @SerializedName("birthday") var birthday: String?,
     @SerializedName("deathday") var deathday: String?,
     @SerializedName("place_of_birth") val placeOfBirth: String?,
@@ -58,7 +58,7 @@ data class Person(
     )
 
     data class Product(
-        @SerializedName("id") val id: Int,
+        @SerializedName("id") val id: Long,
         @SerializedName("title", alternate = ["name"]) val title: String,
         @SerializedName("poster_path") val posterPath: String?,
         @SerializedName("media_type") val mediaType: String,

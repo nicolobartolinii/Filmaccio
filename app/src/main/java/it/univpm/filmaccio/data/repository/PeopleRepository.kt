@@ -28,6 +28,20 @@ class PeopleRepository {
         // Qui, dopo aver utilizzato i combinedCredits per creare la lista di prodotti che ci interessa
         // puliamo i combinedCredits in modo da non occupare memoria inutilmente
         person.combinedCredits = Person.CombinedCredits(emptyList(), emptyList())
+        if (personHasMissingDetails(person)) {
+            val personInEnglish = tmdbApi.getPersonDetails(personId = personId, language = "en-US")
+            fillMissingDetails(person, personInEnglish)
+        }
         return person
+    }
+
+    private fun personHasMissingDetails(person: Person): Boolean {
+        return person.biography.isEmpty()
+    }
+
+    private fun fillMissingDetails(person: Person, personInEnglish: Person) {
+        if (person.biography.isEmpty()) {
+            person.biography = personInEnglish.biography
+        }
     }
 }

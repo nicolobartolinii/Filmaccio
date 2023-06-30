@@ -9,9 +9,9 @@ import com.google.gson.annotations.SerializedName
 // In realtà la lista crew non contiene solo registi, ma visto che a noi interessano solo i registi, poi a runtime filtriamo la lista crew e prendiamo solo i registi.
 data class Movie(
     @SerializedName("id") val id: Long,
-    @SerializedName("title") val title: String,
+    @SerializedName("title") var title: String,
     @SerializedName("poster_path") val posterPath: String?,
-    @SerializedName("overview") val overview: String,
+    @SerializedName("overview") var overview: String,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("backdrop_path") val backdropPath: String?,
     @SerializedName("runtime") val duration: Int,
