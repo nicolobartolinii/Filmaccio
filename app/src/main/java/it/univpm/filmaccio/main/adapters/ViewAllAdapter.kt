@@ -16,11 +16,14 @@ import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
+import it.univpm.filmaccio.data.repository.MovieRepository
+import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.details.activities.UserDetailsActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.flow
@@ -28,7 +31,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
+class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
 
     companion object {
         const val TYPE_TMDB_ENTITY = 0
@@ -100,7 +103,53 @@ class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
                     context.startActivity(intent)
                 }
             }
+            is Long -> {
+                if (type == 'm') {
+                    val movieRepository = MovieRepository()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val movieDetails = movieRepository.getMovieDetails(entity)
+                        holder.title.text = movieDetails.title
+                        if (movieDetails.posterPath != null) {
+                            Glide.with(holder.itemView.context)
+                                .load("https://image.tmdb.org/t/p/w185${movieDetails.posterPath}")
+                                .into(holder.shapeableImageView)
+                        } else {
+                            Glide.with(holder.itemView.context)
+                                .load(R.drawable.error_404)
+                                .into(holder.shapeableImageView)
+                        }
 
+                        holder.itemView.setOnClickListener {
+                            val context = holder.itemView.context
+                            val intent = Intent(context, MovieDetailsActivity::class.java)
+                            intent.putExtra("movieId", entity)
+                            context.startActivity(intent)
+                        }
+                    }
+                } else {
+                    val seriesRepository = SeriesRepository()
+                    CoroutineScope(Dispatchers.Main).launch {
+                        val seriesDetails = seriesRepository.getSeriesDetails(entity)
+                        holder.title.text = seriesDetails.title
+                        if (seriesDetails.posterPath != null) {
+                            Glide.with(holder.itemView.context)
+                                .load("https://image.tmdb.org/t/p/w185${seriesDetails.posterPath}")
+                                .into(holder.shapeableImageView)
+                        } else {
+                            Glide.with(holder.itemView.context)
+                                .load(R.drawable.error_404)
+                                .into(holder.shapeableImageView)
+                        }
+
+                        holder.itemView.setOnClickListener {
+                            val context = holder.itemView.context
+                            val intent = Intent(context, SeriesDetailsActivity::class.java)
+                            intent.putExtra("seriesId", entity)
+                            context.startActivity(intent)
+                        }
+                    }
+                }
+            }
             is User -> {
                 holder.title.text = entity.nameShown
                 Glide.with(holder.itemView.context).load(entity.profileImage)
@@ -118,7 +167,7 @@ class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
 
             }
             is String -> {
-                GlobalScope.launch {
+                CoroutineScope(Dispatchers.Main).launch {
                     FirestoreService.getUserByUid(entity).collect { user ->
                         withContext(Dispatchers.Main) {
                             Log.d("ViewAllAdapter", "User: $user") // Log the user
@@ -150,6 +199,7 @@ class ViewAllAdapter : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
             is Movie -> TYPE_TMDB_ENTITY
             is Series -> TYPE_TMDB_ENTITY
             is Person -> TYPE_TMDB_ENTITY
+            is Long -> TYPE_TMDB_ENTITY
             is User -> TYPE_USER
             is String -> TYPE_USER
             else -> throw IllegalArgumentException("Invalid item type")

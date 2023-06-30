@@ -70,6 +70,7 @@ class ProfileFragment : Fragment() {
     private var followersArrayList: ArrayList<String> = arrayListOf()
     private var followingArrayList: ArrayList<String> = arrayListOf()
     private lateinit var finishedSeries: List<Series>
+    private lateinit var userLists: Map<String, List<Long>>
 
 
     private val currentUserUid = UserUtils.getCurrentUserUid()!!
@@ -88,8 +89,6 @@ class ProfileFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-
-        profileListsAdapter = ProfileHorizontalListAdapter()
 
         // dichiarazione bottoni
         reloadButton = binding.reloadButton
@@ -179,8 +178,6 @@ class ProfileFragment : Fragment() {
             loadProfileListsAndTimes()
         }
 
-        binding.horizontalCardsLists.adapter = profileListsAdapter
-
         // Qui lanciamo una coroutine per ottenere le informazioni dell'utente corrente
         viewLifecycleOwner.lifecycleScope.launch {
             loadCurrentUserDetails()
@@ -225,6 +222,7 @@ class ProfileFragment : Fragment() {
         // Collezioniamo le liste dell'utente corrente contenute nella variabile lists del view model
         profileViewModel.lists.collectLatest { lists ->
             if (lists != null) {
+                userLists = lists
                 // Se la variabile lists non è vuota allora possiamo procedere con il creare
                 // la lista di ProfileListItem da passare all'adapter
                 val profileListItems = lists.flatMap { entry ->
@@ -337,6 +335,8 @@ class ProfileFragment : Fragment() {
 
                 // una volta creata la lista di ProfileListItem la passiamo all'adapter in modo che
                 // lui possa fare il resto e mostrare le liste nella recycler view
+                profileListsAdapter = ProfileHorizontalListAdapter(userLists, requireContext())
+                binding.horizontalCardsLists.adapter = profileListsAdapter
                 profileListsAdapter.submitList(profileListItems)
                 viewFlipper.displayedChild = 1
             }

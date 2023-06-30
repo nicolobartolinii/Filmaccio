@@ -17,12 +17,13 @@ class ViewAllActivity : AppCompatActivity() {
 
         val entities: List<Any> = intent.getSerializableExtra("entities") as List<Any>
         val title = intent.getStringExtra("title")
+        val type = intent.getCharExtra("type", 'm')
 
         binding.viewAllTextView.text = title
 
         binding.viewFlipperViewAll.displayedChild = 1
 
-        viewAllAdapter = ViewAllAdapter()
+        viewAllAdapter = ViewAllAdapter(type)
         viewAllAdapter.submitList(entities)
         binding.viewAllRecyclerView.adapter = viewAllAdapter
 
