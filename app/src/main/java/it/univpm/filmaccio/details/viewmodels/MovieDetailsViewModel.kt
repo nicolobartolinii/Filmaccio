@@ -7,12 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
-import it.univpm.filmaccio.data.models.User
+import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
 class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
@@ -45,8 +43,8 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
     private val _averageMovieRating = MutableLiveData<Float>()
     val averageMovieRating: LiveData<Float> = _averageMovieRating
 
-    private val _movieReviews = MutableLiveData<List<Triple<User, String, Timestamp>>>(emptyList())
-    val movieReviews: LiveData<List<Triple<User, String, Timestamp>>> = _movieReviews
+    private val _movieReviews = MutableLiveData<List<ReviewTriple>>(emptyList())
+    val movieReviews: LiveData<List<ReviewTriple>> = _movieReviews
 
     init {
         viewModelScope.launch {
@@ -66,6 +64,9 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
         }
         viewModelScope.launch {
             _averageMovieRating.value = movieRepository.getAverageMovieRating(movieId)
+        }
+        viewModelScope.launch {
+            _movieReviews.value = movieRepository.getMovieReviews(movieId)
         }
     }
 
@@ -139,8 +140,7 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
 class MovieDetailsViewModelFactory(private val movieId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieDetailsViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return MovieDetailsViewModel(movieId) as T
+            @Suppress("UNCHECKED_CAST") return MovieDetailsViewModel(movieId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

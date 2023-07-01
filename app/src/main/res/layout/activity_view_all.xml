@@ -55,18 +55,18 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/view_all_recycler_view"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
+                android:layout_marginHorizontal="16dp"
                 android:layout_marginVertical="16dp"
                 app:layoutManager="androidx.recyclerview.widget.GridLayoutManager" />
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginTop="16dp"
                 android:gravity="center"
-                android:layout_gravity="center"
                 android:orientation="vertical"
                 tools:ignore="UseCompoundDrawables">
 
@@ -87,7 +87,6 @@
             </LinearLayout>
 
         </ViewFlipper>
-
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -6,6 +6,7 @@ import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.ProfileListItem
+import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.main.utils.FirestoreService
@@ -190,7 +191,7 @@ class MovieRepository {
         return FirestoreService.getAverageMovieRating(movieId)
     }
 
-    suspend fun getMovieReviews(movieId: Long): List<Triple<User, String, Timestamp>> {
+    suspend fun getMovieReviews(movieId: Long): List<ReviewTriple> {
         return FirestoreService.getMovieReviews(movieId)
     }
 }

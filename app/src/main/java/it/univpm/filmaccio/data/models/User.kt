@@ -13,6 +13,6 @@ data class User(
     var profileImage: String = "",
     var nameShown: String = "",
     var gender: String = "",
-    var birthDate: Timestamp = Timestamp.now(),
+    @Transient var birthDate: Timestamp = Timestamp.now(),
     var backdropImage: String = "https://firebasestorage.googleapis.com/v0/b/filmaccio.appspot.com/o/desert.jpg?alt=media&token=a2f60711-b962-40f9-9a8f-1b948e1cd92e"
 ) : Serializable

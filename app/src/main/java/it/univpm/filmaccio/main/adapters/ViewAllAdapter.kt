@@ -13,6 +13,7 @@ import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.Person
+import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
@@ -51,6 +52,12 @@ class ViewAllAdapter(private val type: Char = 'm') :
             TYPE_USER -> LayoutInflater.from(parent.context)
                 .inflate(R.layout.search_result_user, parent, false)
 
+            TYPE_REVIEW -> {
+                return ReviewViewHolder(
+                    LayoutInflater.from(parent.context).inflate(R.layout.review_item, parent, false)
+                )
+            }
+
             else -> throw IllegalArgumentException("Invalid view type")
         }
         return ViewHolder(view)
@@ -69,8 +76,7 @@ class ViewAllAdapter(private val type: Char = 'm') :
                         .load("https://image.tmdb.org/t/p/w185${entity.posterPath}")
                         .into(holder.shapeableImageView)
                 } else {
-                    Glide.with(holder.itemView.context)
-                        .load(R.drawable.error_404)
+                    Glide.with(holder.itemView.context).load(R.drawable.error_404)
                         .into(holder.shapeableImageView)
                 }
 
@@ -89,8 +95,7 @@ class ViewAllAdapter(private val type: Char = 'm') :
                         .load("https://image.tmdb.org/t/p/w185${entity.posterPath}")
                         .into(holder.shapeableImageView)
                 } else {
-                    Glide.with(holder.itemView.context)
-                        .load(R.drawable.error_404)
+                    Glide.with(holder.itemView.context).load(R.drawable.error_404)
                         .into(holder.shapeableImageView)
                 }
 
@@ -113,8 +118,7 @@ class ViewAllAdapter(private val type: Char = 'm') :
                                 .load("https://image.tmdb.org/t/p/w185${movieDetails.posterPath}")
                                 .into(holder.shapeableImageView)
                         } else {
-                            Glide.with(holder.itemView.context)
-                                .load(R.drawable.error_404)
+                            Glide.with(holder.itemView.context).load(R.drawable.error_404)
                                 .into(holder.shapeableImageView)
                         }
 
@@ -135,8 +139,7 @@ class ViewAllAdapter(private val type: Char = 'm') :
                                 .load("https://image.tmdb.org/t/p/w185${seriesDetails.posterPath}")
                                 .into(holder.shapeableImageView)
                         } else {
-                            Glide.with(holder.itemView.context)
-                                .load(R.drawable.error_404)
+                            Glide.with(holder.itemView.context).load(R.drawable.error_404)
                                 .into(holder.shapeableImageView)
                         }
 
@@ -190,7 +193,24 @@ class ViewAllAdapter(private val type: Char = 'm') :
                 }
             }
 
-
+            is ReviewTriple -> {
+                holder as ReviewViewHolder
+                Log.d("ViewAllAdapter", "Review: $entity")
+                holder.title.text = "Ha recensito il film il: ${entity.date}"
+                Glide.with(holder.itemView.context).load(entity.user.profileImage)
+                    .into(holder.shapeableImageView)
+                holder.shapeableImageView.setOnClickListener {
+                    val intent = Intent(holder.itemView.context, UserDetailsActivity::class.java)
+                    intent.putExtra("uid", entity.user.uid)
+                    intent.putExtra("nameShown", entity.user.nameShown)
+                    intent.putExtra("username", entity.user.username)
+                    intent.putExtra("backdropImage", entity.user.backdropImage)
+                    intent.putExtra("profileImage", entity.user.profileImage)
+                    holder.itemView.context.startActivity(intent)
+                }
+                holder.reviewUser.text = entity.user.nameShown
+                holder.reviewText.text = entity.review
+            }
         }
     }
 
@@ -203,15 +223,23 @@ class ViewAllAdapter(private val type: Char = 'm') :
             is Long -> TYPE_TMDB_ENTITY
             is User -> TYPE_USER
             is String -> TYPE_USER
-            is Triple<*, *, *> -> TYPE_REVIEW
+            is ReviewTriple -> TYPE_REVIEW
             else -> throw IllegalArgumentException("Invalid item type")
         }
     }
 
     override fun getItemCount(): Int = entities.size
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val shapeableImageView: ShapeableImageView = view.findViewById(R.id.search_result_image)
-        val title: TextView = view.findViewById(R.id.search_result_title)
+    open class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+        open val shapeableImageView: ShapeableImageView =
+            view.findViewById(R.id.search_result_image) ?: view.findViewById(R.id.review_user_image)
+        open val title: TextView = view.findViewById(R.id.search_result_title) ?: view.findViewById(
+            R.id.review_info_text_view
+        )
+    }
+
+    class ReviewViewHolder(view: View) : ViewHolder(view) {
+        val reviewText: TextView = view.findViewById(R.id.review_text_view)
+        val reviewUser: TextView = view.findViewById(R.id.review_user_text_view)
     }
 }

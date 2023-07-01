@@ -1,66 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="wrap_content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/review_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-    <com.google.android.material.imageview.ShapeableImageView
-        android:id="@+id/review_user_image"
-        android:layout_width="75dp"
-        android:layout_height="75dp"
-        android:layout_margin="5dp"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay" />
+        <com.google.android.material.imageview.ShapeableImageView
+            android:id="@+id/review_user_image"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay" />
 
-    <TextView
-        android:id="@+id/review_user_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:text="Nome visualizzato"
-        android:layout_margin="5dp"
-        app:layout_constraintStart_toStartOf="@id/review_user_image"
-        app:layout_constraintTop_toBottomOf="@id/review_user_image"
-        app:layout_constraintEnd_toEndOf="@id/review_user_image"
-        android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
-        android:textColor="?attr/colorPrimary"
-        android:fontFamily="sans-serif-black"
-        android:textAlignment="center"/>
+        <TextView
+            android:id="@+id/review_user_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:fontFamily="sans-serif-black"
+            android:maxLines="1"
+            android:text="Nome visualizzato"
+            android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/review_user_image"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/review_info_text_view"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:layout_margin="5dp"
-        android:text="Recensione lasciata il: GG/MM/AAAA HH:mm"
-        app:layout_constraintStart_toEndOf="@id/review_user_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:textAppearance="@style/TextAppearance.Material3.LabelLarge"/>
+        <TextView
+            android:id="@+id/review_info_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:maxLines="1"
+            android:text="Recensione lasciata il: GG/MM/AAAA HH:mm"
+            android:textAppearance="@style/TextAppearance.Material3.LabelSmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/review_user_image"
+            app:layout_constraintTop_toBottomOf="@id/review_user_text_view" />
 
-    <TextView
-        android:id="@+id/review_text_view"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:maxLines="1"
-        android:layout_margin="5dp"
-        android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-        android:textAppearance="@style/TextAppearance.Material3.LabelMedium"
-        app:layout_constraintStart_toEndOf="@id/review_user_image"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/review_info_text_view"/>
+        <TextView
+            android:id="@+id/review_text_view"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+            android:textAppearance="@style/TextAppearance.Material3.BodySmall"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/review_user_image"
+            app:layout_constraintTop_toBottomOf="@id/review_info_text_view" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -72,6 +70,6 @@
         android:background="?android:attr/dividerVertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/review_layout"/>
+        app:layout_constraintTop_toBottomOf="@id/review_layout" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
