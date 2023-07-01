@@ -348,10 +348,120 @@
                         app:layout_constraintTop_toBottomOf="@+id/cast_recycler_view" />
 
                     <TextView
-                        android:id="@+id/valutations_title_text_view"
+                        android:id="@+id/rating_title_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="16dp"
+                        android:text="Valuta questa serie TV"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/divider_cast_valutations" />
+
+                    <RatingBar
+                        android:id="@+id/movie_rating_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
+                        android:layout_marginTop="8dp"
+                        app:layout_constraintEnd_toStartOf="@id/submit_rating_button"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/rating_title_text_view" />
+
+                    <Button
+                        android:id="@+id/submit_rating_button"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:text="Valuta"
+                        app:layout_constraintBottom_toBottomOf="@id/movie_rating_bar"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/movie_rating_bar"
+                        app:layout_constraintTop_toTopOf="@id/movie_rating_bar" />
+
+                    <TextView
+                        android:id="@+id/review_title_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="8dp"
+                        android:text="Recensisci questa serie TV"
+                        android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
+                        android:textColor="?colorPrimary"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/movie_rating_bar" />
+
+                    <com.google.android.material.textfield.TextInputLayout
+                        android:id="@+id/review_text_input_layout"
+                        style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="8dp"
+                        android:hint="Lascia una recensione"
+                        app:startIconDrawable="@drawable/round_edit_note_24"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/review_title_text_view">
+
+                        <com.google.android.material.textfield.TextInputEditText
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:inputType="textMultiLine" />
+
+                    </com.google.android.material.textfield.TextInputLayout>
+
+                    <Button
+                        android:id="@+id/edit_review_button"
+                        style="@style/Widget.Material3.Button.OutlinedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginEnd="8dp"
+                        android:text="Modifica"
+                        android:enabled="false"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toStartOf="@id/submit_review_button"
+                        app:layout_constraintTop_toBottomOf="@id/review_text_input_layout"/>
+
+                    <Button
+                        android:id="@+id/submit_review_button"
+                        style="@style/Widget.Material3.Button.ElevatedButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:layout_marginEnd="32dp"
+                        android:layout_marginStart="8dp"
+                        android:text="Conferma"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/edit_review_button"
+                        app:layout_constraintTop_toBottomOf="@id/review_text_input_layout"/>
+
+                    <View
+                        android:id="@+id/divider_reviews_opinions"
+                        style="@style/Widget.Material3.MaterialDivider"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="32dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginEnd="32dp"
+                        android:background="?android:attr/listDivider"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/submit_review_button" />
+
+                    <TextView
+                        android:id="@+id/public_opinions_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
                         android:layout_marginTop="16dp"
                         android:text="Opinioni del pubblico"
                         android:textAppearance="@style/TextAppearance.Material3.TitleMedium"
@@ -359,7 +469,45 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/divider_cast_valutations" />
+                        app:layout_constraintTop_toBottomOf="@id/divider_reviews_opinions" />
+
+                    <TextView
+                        android:id="@+id/valutations_average_text_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:text="Media delle valutazioni: "
+                        android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
+                        app:layout_constraintEnd_toStartOf="@id/average_rating_bar"
+                        app:layout_constraintHorizontal_bias="0.0"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/average_rating_bar"
+                        app:layout_constraintBottom_toBottomOf="@id/average_rating_bar"/>
+
+                    <RatingBar
+                        android:id="@+id/average_rating_bar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginHorizontal="16dp"
+                        android:layout_marginTop="8dp"
+                        android:clickable="false"
+                        android:numStars="5"
+                        android:stepSize="0.1"
+                        style="@style/Widget.AppCompat.RatingBar.Indicator"
+                        app:layout_constraintStart_toEndOf="@id/valutations_average_text_view"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/public_opinions_text_view" />
+
+                    <Button
+                        android:id="@+id/button_view_all_reviews"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:text="Vedi le recensioni degli altri utenti"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/average_rating_bar" />
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
