@@ -1,5 +1,6 @@
 package it.univpm.filmaccio.data.repository
 
+import com.google.firebase.Timestamp
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.DiscoverMoviesResponse
 import it.univpm.filmaccio.data.models.ImagesResponse
@@ -156,5 +157,31 @@ class MovieRepository {
     private fun fillMissingDetails(movie: Movie, movieInEnglish: Movie) {
         if (movie.title.isEmpty()) movie.title = movieInEnglish.title
         if (movie.overview.isEmpty()) movie.overview = movieInEnglish.overview
+    }
+
+    suspend fun isMovieRated(userId: String, movieId: Long): Boolean {
+        val movieRating = FirestoreService.getMovieRating(userId, movieId).first
+        return movieRating != 0f
+    }
+
+    suspend fun getMovieRating(userId: String, movieId: Long): Pair<Float, Timestamp> {
+        return FirestoreService.getMovieRating(userId, movieId)
+    }
+
+    suspend fun isMovieReviewed(userId: String, movieId: Long): Boolean {
+        val movieReview = FirestoreService.getMovieReview(userId, movieId).first
+        return movieReview != ""
+    }
+
+    suspend fun getMovieReview(userId: String, movieId: Long): Pair<String, Timestamp> {
+        return FirestoreService.getMovieReview(userId, movieId)
+    }
+
+    suspend fun updateMovieRating(userId: String, movieId: Long, rating: Float, timestamp: Timestamp) {
+        FirestoreService.updateMovieRating(userId, movieId, rating, timestamp)
+    }
+
+    suspend fun updateMovieReview(userId: String, movieId: Long, review: String, timestamp: Timestamp) {
+        FirestoreService.updateMovieReview(userId, movieId, review, timestamp)
     }
 }

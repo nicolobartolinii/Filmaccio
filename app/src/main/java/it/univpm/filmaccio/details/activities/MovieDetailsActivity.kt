@@ -6,23 +6,37 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
+import android.util.Log
 import android.util.TypedValue
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.Timestamp
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Director
 import it.univpm.filmaccio.details.adapters.CastAdapter
 import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModelFactory
+import it.univpm.filmaccio.main.utils.UserUtils
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.launch
+import java.lang.Thread.sleep
+import java.sql.Time
 
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -42,6 +56,15 @@ class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var movieDirectors: List<Director>
     private lateinit var viewFlipperMovie: ViewFlipper
+    private lateinit var movieRatingBar: RatingBar
+    private lateinit var submitRatingButton: Button
+    private lateinit var reviewInputLayout: TextInputLayout
+    private lateinit var reviewEditText: TextInputEditText
+    private lateinit var editReviewButton: Button
+    private lateinit var submitReviewButton: Button
+    private lateinit var averageRatingBar: RatingBar
+    private lateinit var buttonViewAllReviews: Button
+
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +88,14 @@ class MovieDetailsActivity : AppCompatActivity() {
         overviewTextView = findViewById(R.id.overview_text_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
         viewFlipperMovie = findViewById(R.id.view_flipper_movie)
+        movieRatingBar = findViewById(R.id.movie_rating_bar)
+        submitRatingButton = findViewById(R.id.submit_rating_button)
+        reviewInputLayout = findViewById(R.id.review_text_input_layout)
+        reviewEditText = findViewById(R.id.review_text_input_edit_text)
+        editReviewButton = findViewById(R.id.edit_review_button)
+        submitReviewButton = findViewById(R.id.submit_review_button)
+        averageRatingBar = findViewById(R.id.average_rating_bar)
+        buttonViewAllReviews = findViewById(R.id.button_view_all_reviews)
 
         viewFlipperMovie.displayedChild = 0
 
@@ -198,6 +229,90 @@ class MovieDetailsActivity : AppCompatActivity() {
             } else {
                 buttonWatchlist.setBackgroundColor(buttonColor!!.defaultColor)
                 buttonWatchlist.setIconResource(R.drawable.round_more_time_24)
+            }
+        }
+
+        movieDetailsViewModel.isMovieRated.observe(this) { isRated ->
+            if (isRated) {
+                movieDetailsViewModel.loadCurrentMovieRating(UserUtils.getCurrentUserUid()!!, movieId)
+            }
+        }
+
+        movieDetailsViewModel.isMovieReviewed.observe(this) { isReviewed ->
+            if (isReviewed) {
+                movieDetailsViewModel.loadCurrentMovieReview(UserUtils.getCurrentUserUid()!!, movieId)
+            }
+        }
+
+        movieDetailsViewModel.currentMovieRating.observe(this) { movieRating ->
+            if (movieRating != null) {
+                movieRatingBar.rating = movieRating.first
+                submitRatingButton.isEnabled = false
+                movieRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                    submitRatingButton.isEnabled = true
+                    submitRatingButton.setOnClickListener {
+                        movieDetailsViewModel.updateMovieRating(
+                            UserUtils.getCurrentUserUid()!!,
+                            movieId,
+                            rating,
+                            Timestamp.now()
+                        )
+                        Toast.makeText(
+                            this@MovieDetailsActivity,
+                            "Valutazione aggiornata",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        submitRatingButton.isEnabled = false
+                    }
+                }
+            } else {
+                submitRatingButton.isEnabled = false
+                movieRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                    submitRatingButton.isEnabled = true
+                    submitRatingButton.setOnClickListener {
+                        movieDetailsViewModel.updateMovieRating(
+                            UserUtils.getCurrentUserUid()!!,
+                            movieId,
+                            rating,
+                            Timestamp.now()
+                        )
+                        Toast.makeText(
+                            this@MovieDetailsActivity,
+                            "Valutazione aggiornata",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        submitRatingButton.isEnabled = false
+                    }
+                }
+            }
+        }
+
+        movieDetailsViewModel.currentMovieReview.observe(this) { movieReview ->
+            if (movieReview != null) {
+                Toast.makeText(this, "Hai già recensito questo film", Toast.LENGTH_LONG).show()
+            } else {
+                submitReviewButton.isEnabled = false
+
+
+
+                submitRatingButton.isEnabled = false
+                movieRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                    submitRatingButton.isEnabled = true
+                    submitRatingButton.setOnClickListener {
+                        movieDetailsViewModel.updateMovieRating(
+                            UserUtils.getCurrentUserUid()!!,
+                            movieId,
+                            rating,
+                            Timestamp.now()
+                        )
+                        Toast.makeText(
+                            this@MovieDetailsActivity,
+                            "Valutazione aggiornata",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        submitRatingButton.isEnabled = false
+                    }
+                }
             }
         }
 

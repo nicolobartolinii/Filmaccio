@@ -2,6 +2,7 @@
 
 package it.univpm.filmaccio.main.utils
 
+import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.Query
@@ -23,6 +24,8 @@ object FirestoreService {
     val collectionFollow = db.collection("follow")
     val collectionLists = db.collection("lists")
     val collectionEpisodes = db.collection("episodes")
+    val collectionUsersReviews = db.collection("usersReviews")
+    val collectionProductsReviews = db.collection("productsReviews")
 
     fun getUserByUid(uid: String) = flow {
         val user = collectionUsers.document(uid).get().await()
@@ -175,5 +178,97 @@ object FirestoreService {
 
         val initialSeasonData = listOf<Long>()
         docRef.update("watchingSeries.$seriesId.$seasonNumber", initialSeasonData)
+    }
+
+    suspend fun getMovieRating(uid: String, movieId: Long): Pair<Float, Timestamp> {
+        val doc = collectionUsersReviews.document(uid).get().await()
+        val ratingValueDoc = doc.get("movies.$movieId.rating.value") as Double?
+        val ratingValue = ratingValueDoc?.toFloat() ?: 0f
+        val ratingTimestampDoc = doc.get("movies.$movieId.rating.timestamp") as Timestamp?
+        val ratingTimestamp = ratingTimestampDoc ?: Timestamp.now()
+        return Pair(ratingValue, ratingTimestamp)
+    }
+
+    suspend fun getMovieReview(uid: String, movieId: Long): Pair<String, Timestamp> {
+        val doc = collectionUsersReviews.document(uid).get().await()
+        val reviewDoc = doc.get("movies.$movieId.review.text") as String?
+        val review = reviewDoc ?: ""
+        val reviewTimestampDoc = doc.get("movies.$movieId.review.timestamp") as Timestamp?
+        val reviewTimestamp = reviewTimestampDoc ?: Timestamp.now()
+        return Pair(review, reviewTimestamp)
+    }
+
+    suspend fun updateMovieRating(uid: String, movieId: Long, rating: Float, timestamp: Timestamp) {
+        val docRef = collectionUsersReviews.document(uid)
+        val productsDocRef = collectionProductsReviews.document("movies")
+        val currentRating = getMovieRating(uid, movieId).first
+        if (currentRating != 0f) {
+            docRef.update("movies.$movieId.rating.value", rating)
+            docRef.update("movies.$movieId.rating.timestamp", timestamp)
+            productsDocRef.update("$movieId.value", FieldValue.increment(rating.toDouble() - currentRating.toDouble()))
+        } else {
+            docRef.update("movies.$movieId.rating", mapOf("value" to rating, "timestamp" to timestamp))
+            productsDocRef.update("$movieId.ratings", FieldValue.arrayUnion(uid))
+            productsDocRef.update("$movieId.value", FieldValue.increment(rating.toDouble()))
+        }
+    }
+
+    suspend fun updateMovieReview(uid: String, movieId: Long, review: String, timestamp: Timestamp) {
+        val docRef = collectionUsersReviews.document(uid)
+        val productsDocRef = collectionProductsReviews.document("movies")
+        val currentReview = getMovieReview(uid, movieId).first
+        if (currentReview != "") {
+            docRef.update("movies.$movieId.review.text", review)
+            docRef.update("movies.$movieId.review.timestamp", timestamp)
+        } else {
+            docRef.update("movies.$movieId.review", mapOf("text" to review, "timestamp" to timestamp))
+            productsDocRef.update("$movieId.reviews", FieldValue.arrayUnion(uid))
+        }
+    }
+
+    suspend fun getSeriesRating(uid: String, seriesId: Long): Pair<Float, Timestamp> {
+        val doc = collectionUsersReviews.document(uid).get().await()
+        val ratingValueDoc = doc.get("series.$seriesId.rating.value") as Double?
+        val ratingValue = ratingValueDoc?.toFloat() ?: 0f
+        val ratingTimestampDoc = doc.get("series.$seriesId.rating.timestamp") as Timestamp?
+        val ratingTimestamp = ratingTimestampDoc ?: Timestamp.now()
+        return Pair(ratingValue, ratingTimestamp)
+    }
+
+    suspend fun getSeriesReview(uid: String, seriesId: Long): Pair<String, Timestamp> {
+        val doc = collectionUsersReviews.document(uid).get().await()
+        val reviewDoc = doc.get("series.$seriesId.review.text") as String?
+        val review = reviewDoc ?: ""
+        val reviewTimestampDoc = doc.get("series.$seriesId.review.timestamp") as Timestamp?
+        val reviewTimestamp = reviewTimestampDoc ?: Timestamp.now()
+        return Pair(review, reviewTimestamp)
+    }
+
+    suspend fun updateSeriesRating(uid: String, seriesId: Long, rating: Float, timestamp: Timestamp) {
+        val docRef = collectionUsersReviews.document(uid)
+        val productsDocRef = collectionProductsReviews.document("series")
+        val currentRating = getSeriesRating(uid, seriesId).first
+        if (currentRating != 0f) {
+            docRef.update("series.$seriesId.rating.value", rating)
+            docRef.update("series.$seriesId.rating.timestamp", timestamp)
+            productsDocRef.update("$seriesId.value", FieldValue.increment(rating.toDouble() - currentRating.toDouble()))
+        } else {
+            docRef.update("series.$seriesId.rating", mapOf("value" to rating, "timestamp" to timestamp))
+            productsDocRef.update("$seriesId.ratings", FieldValue.arrayUnion(uid))
+            productsDocRef.update("$seriesId.value", FieldValue.increment(rating.toDouble()))
+        }
+    }
+
+    suspend fun updateSeriesReview(uid: String, seriesId: Long, review: String, timestamp: Timestamp) {
+        val docRef = collectionUsersReviews.document(uid)
+        val productsDocRef = collectionProductsReviews.document("series")
+        val currentReview = getSeriesReview(uid, seriesId).first
+        if (currentReview != "") {
+            docRef.update("series.$seriesId.review.text", review)
+            docRef.update("series.$seriesId.review.timestamp", timestamp)
+        } else {
+            docRef.update("series.$seriesId.review", mapOf("text" to review, "timestamp" to timestamp))
+            productsDocRef.update("$seriesId.reviews", FieldValue.arrayUnion(uid))
+        }
     }
 }

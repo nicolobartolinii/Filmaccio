@@ -223,6 +223,10 @@ class RegGoogleSecondoFragment : Fragment() {
         val episodesDocument = hashMapOf(
             "watchingSeries" to hashMapOf<String, Any>()
         )
+        val reviewsDocument = hashMapOf(
+            "movies" to arrayListOf<List<String>>(),
+            "series" to arrayListOf()
+        )
 
         FirestoreService.collectionUsers.document(uid!!)
             .set(user)
@@ -244,6 +248,15 @@ class RegGoogleSecondoFragment : Fragment() {
             }
         FirestoreService.collectionEpisodes.document(uid)
             .set(episodesDocument)
+            .addOnFailureListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        FirestoreService.collectionUsersReviews.document(uid)
+            .set(reviewsDocument)
             .addOnFailureListener {
                 Toast.makeText(
                     requireContext(),
