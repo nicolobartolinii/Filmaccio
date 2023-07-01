@@ -2,6 +2,7 @@
 
 package it.univpm.filmaccio.main.utils
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -9,6 +10,7 @@ import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.data.models.User
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.tasks.await
 
@@ -270,5 +272,45 @@ object FirestoreService {
             docRef.update("series.$seriesId.review", mapOf("text" to review, "timestamp" to timestamp))
             productsDocRef.update("$seriesId.reviews", FieldValue.arrayUnion(uid))
         }
+    }
+
+    suspend fun getAverageMovieRating(movieId: Long): Float {
+        val docRef = collectionProductsReviews.document("movies")
+        var value = 0f
+        var users = listOf<String>()
+        docRef.get().addOnSuccessListener {
+            users = it.get("$movieId.ratings") as List<String>
+            value = (it.get("$movieId.value") as Double).toFloat()
+        }.await()
+        return if (users.isEmpty()) 0f
+        else value / users.size
+    }
+
+    suspend fun getAverageSeriesRating(seriesId: Long): Float {
+        val docRef = collectionProductsReviews.document("series")
+        var value = 0f
+        var users = listOf<String>()
+        docRef.get().addOnSuccessListener {
+            users = it.get("$seriesId.ratings") as List<String>
+            value = (it.get("$seriesId.value") as Double).toFloat()
+        }.await()
+        return if (users.isEmpty()) 0f
+        else value / users.size
+    }
+
+    suspend fun getMovieReviews(movieId: Long): List<Triple<User, String, Timestamp>> {
+        val docRef = collectionProductsReviews.document("movies")
+        var users = listOf<String>()
+        docRef.get().addOnSuccessListener {
+            users = it.get("$movieId.reviews") as List<String>
+        }.await()
+        val reviews = mutableListOf<Triple<User, String, Timestamp>>()
+        for (user in users) {
+            val reviewData = getMovieReview(user, movieId)
+            val userData = getUserByUid(user).first()!!
+            val review = Triple(userData, reviewData.first, reviewData.second)
+            reviews.add(review)
+        }
+        return reviews
     }
 }

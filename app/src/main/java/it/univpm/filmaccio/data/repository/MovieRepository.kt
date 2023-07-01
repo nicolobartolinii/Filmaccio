@@ -7,6 +7,7 @@ import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.data.models.Series
+import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
@@ -183,5 +184,13 @@ class MovieRepository {
 
     suspend fun updateMovieReview(userId: String, movieId: Long, review: String, timestamp: Timestamp) {
         FirestoreService.updateMovieReview(userId, movieId, review, timestamp)
+    }
+
+    suspend fun getAverageMovieRating(movieId: Long): Float {
+        return FirestoreService.getAverageMovieRating(movieId)
+    }
+
+    suspend fun getMovieReviews(movieId: Long): List<Triple<User, String, Timestamp>> {
+        return FirestoreService.getMovieReviews(movieId)
     }
 }

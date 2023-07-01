@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
-import android.util.Log
 import android.util.TypedValue
+import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -16,7 +16,6 @@ import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
@@ -31,12 +30,11 @@ import it.univpm.filmaccio.data.models.Director
 import it.univpm.filmaccio.details.adapters.CastAdapter
 import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModelFactory
+import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.utils.UserUtils
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.launch
-import java.lang.Thread.sleep
-import java.sql.Time
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
 
 class MovieDetailsActivity : AppCompatActivity() {
 
@@ -249,7 +247,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 movieRatingBar.rating = movieRating.first
                 submitRatingButton.isEnabled = false
                 movieRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                    submitRatingButton.isEnabled = true
+                    submitRatingButton.isEnabled = movieRatingBar.rating != movieRating.first
                     submitRatingButton.setOnClickListener {
                         movieDetailsViewModel.updateMovieRating(
                             UserUtils.getCurrentUserUid()!!,
@@ -278,7 +276,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                         )
                         Toast.makeText(
                             this@MovieDetailsActivity,
-                            "Valutazione aggiornata",
+                            "Valutazione aggiunta",
                             Toast.LENGTH_SHORT
                         ).show()
                         submitRatingButton.isEnabled = false
@@ -289,29 +287,108 @@ class MovieDetailsActivity : AppCompatActivity() {
 
         movieDetailsViewModel.currentMovieReview.observe(this) { movieReview ->
             if (movieReview != null) {
-                Toast.makeText(this, "Hai già recensito questo film", Toast.LENGTH_LONG).show()
-            } else {
+                editReviewButton.isEnabled = true
                 submitReviewButton.isEnabled = false
-
-
-
-                submitRatingButton.isEnabled = false
-                movieRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
-                    submitRatingButton.isEnabled = true
-                    submitRatingButton.setOnClickListener {
-                        movieDetailsViewModel.updateMovieRating(
-                            UserUtils.getCurrentUserUid()!!,
-                            movieId,
-                            rating,
-                            Timestamp.now()
-                        )
-                        Toast.makeText(
-                            this@MovieDetailsActivity,
-                            "Valutazione aggiornata",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        submitRatingButton.isEnabled = false
+                reviewEditText.setText(movieReview.first)
+                reviewEditText.isEnabled = false
+                val date = movieReview.second.toDate()
+                val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+                val dateString = format.format(date)
+                reviewInputLayout.helperText = "Ultima modifica: $dateString"
+                editReviewButton.setOnClickListener {
+                    editReviewButton.isEnabled = false
+                    submitReviewButton.isEnabled = true
+                    reviewEditText.isEnabled = true
+                }
+                submitReviewButton.setOnClickListener {
+                    reviewInputLayout.isErrorEnabled = false
+                    val reviewText = reviewEditText.text.toString()
+                    if (reviewText.length < 5) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione deve essere lunga almeno 5 caratteri"
+                        return@setOnClickListener
                     }
+                    if (reviewText.contains("http") ||
+                        reviewText.contains("www")
+                    ) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione non può contenere link"
+                        return@setOnClickListener
+                    }
+                    if (reviewText == movieReview.first) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione è identica a quella precedente"
+                        return@setOnClickListener
+                    }
+                    val timestamp = Timestamp.now()
+                    movieDetailsViewModel.updateMovieReview(
+                        UserUtils.getCurrentUserUid()!!,
+                        movieId,
+                        reviewText,
+                        timestamp
+                    )
+                    Toast.makeText(
+                        this@MovieDetailsActivity,
+                        "Recensione aggiornata",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    submitReviewButton.isEnabled = false
+                    editReviewButton.isEnabled = true
+                    reviewEditText.isEnabled = false
+                    reviewInputLayout.helperText = "Ultima modifica: ${format.format(timestamp.toDate())}"
+                }
+            } else {
+                editReviewButton.isEnabled = false
+                submitReviewButton.isEnabled = true
+                submitReviewButton.setOnClickListener {
+                    reviewInputLayout.isErrorEnabled = false
+                    val reviewText = reviewEditText.text.toString()
+                    if (reviewText.length < 5) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione deve essere lunga almeno 5 caratteri"
+                        return@setOnClickListener
+                    }
+                    if (reviewText.contains("http") ||
+                        reviewText.contains("www")
+                    ) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione non può contenere link"
+                        return@setOnClickListener
+                    }
+                    val timestamp = Timestamp.now()
+                    movieDetailsViewModel.updateMovieReview(
+                        UserUtils.getCurrentUserUid()!!,
+                        movieId,
+                        reviewText,
+                        timestamp
+                    )
+                    val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+                    Toast.makeText(
+                        this@MovieDetailsActivity,
+                        "Recensione aggiunta",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    submitReviewButton.isEnabled = false
+                    editReviewButton.isEnabled = true
+                    reviewEditText.isEnabled = false
+                    reviewInputLayout.helperText = "Ultima modifica: ${format.format(timestamp.toDate())}"
+                }
+            }
+        }
+
+        movieDetailsViewModel.averageMovieRating.observe(this) {
+            averageRatingBar.rating = it
+        }
+
+        movieDetailsViewModel.movieReviews.observe(this) {
+            if (it.isEmpty()) {
+                buttonViewAllReviews.visibility = View.GONE
+            } else {
+                buttonViewAllReviews.visibility = View.VISIBLE
+                buttonViewAllReviews.setOnClickListener { _ ->
+                    val intent = Intent(this, ViewAllActivity::class.java)
+                    intent.putExtra("entities", ArrayList(it))
+                    startActivity(intent)
                 }
             }
         }

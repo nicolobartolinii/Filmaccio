@@ -14,28 +14,25 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.data.models.Series
-import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
-import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.details.activities.UserDetailsActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
-class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
+class ViewAllAdapter(private val type: Char = 'm') :
+    RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
 
     companion object {
         const val TYPE_TMDB_ENTITY = 0
         const val TYPE_USER = 1
+        const val TYPE_REVIEW = 2
     }
 
     private var entities: List<Any> = listOf()
@@ -79,11 +76,12 @@ class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewA
 
                 holder.itemView.setOnClickListener {
                     val context = holder.itemView.context
-                        val intent = Intent(context, MovieDetailsActivity::class.java)
-                        intent.putExtra("movieId", entity.id)
-                        context.startActivity(intent)
+                    val intent = Intent(context, MovieDetailsActivity::class.java)
+                    intent.putExtra("movieId", entity.id)
+                    context.startActivity(intent)
                 }
             }
+
             is Series -> {
                 holder.title.text = entity.title
                 if (entity.posterPath != null) {
@@ -103,6 +101,7 @@ class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewA
                     context.startActivity(intent)
                 }
             }
+
             is Long -> {
                 if (type == 'm') {
                     val movieRepository = MovieRepository()
@@ -150,6 +149,7 @@ class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewA
                     }
                 }
             }
+
             is User -> {
                 holder.title.text = entity.nameShown
                 Glide.with(holder.itemView.context).load(entity.profileImage)
@@ -158,14 +158,15 @@ class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewA
                     val context = holder.itemView.context
                     val intent = Intent(context, UserDetailsActivity::class.java)
                     intent.putExtra("uid", entity.uid)
-                    intent.putExtra("nameShown",entity.nameShown)
-                    intent.putExtra("username",entity.username)
-                    intent.putExtra("backdropImage",entity.backdropImage)
-                    intent.putExtra("profileImage",entity.profileImage)
+                    intent.putExtra("nameShown", entity.nameShown)
+                    intent.putExtra("username", entity.username)
+                    intent.putExtra("backdropImage", entity.backdropImage)
+                    intent.putExtra("profileImage", entity.profileImage)
                     context.startActivity(intent)
                 }
 
             }
+
             is String -> {
                 CoroutineScope(Dispatchers.Main).launch {
                     FirestoreService.getUserByUid(entity).collect { user ->
@@ -178,10 +179,10 @@ class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewA
                                 val context = holder.itemView.context
                                 val intent = Intent(context, UserDetailsActivity::class.java)
                                 intent.putExtra("uid", user?.uid)
-                                intent.putExtra("nameShown",user?.nameShown)
-                                intent.putExtra("username",user?.username)
-                                intent.putExtra("backdropImage",user?.backdropImage)
-                                intent.putExtra("profileImage",user?.profileImage)
+                                intent.putExtra("nameShown", user?.nameShown)
+                                intent.putExtra("username", user?.username)
+                                intent.putExtra("backdropImage", user?.backdropImage)
+                                intent.putExtra("profileImage", user?.profileImage)
                                 context.startActivity(intent)
                             }
                         }
@@ -202,6 +203,7 @@ class ViewAllAdapter (private val type: Char = 'm') : RecyclerView.Adapter<ViewA
             is Long -> TYPE_TMDB_ENTITY
             is User -> TYPE_USER
             is String -> TYPE_USER
+            is Triple<*, *, *> -> TYPE_REVIEW
             else -> throw IllegalArgumentException("Invalid item type")
         }
     }

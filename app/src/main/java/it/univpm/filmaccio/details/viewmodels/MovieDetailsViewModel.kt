@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
+import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
@@ -41,6 +42,12 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
     private val _currentMovieReview = MutableLiveData<Pair<String, Timestamp>?>(null)
     val currentMovieReview: LiveData<Pair<String, Timestamp>?> = _currentMovieReview
 
+    private val _averageMovieRating = MutableLiveData<Float>()
+    val averageMovieRating: LiveData<Float> = _averageMovieRating
+
+    private val _movieReviews = MutableLiveData<List<Triple<User, String, Timestamp>>>(emptyList())
+    val movieReviews: LiveData<List<Triple<User, String, Timestamp>>> = _movieReviews
+
     init {
         viewModelScope.launch {
             _isMovieWatched.value = movieRepository.isMovieWatched(userId, movieId)
@@ -56,6 +63,9 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
         }
         viewModelScope.launch {
             _isMovieReviewed.value = movieRepository.isMovieReviewed(userId, movieId)
+        }
+        viewModelScope.launch {
+            _averageMovieRating.value = movieRepository.getAverageMovieRating(movieId)
         }
     }
 
@@ -122,6 +132,8 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
             movieRepository.updateMovieReview(userId, movieId, review, timestamp)
         }
     }
+
+    suspend fun getMovieReviews(movieId: Long) = movieRepository.getMovieReviews(movieId)
 }
 
 class MovieDetailsViewModelFactory(private val movieId: Long) : ViewModelProvider.Factory {
