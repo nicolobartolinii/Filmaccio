@@ -285,8 +285,12 @@ object FirestoreService {
         var value = 0f
         var users = listOf<String>()
         docRef.get().addOnSuccessListener {
-            users = it.get("$movieId.ratings") as List<String>
-            value = (it.get("$movieId.value") as Double).toFloat()
+            users = if (it.get("$movieId.ratings") != null)
+                it.get("$movieId.ratings") as List<String>
+            else listOf()
+            value = if ((it.get("$movieId.value") as Double?) != null)
+                (it.get("$movieId.value") as Double).toFloat()
+            else 0f
         }.await()
         return if (users.isEmpty()) 0f
         else value / users.size
@@ -297,8 +301,12 @@ object FirestoreService {
         var value = 0f
         var users = listOf<String>()
         docRef.get().addOnSuccessListener {
-            users = it.get("$seriesId.ratings") as List<String>
-            value = (it.get("$seriesId.value") as Double).toFloat()
+            users = if (it.get("$seriesId.ratings") != null)
+                it.get("$seriesId.ratings") as List<String>
+            else listOf()
+            value = if ((it.get("$seriesId.value") as Double?) != null)
+                (it.get("$seriesId.value") as Double).toFloat()
+            else 0f
         }.await()
         return if (users.isEmpty()) 0f
         else value / users.size
@@ -317,6 +325,28 @@ object FirestoreService {
             val userData = getUserByUid(user).first()!!
             userData.birthDate
             val reviewData = getMovieReview(user, movieId)
+            val date = reviewData.second.toDate()
+            val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+            val dateString = format.format(date)
+            val review = ReviewTriple(userData, reviewData.first, dateString)
+            reviews.add(review)
+        }
+        return reviews
+    }
+
+    suspend fun getSeriesReviews(seriesId: Long): List<ReviewTriple> {
+        val docRef = collectionProductsReviews.document("series")
+        var users = listOf<String>()
+        docRef.get().addOnSuccessListener {
+            users =
+                if (it.get("$seriesId.reviews") != null) it.get("$seriesId.reviews") as List<String>
+                else listOf()
+        }.await()
+        val reviews = mutableListOf<ReviewTriple>()
+        for (user in users) {
+            val userData = getUserByUid(user).first()!!
+            userData.birthDate
+            val reviewData = getSeriesReview(user, seriesId)
             val date = reviewData.second.toDate()
             val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
             val dateString = format.format(date)

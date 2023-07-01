@@ -1,9 +1,11 @@
 package it.univpm.filmaccio.data.repository
 
+import com.google.firebase.Timestamp
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.DiscoverSeriesResponse
 import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.ProfileListItem
+import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
@@ -198,5 +200,39 @@ class SeriesRepository {
             FirestoreService.removeFromList(uid, "watching_t", seriesId)
             FirestoreService.addToList(uid, "finished_t", seriesId)
         }
+    }
+
+    suspend fun isSeriesRated(userId: String, seriesId: Long): Boolean {
+        val seriesRating = FirestoreService.getSeriesRating(userId, seriesId).first
+        return seriesRating != 0f
+    }
+
+    suspend fun getSeriesRating(userId: String, seriesId: Long): Pair<Float, Timestamp> {
+        return FirestoreService.getSeriesRating(userId, seriesId)
+    }
+
+    suspend fun isSeriesReviewed(userId: String, seriesId: Long): Boolean {
+        val seriesReview = FirestoreService.getSeriesReview(userId, seriesId).first
+        return seriesReview != ""
+    }
+
+    suspend fun getSeriesReview(userId: String, seriesId: Long): Pair<String, Timestamp> {
+        return FirestoreService.getSeriesReview(userId, seriesId)
+    }
+
+    suspend fun updateSeriesRating(userId: String, seriesId: Long, rating: Float, timestamp: Timestamp) {
+        FirestoreService.updateSeriesRating(userId, seriesId, rating, timestamp)
+    }
+
+    suspend fun updateSeriesReview(userId: String, seriesId: Long, review: String, timestamp: Timestamp) {
+        FirestoreService.updateSeriesReview(userId, seriesId, review, timestamp)
+    }
+
+    suspend fun getAverageSeriesRating(seriesId: Long): Float {
+        return FirestoreService.getAverageSeriesRating(seriesId)
+    }
+
+    suspend fun getSeriesReviews(seriesId: Long): List<ReviewTriple> {
+        return FirestoreService.getSeriesReviews(seriesId)
     }
 }

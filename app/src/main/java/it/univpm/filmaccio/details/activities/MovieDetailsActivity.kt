@@ -171,6 +171,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 overviewTextView.text = spannableString
             }
         }
+
         directorTextView.setOnClickListener {
             if (movieDirectors.size == 1) {
                 val directorId = movieDirectors[0].id

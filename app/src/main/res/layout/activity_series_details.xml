@@ -362,7 +362,7 @@
                         app:layout_constraintTop_toBottomOf="@id/divider_cast_valutations" />
 
                     <RatingBar
-                        android:id="@+id/movie_rating_bar"
+                        android:id="@+id/series_rating_bar"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="16dp"
@@ -378,10 +378,10 @@
                         android:layout_height="wrap_content"
                         android:layout_marginHorizontal="16dp"
                         android:text="Valuta"
-                        app:layout_constraintBottom_toBottomOf="@id/movie_rating_bar"
+                        app:layout_constraintBottom_toBottomOf="@id/series_rating_bar"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/movie_rating_bar"
-                        app:layout_constraintTop_toTopOf="@id/movie_rating_bar" />
+                        app:layout_constraintStart_toEndOf="@id/series_rating_bar"
+                        app:layout_constraintTop_toTopOf="@id/series_rating_bar" />
 
                     <TextView
                         android:id="@+id/review_title_text_view"
@@ -395,7 +395,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintHorizontal_bias="0.0"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/movie_rating_bar" />
+                        app:layout_constraintTop_toBottomOf="@id/series_rating_bar" />
 
                     <com.google.android.material.textfield.TextInputLayout
                         android:id="@+id/review_text_input_layout"
@@ -411,6 +411,7 @@
                         app:layout_constraintTop_toBottomOf="@id/review_title_text_view">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/review_text_input_edit_text"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:inputType="textMultiLine" />
@@ -504,7 +505,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
-                        android:text="Vedi le recensioni degli altri utenti"
+                        android:text="Visualizza tutte le recensioni"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/average_rating_bar" />

@@ -7,8 +7,12 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -17,14 +21,20 @@ import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
+import com.google.firebase.Timestamp
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Director
 import it.univpm.filmaccio.details.adapters.CastAdapter
 import it.univpm.filmaccio.details.adapters.SeasonsAdapter
 import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModelFactory
+import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
+import java.text.SimpleDateFormat
+import java.util.Locale
 
 class SeriesDetailsActivity : AppCompatActivity() {
 
@@ -46,6 +56,14 @@ class SeriesDetailsActivity : AppCompatActivity() {
     private lateinit var castRecyclerView: RecyclerView
     private lateinit var seriesDirectors: List<Director>
     private lateinit var viewFlipperSeries: ViewFlipper
+    private lateinit var seriesRatingBar: RatingBar
+    private lateinit var submitRatingButton: Button
+    private lateinit var reviewInputLayout: TextInputLayout
+    private lateinit var reviewEditText: TextInputEditText
+    private lateinit var editReviewButton: Button
+    private lateinit var submitReviewButton: Button
+    private lateinit var averageRatingBar: RatingBar
+    private lateinit var buttonViewAllReviews: Button
 
     private var isSeriesInWatching = false
 
@@ -73,6 +91,14 @@ class SeriesDetailsActivity : AppCompatActivity() {
         seasonsRecyclerView = findViewById(R.id.seasons_recycler_view)
         castRecyclerView = findViewById(R.id.cast_recycler_view)
         viewFlipperSeries = findViewById(R.id.view_flipper_series)
+        seriesRatingBar = findViewById(R.id.series_rating_bar)
+        submitRatingButton = findViewById(R.id.submit_rating_button)
+        reviewInputLayout = findViewById(R.id.review_text_input_layout)
+        reviewEditText = findViewById(R.id.review_text_input_edit_text)
+        editReviewButton = findViewById(R.id.edit_review_button)
+        submitReviewButton = findViewById(R.id.submit_review_button)
+        averageRatingBar = findViewById(R.id.average_rating_bar)
+        buttonViewAllReviews = findViewById(R.id.button_view_all_reviews)
 
         viewFlipperSeries.displayedChild = 0
 
@@ -222,6 +248,154 @@ class SeriesDetailsActivity : AppCompatActivity() {
                         intent.putExtra("personId", directorId)
                         startActivity(intent)
                     }.setNegativeButton("Annulla", null).show()
+            }
+        }
+
+        seriesDetailsViewModel.isSeriesRated.observe(this) { isRated ->
+            if (isRated) {
+                seriesDetailsViewModel.loadCurrentSeriesRating(
+                    UserUtils.getCurrentUserUid()!!, seriesId
+                )
+            }
+        }
+
+        seriesDetailsViewModel.isSeriesReviewed.observe(this) { isReviewed ->
+            if (isReviewed) {
+                seriesDetailsViewModel.loadCurrentSeriesReview(
+                    UserUtils.getCurrentUserUid()!!, seriesId
+                )
+            }
+        }
+
+        seriesDetailsViewModel.currentSeriesRating.observe(this) { seriesRating ->
+            if (seriesRating != null) {
+                seriesRatingBar.rating = seriesRating.first
+                submitRatingButton.isEnabled = false
+                seriesRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                    submitRatingButton.isEnabled = seriesRatingBar.rating != seriesRating.first
+                    submitRatingButton.setOnClickListener {
+                        seriesDetailsViewModel.updateSeriesRating(
+                            UserUtils.getCurrentUserUid()!!, seriesId, rating, Timestamp.now()
+                        )
+                        Toast.makeText(
+                            this@SeriesDetailsActivity, "Valutazione aggiornata", Toast.LENGTH_SHORT
+                        ).show()
+                        submitRatingButton.isEnabled = false
+                    }
+                }
+            } else {
+                submitRatingButton.isEnabled = false
+                seriesRatingBar.setOnRatingBarChangeListener { _, rating, _ ->
+                    submitRatingButton.isEnabled = true
+                    submitRatingButton.setOnClickListener {
+                        seriesDetailsViewModel.updateSeriesRating(
+                            UserUtils.getCurrentUserUid()!!, seriesId, rating, Timestamp.now()
+                        )
+                        Toast.makeText(
+                            this@SeriesDetailsActivity, "Valutazione aggiunta", Toast.LENGTH_SHORT
+                        ).show()
+                        submitRatingButton.isEnabled = false
+                    }
+                }
+            }
+        }
+
+        seriesDetailsViewModel.currentSeriesReview.observe(this) { seriesReview ->
+            if (seriesReview != null) {
+                editReviewButton.isEnabled = true
+                submitReviewButton.isEnabled = false
+                reviewEditText.setText(seriesReview.first)
+                reviewEditText.isEnabled = false
+                val date = seriesReview.second.toDate()
+                val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+                val dateString = format.format(date)
+                reviewInputLayout.helperText = "Ultima modifica: $dateString"
+                editReviewButton.setOnClickListener {
+                    editReviewButton.isEnabled = false
+                    submitReviewButton.isEnabled = true
+                    reviewEditText.isEnabled = true
+                }
+                submitReviewButton.setOnClickListener {
+                    reviewInputLayout.isErrorEnabled = false
+                    val reviewText = reviewEditText.text.toString()
+                    if (reviewText.length < 5) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error =
+                            "La recensione deve essere lunga almeno 5 caratteri"
+                        return@setOnClickListener
+                    }
+                    if (reviewText.contains("http") || reviewText.contains("www")) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione non può contenere link"
+                        return@setOnClickListener
+                    }
+                    if (reviewText == seriesReview.first) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione è identica a quella precedente"
+                        return@setOnClickListener
+                    }
+                    val timestamp = Timestamp.now()
+                    seriesDetailsViewModel.updateSeriesReview(
+                        UserUtils.getCurrentUserUid()!!, seriesId, reviewText, timestamp
+                    )
+                    Toast.makeText(
+                        this@SeriesDetailsActivity, "Recensione aggiornata", Toast.LENGTH_SHORT
+                    ).show()
+                    submitReviewButton.isEnabled = false
+                    editReviewButton.isEnabled = true
+                    reviewEditText.isEnabled = false
+                    reviewInputLayout.helperText =
+                        "Ultima modifica: ${format.format(timestamp.toDate())}"
+                }
+            } else {
+                editReviewButton.isEnabled = false
+                submitReviewButton.isEnabled = true
+                submitReviewButton.setOnClickListener {
+                    reviewInputLayout.isErrorEnabled = false
+                    val reviewText = reviewEditText.text.toString()
+                    if (reviewText.length < 5) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error =
+                            "La recensione deve essere lunga almeno 5 caratteri"
+                        return@setOnClickListener
+                    }
+                    if (reviewText.contains("http") || reviewText.contains("www")) {
+                        reviewInputLayout.isErrorEnabled = true
+                        reviewInputLayout.error = "La recensione non può contenere link"
+                        return@setOnClickListener
+                    }
+                    val timestamp = Timestamp.now()
+                    seriesDetailsViewModel.updateSeriesReview(
+                        UserUtils.getCurrentUserUid()!!, seriesId, reviewText, timestamp
+                    )
+                    val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+                    Toast.makeText(
+                        this@SeriesDetailsActivity, "Recensione aggiunta", Toast.LENGTH_SHORT
+                    ).show()
+                    submitReviewButton.isEnabled = false
+                    editReviewButton.isEnabled = true
+                    reviewEditText.isEnabled = false
+                    reviewInputLayout.helperText =
+                        "Ultima modifica: ${format.format(timestamp.toDate())}"
+                }
+            }
+        }
+
+        seriesDetailsViewModel.averageSeriesRating.observe(this) {
+            averageRatingBar.rating = it
+        }
+
+        seriesDetailsViewModel.seriesReviews.observe(this) {
+            if (it.isEmpty()) {
+                buttonViewAllReviews.visibility = View.INVISIBLE
+            } else {
+                buttonViewAllReviews.visibility = View.VISIBLE
+                buttonViewAllReviews.setOnClickListener { _ ->
+                    val intent = Intent(this, ViewAllActivity::class.java)
+                    intent.putExtra("entities", ArrayList(it))
+                    intent.putExtra("title", "Recensioni")
+                    startActivity(intent)
+                }
             }
         }
 

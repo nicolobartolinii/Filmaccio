@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
+import com.google.firebase.Timestamp
+import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -30,6 +32,24 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
     private val _isSeriesFinished = MutableLiveData<Boolean>()
     val isSeriesFinished: LiveData<Boolean> = _isSeriesFinished
 
+    private val _isSeriesRated = MutableLiveData<Boolean>()
+    val isSeriesRated: LiveData<Boolean> = _isSeriesRated
+
+    private val _isSeriesReviewed = MutableLiveData<Boolean>()
+    val isSeriesReviewed: LiveData<Boolean> = _isSeriesReviewed
+
+    private val _currentSeriesRating = MutableLiveData<Pair<Float, Timestamp>?>(null)
+    val currentSeriesRating: LiveData<Pair<Float, Timestamp>?> = _currentSeriesRating
+
+    private val _currentSeriesReview = MutableLiveData<Pair<String, Timestamp>?>(null)
+    val currentSeriesReview: LiveData<Pair<String, Timestamp>?> = _currentSeriesReview
+
+    private val _averageSeriesRating = MutableLiveData<Float>()
+    val averageSeriesRating: LiveData<Float> = _averageSeriesRating
+
+    private val _seriesReviews = MutableLiveData<List<ReviewTriple>>(emptyList())
+    val seriesReviews: LiveData<List<ReviewTriple>> = _seriesReviews
+
     init {
         viewModelScope.launch {
             _isSeriesInWatching.value = seriesRepository.isSeriesInWatching(userId, seriesId)
@@ -42,6 +62,18 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
         }
         viewModelScope.launch {
             _isSeriesFinished.value = seriesRepository.isSeriesFinished(userId, seriesId)
+        }
+        viewModelScope.launch {
+            _isSeriesRated.value = seriesRepository.isSeriesRated(userId, seriesId)
+        }
+        viewModelScope.launch {
+            _isSeriesReviewed.value = seriesRepository.isSeriesReviewed(userId, seriesId)
+        }
+        viewModelScope.launch {
+            _averageSeriesRating.value = seriesRepository.getAverageSeriesRating(seriesId)
+        }
+        viewModelScope.launch {
+            _seriesReviews.value = seriesRepository.getSeriesReviews(seriesId)
         }
     }
 
@@ -84,6 +116,32 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
         val series = seriesRepository.getSeriesDetails(seriesId)
         emit(series)
     }
+
+    fun loadCurrentSeriesRating(userId: String, seriesId: Long) {
+        viewModelScope.launch {
+            _currentSeriesRating.value = seriesRepository.getSeriesRating(userId, seriesId)
+        }
+    }
+
+    fun loadCurrentSeriesReview(userId: String, seriesId: Long) {
+        viewModelScope.launch {
+            _currentSeriesReview.value = seriesRepository.getSeriesReview(userId, seriesId)
+        }
+    }
+
+    fun updateSeriesRating(userId: String, seriesId: Long, rating: Float, timestamp: Timestamp) {
+        viewModelScope.launch {
+            seriesRepository.updateSeriesRating(userId, seriesId, rating, timestamp)
+        }
+    }
+
+    fun updateSeriesReview(userId: String, seriesId: Long, review: String, timestamp: Timestamp) {
+        viewModelScope.launch {
+            seriesRepository.updateSeriesReview(userId, seriesId, review, timestamp)
+        }
+    }
+
+    suspend fun getSeriesReviews(seriesId: Long) = seriesRepository.getSeriesReviews(seriesId)
 }
 
 class SeriesDetailsViewModelFactory(private val seriesId: Long) : ViewModelProvider.Factory {
