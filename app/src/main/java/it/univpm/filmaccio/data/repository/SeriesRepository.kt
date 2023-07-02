@@ -235,4 +235,8 @@ class SeriesRepository {
     suspend fun getSeriesReviews(seriesId: Long): List<ReviewTriple> {
         return FirestoreService.getSeriesReviews(seriesId)
     }
+
+    suspend fun getUserReviews(userId: String): Pair<ReviewTriple, Long>? {
+        return FirestoreService.getUserReviews(userId, "series")
+    }
 }

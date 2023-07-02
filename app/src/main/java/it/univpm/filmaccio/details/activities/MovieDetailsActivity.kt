@@ -361,7 +361,7 @@ class MovieDetailsActivity : AppCompatActivity() {
                 buttonViewAllReviews.visibility = View.VISIBLE
                 buttonViewAllReviews.setOnClickListener { _ ->
                     val intent = Intent(this, ViewAllActivity::class.java)
-                    intent.putExtra("entities", ArrayList(it))
+                    intent.putExtra("entities", ArrayList(it.reversed()))
                     intent.putExtra("title", "Recensioni")
                     startActivity(intent)
                 }

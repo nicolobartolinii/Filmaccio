@@ -26,6 +26,7 @@ class PersonDetailsActivity : AppCompatActivity() {
 
     private lateinit var personImage: ShapeableImageView
     private lateinit var personNameTextView: TextView
+    private lateinit var knownForLabel: TextView
     private lateinit var knownForTextView: TextView
     private lateinit var genderTextView: TextView
     private lateinit var birthTextView: TextView
@@ -49,6 +50,7 @@ class PersonDetailsActivity : AppCompatActivity() {
 
         personImage = findViewById(R.id.person_image)
         personNameTextView = findViewById(R.id.person_name)
+        knownForLabel = findViewById(R.id.known_for_label)
         knownForTextView = findViewById(R.id.known_for)
         genderTextView = findViewById(R.id.gender)
         birthTextView = findViewById(R.id.birth)
@@ -89,7 +91,10 @@ class PersonDetailsActivity : AppCompatActivity() {
             }
             when (it.gender) {
                 0 -> genderTextView.text = "Non specificato"
-                1 -> genderTextView.text = "Femminile"
+                1 -> {
+                    genderTextView.text = "Femminile"
+                    knownForLabel.text = "Conosciuta per"
+                }
                 2 -> genderTextView.text = "Maschile"
                 else -> genderTextView.text = "Non disponibile"
             }

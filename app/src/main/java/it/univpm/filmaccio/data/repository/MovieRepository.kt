@@ -194,4 +194,8 @@ class MovieRepository {
     suspend fun getMovieReviews(movieId: Long): List<ReviewTriple> {
         return FirestoreService.getMovieReviews(movieId)
     }
+
+    suspend fun getUserReviews(userId: String): Pair<ReviewTriple, Long>? {
+        return FirestoreService.getUserReviews(userId, "movies")
+    }
 }

@@ -195,7 +195,6 @@ class ViewAllAdapter(private val type: Char = 'm') :
 
             is ReviewTriple -> {
                 holder as ReviewViewHolder
-                Log.d("ViewAllAdapter", "Review: $entity")
                 holder.title.text = "Ha recensito il film il: ${entity.date}"
                 Glide.with(holder.itemView.context).load(entity.user.profileImage)
                     .into(holder.shapeableImageView)

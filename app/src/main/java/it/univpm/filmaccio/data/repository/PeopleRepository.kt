@@ -59,4 +59,14 @@ class PeopleRepository {
     fun unfollowPerson(userId: String, personId: Long) {
         FirestoreService.unfollowPerson(userId, personId)
     }
+
+    suspend fun getFollowedPeople(userId: String): List<Person> {
+        val followdPeopleIds = FirestoreService.getPeopleFollowed(userId).first()
+        val followedPeople = mutableListOf<Person>()
+        for (personId in followdPeopleIds) {
+            val person = getPersonDetails(personId)
+            followedPeople.add(person)
+        }
+        return followedPeople
+    }
 }

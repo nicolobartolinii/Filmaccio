@@ -2,6 +2,7 @@
 
 package it.univpm.filmaccio.main.utils
 
+import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -50,10 +51,10 @@ object FirestoreService {
     fun updateUserField(uid: String, field: String, value: Any, callback: (Boolean) -> Unit) {
         val userRef = collectionUsers.document(uid)
         userRef.update(field, value).addOnCompleteListener {
-                callback(it.isSuccessful)
-            }.addOnFailureListener {
-                callback(false)
-            }
+            callback(it.isSuccessful)
+        }.addOnFailureListener {
+            callback(false)
+        }
     }
 
 
@@ -285,12 +286,12 @@ object FirestoreService {
         var value = 0f
         var users = listOf<String>()
         docRef.get().addOnSuccessListener {
-            users = if (it.get("$movieId.ratings") != null)
-                it.get("$movieId.ratings") as List<String>
-            else listOf()
-            value = if ((it.get("$movieId.value") as Double?) != null)
-                (it.get("$movieId.value") as Double).toFloat()
-            else 0f
+            users =
+                if (it.get("$movieId.ratings") != null) it.get("$movieId.ratings") as List<String>
+                else listOf()
+            value =
+                if ((it.get("$movieId.value") as Double?) != null) (it.get("$movieId.value") as Double).toFloat()
+                else 0f
         }.await()
         return if (users.isEmpty()) 0f
         else value / users.size
@@ -301,12 +302,12 @@ object FirestoreService {
         var value = 0f
         var users = listOf<String>()
         docRef.get().addOnSuccessListener {
-            users = if (it.get("$seriesId.ratings") != null)
-                it.get("$seriesId.ratings") as List<String>
-            else listOf()
-            value = if ((it.get("$seriesId.value") as Double?) != null)
-                (it.get("$seriesId.value") as Double).toFloat()
-            else 0f
+            users =
+                if (it.get("$seriesId.ratings") != null) it.get("$seriesId.ratings") as List<String>
+                else listOf()
+            value =
+                if ((it.get("$seriesId.value") as Double?) != null) (it.get("$seriesId.value") as Double).toFloat()
+                else 0f
         }.await()
         return if (users.isEmpty()) 0f
         else value / users.size
@@ -354,5 +355,37 @@ object FirestoreService {
             reviews.add(review)
         }
         return reviews
+    }
+
+    suspend fun getUserReviews(userId: String, type: String): Pair<ReviewTriple, Long>? {
+        val docRef = collectionUsersReviews.document(userId).get().await()
+        val reviews = docRef.get(type) as Map<String, Map<String, Map<String, Any>>>?
+        val latestReview = if (reviews != null) findLatestReview(reviews)
+        else return null
+        val reviewTriple = ReviewTriple(
+            getUserByUid(userId).first()!!,
+            latestReview?.second ?: "",
+            latestReview?.third ?: "01/01/1970 00:00"
+        )
+        return Pair(reviewTriple, latestReview?.first?.toLong() ?: 0)
+    }
+
+    private fun findLatestReview(map: Map<String, Map<String, Map<String, Any>>>): Triple<String, String, String>? {
+        var latestReview: Triple<String, String, String>? = null
+        var latestTimestamp: Timestamp? = null
+
+        for ((key1, value1) in map) {
+            val value2 = value1["review"] ?: continue
+            val timestamp = value2["timestamp"] as Timestamp
+            if (latestTimestamp == null || timestamp > latestTimestamp) {
+                latestTimestamp = timestamp
+                val date = latestTimestamp.toDate()
+                val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
+                val dateString = format.format(date)
+                Log.d("DATE", "$key1, $value1, $value2, $dateString")
+                latestReview = Triple(key1, value2["text"] as String, dateString)
+            }
+        }
+        return latestReview
     }
 }
