@@ -28,9 +28,5 @@ class MainActivity : AppCompatActivity() {
         navBar = findViewById(R.id.navigation_bar)
 
         navBar.setupWithNavController(navController)
-
-        if (intent.getBooleanExtra("reloadProfile", false)) {
-            navHostFragment.navController.navigate(R.id.action_navigation_home_to_navigation_profile)
-        }
     }
 }

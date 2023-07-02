@@ -14,6 +14,7 @@ import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
+import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.main.activities.ViewAllActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -138,6 +139,48 @@ class HomeFragment : Fragment() {
         binding.thirdLatestReleaseHome.setOnClickListener {
             val intent = Intent(context, MovieDetailsActivity::class.java)
             intent.putExtra("movieId", nowPlayingMovieIds[2])
+            startActivity(intent)
+        }
+
+        // Impostazione del listener sul click per il primo poster dei film più votati
+        binding.firstTopRatedMovieHome.setOnClickListener {
+            val intent = Intent(context, MovieDetailsActivity::class.java)
+            intent.putExtra("movieId", topRatedMovies[0].id)
+            startActivity(intent)
+        }
+
+        // Impostazione del listener sul click per il secondo poster dei film più votati
+        binding.secondTopRatedMovieHome.setOnClickListener {
+            val intent = Intent(context, MovieDetailsActivity::class.java)
+            intent.putExtra("movieId", topRatedMovies[1].id)
+            startActivity(intent)
+        }
+
+        // Impostazione del listener sul click per il terzo poster dei film più votati
+        binding.thirdTopRatedMovieHome.setOnClickListener {
+            val intent = Intent(context, MovieDetailsActivity::class.java)
+            intent.putExtra("movieId", topRatedMovies[2].id)
+            startActivity(intent)
+        }
+
+        // Impostazione del listener sul click per il primo poster delle serie tv più votate
+        binding.firstTopRatedSeriesHome.setOnClickListener {
+            val intent = Intent(context, SeriesDetailsActivity::class.java)
+            intent.putExtra("seriesId", topRatedSeries[0].id)
+            startActivity(intent)
+        }
+
+        // Impostazione del listener sul click per il secondo poster delle serie tv più votate
+        binding.secondTopRatedSeriesHome.setOnClickListener {
+            val intent = Intent(context, SeriesDetailsActivity::class.java)
+            intent.putExtra("seriesId", topRatedSeries[1].id)
+            startActivity(intent)
+        }
+
+        // Impostazione del listener sul click per il terzo poster delle serie tv più votate
+        binding.thirdTopRatedSeriesHome.setOnClickListener {
+            val intent = Intent(context, SeriesDetailsActivity::class.java)
+            intent.putExtra("seriesId", topRatedSeries[2].id)
             startActivity(intent)
         }
 

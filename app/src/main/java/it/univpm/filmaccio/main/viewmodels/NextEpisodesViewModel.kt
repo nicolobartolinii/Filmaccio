@@ -77,7 +77,7 @@ class NextEpisodesViewModel : ViewModel() {
                         }
                     }
                     Log.d("NextEpisodesViewModel", "Season: $season, nextEpisodeNumber: $nextEpisodeNumber, seasonDetails.episodes.size: ${seasonDetails.episodes.size},")
-                    if (nextEpisodeNumber != -1L && season.value.size == seriesDetails.seasons[seasonNumber.toInt()].episodes.size) continue
+                    if (nextEpisodeNumber != -1L && season.value.size == seriesDetails.seasons[seasonNumber.toInt() - 1].episodes.size) continue
                     else if (nextEpisodeNumber != -1L && series.value.size == seriesDetails.seasons.size) break
                     else break
                 }

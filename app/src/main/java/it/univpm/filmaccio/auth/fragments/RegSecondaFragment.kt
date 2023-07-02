@@ -65,7 +65,7 @@ class RegSecondaFragment : Fragment() {
 
             // Se l'utente non ha selezionato nessun genere, mostriamo un Toast che lo avvisa di selezionare un genere e interrompiamo l'esecuzione del codice
             if (gender == null) {
-                Toast.makeText(requireContext(), "Seleziona un genere", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Seleziona un genere", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -94,7 +94,7 @@ class RegSecondaFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     "Inserisci una data di nascita valida (almeno $minimumAge anni)",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }

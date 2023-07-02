@@ -76,7 +76,7 @@ class RegGooglePrimoFragment : Fragment() {
             }
 
             if (gender == null) {
-                Toast.makeText(requireContext(), "Seleziona un genere", Toast.LENGTH_LONG).show()
+                Toast.makeText(requireContext(), "Seleziona un genere", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
 
@@ -99,7 +99,7 @@ class RegGooglePrimoFragment : Fragment() {
                 Toast.makeText(
                     requireContext(),
                     "Inserisci una data di nascita valida (almeno $minimumAge anni)",
-                    Toast.LENGTH_LONG
+                    Toast.LENGTH_SHORT
                 ).show()
                 return@setOnClickListener
             }

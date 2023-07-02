@@ -174,7 +174,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="148dp"
                         app:icon="@drawable/round_more_time_24"
-                        app:layout_constraintEnd_toStartOf="@id/button_lists"
+                        app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@id/button_favorite"
                         app:layout_constraintTop_toTopOf="parent" />
 
@@ -187,28 +187,6 @@
                         app:layout_constraintEnd_toEndOf="@id/button_watchlist"
                         app:layout_constraintStart_toStartOf="@id/button_watchlist"
                         app:layout_constraintTop_toBottomOf="@id/button_watchlist" />
-
-                    <com.google.android.material.button.MaterialButton
-                        android:id="@+id/button_lists"
-                        style="@style/Widget.Material3.Button.IconButton.Filled"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="148dp"
-                        android:layout_weight="1"
-                        app:icon="@drawable/round_view_list_24"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/button_watchlist"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <TextView
-                        android:id="@+id/textView_lists"
-                        android:layout_width="wrap_content"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:text="Altro"
-                        app:layout_constraintEnd_toEndOf="@id/button_lists"
-                        app:layout_constraintStart_toStartOf="@id/button_lists"
-                        app:layout_constraintTop_toBottomOf="@id/button_lists" />
 
                     <View
                         android:id="@+id/divider_buttons_overview"

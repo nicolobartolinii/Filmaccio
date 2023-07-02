@@ -41,24 +41,11 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var propicImageView: ShapeableImageView
     private lateinit var backdropImageView: ShapeableImageView
 
-    private lateinit var callback: OnBackPressedCallback
-
     private var selectedBackdropImageUrl: String? = Constants.DESERT_BACKDROP_URL
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_profile_edit)
-
-        callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                val intent = Intent(this@EditProfileActivity, MainActivity::class.java)
-                intent.putExtra("reloadProfile", true)
-                startActivity(intent)
-                finish()
-            }
-        }
-
-        onBackPressedDispatcher.addCallback(this, callback)
 
         val nameShown = intent.getStringExtra("nameShown")
         val uid = intent.getStringExtra("uid")
@@ -81,9 +68,6 @@ class EditProfileActivity : AppCompatActivity() {
         Glide.with(this).load(backdropImage).into(backdropImageView)
 
         buttonBack.setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            intent.putExtra("reloadProfile", true)
-            startActivity(intent)
             finish()
         }
 
@@ -183,9 +167,6 @@ class EditProfileActivity : AppCompatActivity() {
                     )
                     snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
                     snackbar.setAction("Indietro") {
-                        val intent = Intent(this, MainActivity::class.java)
-                        intent.putExtra("reloadProfile", true)
-                        startActivity(intent)
                         finish()
                     }
                     snackbar.show()
@@ -225,9 +206,6 @@ class EditProfileActivity : AppCompatActivity() {
                             )
                             snackbar.animationMode = Snackbar.ANIMATION_MODE_SLIDE
                             snackbar.setAction("Indietro") {
-                                val intent = Intent(this, MainActivity::class.java)
-                                intent.putExtra("reloadProfile", true)
-                                startActivity(intent)
                                 finish()
                             }
                             snackbar.show()
@@ -244,10 +222,5 @@ class EditProfileActivity : AppCompatActivity() {
                 ).show()
             }
         }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        callback.remove()
     }
 }

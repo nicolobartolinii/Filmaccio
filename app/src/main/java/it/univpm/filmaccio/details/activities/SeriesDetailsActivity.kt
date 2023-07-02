@@ -206,8 +206,10 @@ class SeriesDetailsActivity : AppCompatActivity() {
                 SeasonsAdapter(it.id, it.seasons, this, isSeriesInWatching)
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
 
-            titleTextView.setOnClickListener { _ ->
-                MaterialAlertDialogBuilder(this).setTitle(it.title).setPositiveButton("Ok", null)
+            if (it.title.length > 50) titleTextView.setOnClickListener { _ ->
+                MaterialAlertDialogBuilder(this).setTitle("Titolo completo")
+                    .setMessage(it.title)
+                    .setPositiveButton("Ok", null)
                     .show()
             }
             viewFlipperSeries.displayedChild = 1
@@ -387,9 +389,11 @@ class SeriesDetailsActivity : AppCompatActivity() {
 
         seriesDetailsViewModel.seriesReviews.observe(this) {
             if (it.isEmpty()) {
-                buttonViewAllReviews.visibility = View.INVISIBLE
+                buttonViewAllReviews.isEnabled = false
+                buttonViewAllReviews.text = "Vedi tutte le recensioni (0)"
             } else {
-                buttonViewAllReviews.visibility = View.VISIBLE
+                buttonViewAllReviews.isEnabled = true
+                buttonViewAllReviews.text = "Vedi tutte le recensioni (${it.size})"
                 buttonViewAllReviews.setOnClickListener { _ ->
                     val intent = Intent(this, ViewAllActivity::class.java)
                     intent.putExtra("entities", ArrayList(it.reversed()))
