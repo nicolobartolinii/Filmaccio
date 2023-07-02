@@ -4,6 +4,8 @@ import android.content.Intent
 import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
 import com.google.firebase.auth.FirebaseAuth
@@ -30,6 +32,10 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
+            val colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.icon_color)
+            findPreference<Preference>("theme")?.icon?.setTintList(colorStateList)
+            findPreference<Preference>("logout")?.icon?.setTintList(colorStateList)
+
             val logoutPref: Preference? = findPreference("logout")
             logoutPref?.setOnPreferenceClickListener {
                 FirebaseAuth.getInstance().signOut()
@@ -51,7 +57,13 @@ class SettingsActivity : AppCompatActivity() {
         }
 
         override fun onSharedPreferenceChanged(sharedPreferences: SharedPreferences, key: String) {
-            // Handle your preferences changes here.
+            if (key == "theme") {
+                when (sharedPreferences.getString("theme", "default")) {
+                    "light" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+                    "dark" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                    "system" -> AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                }
+            }
         }
     }
 }

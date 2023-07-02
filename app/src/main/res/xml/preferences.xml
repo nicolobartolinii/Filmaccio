@@ -1,16 +1,9 @@
 <PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <SwitchPreferenceCompat
-        app:key="notifications"
-        app:title="Abilità notifiche"
-        app:summary="Ricevi notifiche quando altri utenti iniziano a seguirti"
-        app:defaultValue="true"
-        app:icon="@drawable/ic_feed"/>
-
     <ListPreference
         app:key="theme"
-        app:title="App Theme"
-        app:summary="Choose your preferred theme"
+        app:title="Tema dell'app"
+        app:summary="Scegli quale tema applicare all'app"
         app:defaultValue="system"
         app:entries="@array/theme_entries"
         app:entryValues="@array/theme_values"
