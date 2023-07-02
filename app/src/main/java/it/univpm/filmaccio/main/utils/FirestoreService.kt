@@ -335,6 +335,20 @@ object FirestoreService {
         return reviews
     }
 
+    suspend fun getAllRatings(type: String): List<Pair<Long, Double>> {
+        val docRef = collectionProductsReviews.document(type).get().await()
+        val document = docRef.data as MutableMap<String, Map<String, Any>>
+        val ratings = mutableListOf<Pair<Long, Double>>()
+        for (movie in document) {
+            val movieId = movie.key.toLong()
+            if (movie.value["ratings"] == null) continue
+            val rating = (movie.value["value"] as Double) / (movie.value["ratings"] as List<String>).size
+            val pair = Pair(movieId, rating)
+            ratings.add(pair)
+        }
+        return ratings
+    }
+
     suspend fun getSeriesReviews(seriesId: Long): List<ReviewTriple> {
         val docRef = collectionProductsReviews.document("series")
         var users = listOf<String>()

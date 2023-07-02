@@ -5,12 +5,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.ViewFlipper
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.bumptech.glide.Glide
+import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.data.models.Movie
+import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.main.activities.ViewAllActivity
@@ -42,21 +43,35 @@ class HomeFragment : Fragment() {
         return binding.root
     }
 
-    private lateinit var moviePostersHome: List<ImageView>
+    private lateinit var nowPlayingMoviesPosters: List<ShapeableImageView>
+    private lateinit var topRatedMoviesPosters: List<ShapeableImageView>
+    private lateinit var topRatedSeriesPosters: List<ShapeableImageView>
     private lateinit var viewFlipperHome: ViewFlipper
 
     private lateinit var latestReleases: List<Movie>
+    private lateinit var topRatedMovies: List<Movie>
+    private lateinit var topRatedSeries: List<Series>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        moviePostersHome = listOf(
+        nowPlayingMoviesPosters = listOf(
             binding.firstLatestReleaseHome,
             binding.secondLatestReleaseHome,
             binding.thirdLatestReleaseHome
         )
+        topRatedMoviesPosters = listOf(
+            binding.firstTopRatedMovieHome,
+            binding.secondTopRatedMovieHome,
+            binding.thirdTopRatedMovieHome
+            )
+        topRatedSeriesPosters = listOf(
+            binding.firstTopRatedSeriesHome,
+            binding.secondTopRatedSeriesHome,
+            binding.thirdTopRatedSeriesHome
+        )
         viewFlipperHome = binding.viewFlipperHome
         viewFlipperHome.displayedChild = 0
         // Qui creiamo una lista vuota che poi conterrà gli id dei film in onda.
-        val movieIds = mutableListOf(0L, 0L, 0L)
+        val nowPlayingMovieIds = mutableListOf(0L, 0L, 0L)
         // Qui osserviamo il LiveData che contiene i film in onda nel viewmodel.
         // Questa è una gestione asincrona dei dati. Si osserva la variabile nowPlayingMovies del viewModel
         // e quando questa cambia si esegue il codice che c'è dentro il blocco di codice.
@@ -67,10 +82,10 @@ class HomeFragment : Fragment() {
             // lista movieIds gli id dei film in onda e andiamo a caricare le immagini dei poster dei film
             // nei riquadri della schermata home.
             for (i in 0..2) {
-                movieIds[i] = it.movies[i].id
+                nowPlayingMovieIds[i] = it.movies[i].id
                 Glide.with(this)
                     .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
-                    .into(moviePostersHome[i])
+                    .into(nowPlayingMoviesPosters[i])
                 // Un piccolo dettaglio su questa cosa è il link che viene utilizzato per caricare le immagini.
                 // Questo link è standard fino a dopo il p/ dopo di che abbiamo la definizione della larghezza
                 // dell'immagine da reperire da TMDB. Questa larghezza non è un numero a caso, infatti bisogna
@@ -80,6 +95,26 @@ class HomeFragment : Fragment() {
                 // Nella schermata di dettaglio dei film invece si utilizza una larghezza maggiore perché si vuole
                 // che l'immagine sia più grande (infatti uso w342 se non sbaglio).
             }
+        }
+
+        homeViewModel.topRatedMovies.observe(viewLifecycleOwner) {
+            topRatedMovies = it
+            // Qui si fa la stessa cosa che si fa per i film in onda, ma per i film più votati.
+            for (i in 0..2) {
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${it[i].posterPath}")
+                    .into(topRatedMoviesPosters[i])
+            }
+        }
+
+        homeViewModel.topRatedSeries.observe(viewLifecycleOwner) {
+            topRatedSeries = it
+            // Qui si fa la stessa cosa che si fa per i film in onda, ma per le serie tv più votate.
+            for (i in 0..2) {
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${it[i].posterPath}")
+                    .into(topRatedSeriesPosters[i])
+            }
             viewFlipperHome.displayedChild = 1
         }
 
@@ -88,21 +123,21 @@ class HomeFragment : Fragment() {
             // Quando viene cliccato il poster del film in onda, viene aperta la schermata di dettaglio del film corrispondente
             // aggiungendo all'intent l'id del film. in modo da poterlo recuperare nella schermata di dettaglio.
             val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra("movieId", movieIds[0])
+            intent.putExtra("movieId", nowPlayingMovieIds[0])
             startActivity(intent)
         }
 
         // Impostazione del listener sul click per il secondo poster dei film in onda
         binding.secondLatestReleaseHome.setOnClickListener {
             val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra("movieId", movieIds[1])
+            intent.putExtra("movieId", nowPlayingMovieIds[1])
             startActivity(intent)
         }
 
         // Impostazione del listener sul click per il terzo poster dei film in onda
         binding.thirdLatestReleaseHome.setOnClickListener {
             val intent = Intent(context, MovieDetailsActivity::class.java)
-            intent.putExtra("movieId", movieIds[2])
+            intent.putExtra("movieId", nowPlayingMovieIds[2])
             startActivity(intent)
         }
 
@@ -113,9 +148,18 @@ class HomeFragment : Fragment() {
             startActivity(intent)
         }
 
+        binding.buttonTopRatedMoviesViewAll.setOnClickListener {
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(topRatedMovies.take(25)))
+            intent.putExtra("title", "Film più votati (top 25)")
+            startActivity(intent)
+        }
 
-        binding.buttonFeedViewAllHome.setOnClickListener {
-            FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, 4235)
+        binding.buttonTopRatedSeriesViewAll.setOnClickListener {
+            val intent = Intent(requireContext(), ViewAllActivity::class.java)
+            intent.putExtra("entities", ArrayList(topRatedSeries.take(25)))
+            intent.putExtra("title", "Serie TV più votate (top 25)")
+            startActivity(intent)
         }
     }
 }

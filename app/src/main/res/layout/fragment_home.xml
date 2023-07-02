@@ -14,6 +14,7 @@
             android:id="@+id/scrollview_home"
             android:layout_width="match_parent"
             android:layout_height="0dp"
+            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -123,7 +124,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="@string/feed"
+                        android:text="Film più votati"
                         android:textColor="?attr/colorPrimary" />
 
                     <View
@@ -132,7 +133,7 @@
                         android:layout_weight="1" />
 
                     <Button
-                        android:id="@+id/button_feed_view_all_home"
+                        android:id="@+id/button_top_rated_movies_view_all"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -140,34 +141,38 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/three_feeds_linlayout_home"
+                    android:id="@+id/three_top_rated_movies_linlayout_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp">
+                    android:paddingHorizontal="8dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/first_top_rated_movie_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:visibility="invisible" />
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/second_top_rated_movie_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:visibility="invisible" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:visibility="invisible" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/third_top_rated_movie_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                 </LinearLayout>
 
@@ -193,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="@string/episodes"
+                        android:text="Serie TV più votate"
                         android:textColor="?attr/colorPrimary" />
 
                     <View
@@ -202,7 +207,7 @@
                         android:layout_weight="1" />
 
                     <Button
-                        android:id="@+id/button_episodes_view_all_home"
+                        android:id="@+id/button_top_rated_series_view_all"
                         style="@style/Widget.Material3.Button.TextButton"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -210,38 +215,43 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/three_episodes_linlayout_home"
+                    android:id="@+id/three_top_rated_series_linlayout_home"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:paddingHorizontal="16dp">
+                    android:paddingHorizontal="8dp">
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/first_top_rated_series_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:visibility="invisible" />
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/second_top_rated_series_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                     <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp" />
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:visibility="invisible" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="8dp" />
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="60dp"
-                        android:visibility="invisible" />
+                    <com.google.android.material.imageview.ShapeableImageView
+                        android:id="@+id/third_top_rated_series_home"
+                        android:layout_width="110dp"
+                        android:layout_height="165dp"
+                        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
                 </LinearLayout>
 
             </LinearLayout>
+
         </ScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
