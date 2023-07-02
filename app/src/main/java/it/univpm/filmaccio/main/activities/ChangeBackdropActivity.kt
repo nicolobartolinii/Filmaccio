@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
+import android.widget.ViewFlipper
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
@@ -27,6 +28,7 @@ class ChangeBackdropActivity : AppCompatActivity(), BackdropAdapter.ImageSelecti
     private lateinit var confirmButton: ExtendedFloatingActionButton
     private lateinit var infoButton: Button
     private lateinit var pagesTextView: TextView
+    private lateinit var viewFlipperBackdrops: ViewFlipper
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -40,6 +42,7 @@ class ChangeBackdropActivity : AppCompatActivity(), BackdropAdapter.ImageSelecti
         previousPageButton = findViewById(R.id.button_before)
         confirmButton = findViewById(R.id.confirm_button)
         pagesTextView = findViewById(R.id.textView_page)
+        viewFlipperBackdrops = findViewById(R.id.view_flipper_backdrops)
 
         nextPageButton.setOnClickListener {
             changeBackdropViewModel.loadNextPage()
@@ -91,6 +94,8 @@ class ChangeBackdropActivity : AppCompatActivity(), BackdropAdapter.ImageSelecti
 
         changeBackdropViewModel.backdrops.observe(this) { backdrops ->
             backdropAdapter.submitList(backdrops)
+            if (backdrops.isEmpty()) viewFlipperBackdrops.displayedChild = 1
+            else viewFlipperBackdrops.displayedChild = 0
             updateNavigation()
         }
 

@@ -67,12 +67,12 @@ class FeedViewModel() : ViewModel() {
                 val movieTimestamp = Timestamp(movieDate)
                 val seriesDate = format.parse(seriesReview.first.date)!!
                 val seriesTimestamp = Timestamp(seriesDate)
-                if (movieTimestamp > seriesTimestamp) {
+                if (movieTimestamp > seriesTimestamp && movieReview.second != 0L) {
                     val movie = movieRepository.getMovieDetails(movieReview.second)
                     val tmdbEntity = TmdbEntity(movie.id, movie.title, movie.posterPath, "movie")
                     reviews.add(Pair(movieReview.first, tmdbEntity))
                 }
-                else {
+                else if (seriesTimestamp > movieTimestamp && seriesReview.second != 0L) {
                     val series = seriesRepository.getSeriesDetails(seriesReview.second)
                     val tmdbEntity = TmdbEntity(series.id, series.title, series.posterPath, "series")
                     reviews.add(Pair(seriesReview.first, tmdbEntity))

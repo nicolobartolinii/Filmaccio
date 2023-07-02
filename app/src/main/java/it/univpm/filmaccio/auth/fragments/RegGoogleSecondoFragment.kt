@@ -205,7 +205,7 @@ class RegGoogleSecondoFragment : Fragment() {
             "watchingSeries" to hashMapOf<String, Any>()
         )
         val reviewsDocument = hashMapOf(
-            "movies" to arrayListOf<List<String>>(), "series" to arrayListOf()
+            "movies" to hashMapOf<String, Map<String, Map<String, Any>>>(), "series" to hashMapOf()
         )
 
         FirestoreService.collectionUsers.document(uid!!).set(user).addOnFailureListener {
