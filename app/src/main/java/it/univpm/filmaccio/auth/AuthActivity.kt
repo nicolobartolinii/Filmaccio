@@ -17,7 +17,6 @@ class AuthActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
         // Inizializza l'istanza di firebaseAuth prendendola dalla classe UserUtils che si occupa di fornire utilità relative all'utente via FirebaseAuth
         auth = UserUtils.auth
     }
@@ -25,6 +24,7 @@ class AuthActivity : AppCompatActivity() {
     // Questo metodo viene chiamato quando l'activity viene avviata
     public override fun onStart() {
         super.onStart()
+        setContentView(R.layout.loading_screen)
         // Controlla se l'utente è già loggato
         val currentUser = auth.currentUser
         if (currentUser != null) {
@@ -46,8 +46,9 @@ class AuthActivity : AppCompatActivity() {
                     baseContext, "Errore di lettura del database: $exception",
                     Toast.LENGTH_SHORT
                 ).show()
+                setContentView(R.layout.activity_auth)
             }
-        }
+        } else setContentView(R.layout.activity_auth)
         // Se l'utente non è loggato non fa nulla e, data la struttura dell'XML di questa activity, mostra il fragment di login
     }
 }

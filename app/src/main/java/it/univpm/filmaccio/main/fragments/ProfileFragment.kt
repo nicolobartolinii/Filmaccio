@@ -242,7 +242,7 @@ class ProfileFragment : Fragment() {
                     } else if (listTitle == "finished_t") {
                         // Se la lista è quella delle serie viste allora aggiorniamo le variabili
                         // tvMinutes e tvNumber con i valori corretti
-                        val watchingSeries = FirestoreService.getWatchingSeries(currentUser.uid).first()
+                        val watchingSeries = FirestoreService.getWatchingSeries(UserUtils.getCurrentUserUid()!!).first()
                         for (series in watchingSeries) {
                             val seriesDetails = seriesRepository.getSeriesDetails(series.key.toLong())
                             for (season in series.value) {
