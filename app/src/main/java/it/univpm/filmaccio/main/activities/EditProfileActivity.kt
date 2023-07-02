@@ -200,12 +200,12 @@ class EditProfileActivity : AppCompatActivity() {
         savePropicButton.setOnClickListener {
             val selectedImageBitmap = (propicImageView.drawable as BitmapDrawable).bitmap
 
-            // compressa l'immagine
+            // comprimiamo l'immagine
             val byteArrayOutputStream = ByteArrayOutputStream()
             selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
             val imageData = byteArrayOutputStream.toByteArray()
 
-            // carica l'immagine su Firebase Cloud Storage
+            // carichiamo l'immagine su Firebase Cloud Storage
             val storageReference = Firebase.storage.reference
             val propicReference = storageReference.child("propic/${uid}/profile.jpg")
 
@@ -244,7 +244,6 @@ class EditProfileActivity : AppCompatActivity() {
                 ).show()
             }
         }
-
     }
 
     override fun onDestroy() {

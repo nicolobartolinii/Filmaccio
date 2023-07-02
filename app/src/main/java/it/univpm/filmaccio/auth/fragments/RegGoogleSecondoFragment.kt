@@ -1,13 +1,10 @@
 package it.univpm.filmaccio.auth.fragments
 
-import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,10 +14,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import androidx.navigation.fragment.navArgs
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.google.android.material.imageview.ShapeableImageView
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -33,8 +27,8 @@ import it.univpm.filmaccio.main.activities.MainActivity
 import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
+import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.FileOutputStream
 
 // Questa classe gestisce il secondo passo della registrazione di un utente tramite Google.
 // La differenza con il terzo passo della registrazione tramite email è che qui l'utente non viene creato in FirebaseAuth, perché in questo caso l'utente è già
@@ -63,9 +57,7 @@ class RegGoogleSecondoFragment : Fragment() {
     private lateinit var nameShown: String
     private var croppedImageFile: File? = null
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegGoogleSecondoBinding.inflate(inflater, container, false)
 
@@ -110,88 +102,77 @@ class RegGoogleSecondoFragment : Fragment() {
     }
 
     private fun onPropicClick() {
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)
+        MaterialAlertDialogBuilder(requireContext()).setTitle("Info di servizio").setMessage(
+                "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
+            ).setPositiveButton("OK") { dialog, _ ->
+                dialog.dismiss()
+            }.show()/*val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+        startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
     }
 
-    @Deprecated("Deprecated in Java")
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+    /* @Deprecated("Deprecated in Java")
+     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+         super.onActivityResult(requestCode, resultCode, data)
 
-        if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
-            selectedImageUri = data.data!!
-            loadImageWithCircularCrop(selectedImageUri)
-        }
-    }
+         if (requestCode == PICK_IMAGE_REQUEST && resultCode == Activity.RESULT_OK && data != null) {
+             selectedImageUri = data.data!!
+             loadImageWithCircularCrop(selectedImageUri)
+         }
+     }
 
-    private fun loadImageWithCircularCrop(imageUri: Uri?) {
-        val requestBuilder = Glide.with(this)
-            .asBitmap()
-            .load(imageUri)
-            .apply(RequestOptions.circleCropTransform())
+     private fun loadImageWithCircularCrop(imageUri: Uri?) {
+         val requestBuilder = Glide.with(this)
+             .asBitmap()
+             .load(imageUri)
+             .apply(RequestOptions.circleCropTransform())
 
-        val target = object : CustomTarget<Bitmap>() {
-            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
-                croppedImageFile = saveBitmapToFile(resource)
-                propicImageView.setImageBitmap(resource)
-            }
+         val target = object : CustomTarget<Bitmap>() {
+             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                 croppedImageFile = saveBitmapToFile(resource)
+                 propicImageView.setImageBitmap(resource)
+             }
 
-            override fun onLoadCleared(placeholder: Drawable?) {
-                propicImageView.setImageDrawable(null)
-            }
-        }
+             override fun onLoadCleared(placeholder: Drawable?) {
+                 propicImageView.setImageDrawable(null)
+             }
+         }
 
-        requestBuilder.into(target)
-    }
+         requestBuilder.into(target)
+     }
 
-    private fun saveBitmapToFile(bitmap: Bitmap): File {
-        val file = File(requireContext().cacheDir, "propic.jpg")
-        val outputStream = FileOutputStream(file)
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
-        outputStream.flush()
-        outputStream.close()
-        return file
-    }
+     private fun saveBitmapToFile(bitmap: Bitmap): File {
+         val file = File(requireContext().cacheDir, "propic.jpg")
+         val outputStream = FileOutputStream(file)
+         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream)
+         outputStream.flush()
+         outputStream.close()
+         return file
+     }*/
 
     private fun uploadPropicAndUser(uid: String?) {
-        val storageRef = Firebase.storage.reference
-        val propicRef = storageRef.child("propic/${uid}.jpg")
-        val imageUri = if (croppedImageFile != null) {
-            Uri.fromFile(croppedImageFile)
-        } else {
-            val drawable = propicImageView.drawable as BitmapDrawable
-            val bitmap = drawable.bitmap
-            val defaultImageFile = saveBitmapToFile(bitmap)
-            Uri.fromFile(defaultImageFile)
-        }
-        val uploadTask = propicRef.putFile(imageUri)
+        val selectedImageBitmap = (propicImageView.drawable as BitmapDrawable).bitmap
 
-        uploadTask.continueWithTask { task ->
-            if (!task.isSuccessful) {
-                val exception = task.exception
-                Toast.makeText(
-                    requireContext(),
-                    "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})",
-                    Toast.LENGTH_LONG
-                )
-                    .show()
-            }
+        // Comprimiamo l'immagine
+        val byteArrayOutputStream = ByteArrayOutputStream()
+        selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
+        val imageData = byteArrayOutputStream.toByteArray()
 
-            propicRef.downloadUrl
-        }.addOnCompleteListener { task ->
-            if (task.isSuccessful) {
-                val downloadUri = task.result
-                val imageURL = downloadUri.toString()
-                addNewUserToFirestore(uid, imageURL)
-            } else {
-                val exception = task.exception
-                Toast.makeText(
-                    requireContext(),
-                    "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: ${exception.toString()})",
-                    Toast.LENGTH_LONG
-                )
-                    .show()
+        val storageReference = Firebase.storage.reference
+        val propicReference = storageReference.child("propic/${uid}/profile.jpg")
+
+        val uploadTask = propicReference.putBytes(imageData)
+        uploadTask.addOnSuccessListener {
+
+            propicReference.downloadUrl.addOnSuccessListener { uri ->
+                val propicURL = uri.toString()
+                addNewUserToFirestore(uid, propicURL)
             }
+        }.addOnFailureListener {
+            Toast.makeText(
+                requireContext(),
+                "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: $it)",
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 
@@ -224,12 +205,24 @@ class RegGoogleSecondoFragment : Fragment() {
             "watchingSeries" to hashMapOf<String, Any>()
         )
         val reviewsDocument = hashMapOf(
-            "movies" to arrayListOf<List<String>>(),
-            "series" to arrayListOf()
+            "movies" to arrayListOf<List<String>>(), "series" to arrayListOf()
         )
 
-        FirestoreService.collectionUsers.document(uid!!)
-            .set(user)
+        FirestoreService.collectionUsers.document(uid!!).set(user).addOnFailureListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        FirestoreService.collectionFollow.document(uid).set(followDocument).addOnFailureListener {
+                Toast.makeText(
+                    requireContext(),
+                    "Registrazione al database fallita, avvisa il nostro team di supporto",
+                    Toast.LENGTH_LONG
+                ).show()
+            }
+        FirestoreService.collectionEpisodes.document(uid).set(episodesDocument)
             .addOnFailureListener {
                 Toast.makeText(
                     requireContext(),
@@ -237,8 +230,7 @@ class RegGoogleSecondoFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        FirestoreService.collectionFollow.document(uid)
-            .set(followDocument)
+        FirestoreService.collectionUsersReviews.document(uid).set(reviewsDocument)
             .addOnFailureListener {
                 Toast.makeText(
                     requireContext(),
@@ -246,30 +238,9 @@ class RegGoogleSecondoFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        FirestoreService.collectionEpisodes.document(uid)
-            .set(episodesDocument)
-            .addOnFailureListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        FirestoreService.collectionUsersReviews.document(uid)
-            .set(reviewsDocument)
-            .addOnFailureListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
-        FirestoreService.collectionLists.document(uid)
-            .set(listsDocument)
-            .addOnSuccessListener {
+        FirestoreService.collectionLists.document(uid).set(listsDocument).addOnSuccessListener {
                 navigateToMainActivity()
-            }
-            .addOnFailureListener {
+            }.addOnFailureListener {
                 Toast.makeText(
                     requireContext(),
                     "Registrazione al database fallita, avvisa il nostro team di supporto",
