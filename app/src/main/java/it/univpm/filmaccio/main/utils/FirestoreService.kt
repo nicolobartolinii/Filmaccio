@@ -24,13 +24,13 @@ import java.util.Locale
 // autoesplicativi, quindi non mi metterò a commentarli.
 object FirestoreService {
 
-    val db: FirebaseFirestore by lazy { Firebase.firestore }
+    private val db: FirebaseFirestore by lazy { Firebase.firestore }
     val collectionUsers = db.collection("users")
     val collectionFollow = db.collection("follow")
     val collectionLists = db.collection("lists")
     val collectionEpisodes = db.collection("episodes")
     val collectionUsersReviews = db.collection("usersReviews")
-    val collectionProductsReviews = db.collection("productsReviews")
+    private val collectionProductsReviews = db.collection("productsReviews")
 
     fun getUserByUid(uid: String) = flow {
         val user = collectionUsers.document(uid).get().await().toObject(User::class.java)

@@ -19,11 +19,6 @@ class AuthActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // Inizializza l'istanza di firebaseAuth prendendola dalla classe UserUtils che si occupa di fornire utilità relative all'utente via FirebaseAuth
         auth = UserUtils.auth
-    }
-
-    // Questo metodo viene chiamato quando l'activity viene avviata
-    public override fun onStart() {
-        super.onStart()
         setContentView(R.layout.loading_screen)
         // Controlla se l'utente è già loggato
         val currentUser = auth.currentUser
@@ -49,6 +44,5 @@ class AuthActivity : AppCompatActivity() {
                 setContentView(R.layout.activity_auth)
             }
         } else setContentView(R.layout.activity_auth)
-        // Se l'utente non è loggato non fa nulla e, data la struttura dell'XML di questa activity, mostra il fragment di login
     }
 }

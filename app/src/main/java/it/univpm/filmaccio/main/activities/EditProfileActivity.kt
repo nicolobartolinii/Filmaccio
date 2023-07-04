@@ -21,6 +21,7 @@ import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.ktx.storage
 import it.univpm.filmaccio.R
+import it.univpm.filmaccio.data.repository.UsersRepository
 import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -42,6 +43,8 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var backdropImageView: ShapeableImageView
 
     private var selectedBackdropImageUrl: String? = Constants.DESERT_BACKDROP_URL
+
+    private val usersRepository = UsersRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,7 +84,7 @@ class EditProfileActivity : AppCompatActivity() {
                 return@setOnClickListener
             }
             // richiama la funzione chew fa un update del nome utente
-            FirestoreService.updateUserField(uid!!, "nameShown", newNameShown) { updateSuccessful ->
+            usersRepository.updateUserField(uid!!, "nameShown", newNameShown) { updateSuccessful ->
                 if (updateSuccessful) {
                     val snackbar = Snackbar.make(
                         buttonChangePassword,
