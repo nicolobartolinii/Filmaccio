@@ -9,7 +9,6 @@ import it.univpm.filmaccio.data.repository.UsersRepository
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
-import org.junit.Assert
 import org.junit.Test
 
 class FirestoreUnitTests {

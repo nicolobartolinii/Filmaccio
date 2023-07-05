@@ -11,8 +11,6 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegPrimaBinding
 import it.univpm.filmaccio.main.utils.FirestoreService
@@ -33,11 +31,8 @@ class RegPrimaFragment : Fragment() {
     private lateinit var usernameRegInputTextEdit: TextInputEditText
     private lateinit var passwordRegInputTextEdit: TextInputEditText
     private lateinit var passwordConfirmRegInputTextEdit: TextInputEditText
-    private val db = Firebase.firestore
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegPrimaBinding.inflate(inflater, container, false)
 
@@ -128,9 +123,7 @@ class RegPrimaFragment : Fragment() {
                             // In questo caso passiamo tre stringhe: email, username e password che poi possono essere riottenute nel fragment successivo
                             val action =
                                 RegPrimaFragmentDirections.actionRegPrimaFragmentToRegSecondaFragment(
-                                    email,
-                                    username,
-                                    password
+                                    email, username, password
                                 )
                             // Quì navighiamo attraverso l'action definita prima al prossimo fragment.
                             // Infatti l'action si riferisce a actionRegPrimaFragmentToRegSecondaFragment che è l'id dell'action che porta dal framgnet RegPrimaFragment al fragment RegSecondaFragment mantenendo i dati necessari
@@ -165,8 +158,7 @@ class RegPrimaFragment : Fragment() {
             // La callback è una funzione che viene passata come parametro ad un'altra funzione e che viene chiamata all'interno di quest'ultima
             // In altre parole è quel "emailExists" che viene chiamato all'interno della lambda relativa a isEmailAlreadyRegistered dentro il listener del pulsante buttonAvanti
             callback(exists)
-        }
-            .addOnFailureListener {
+        }.addOnFailureListener {
                 // Se la query fallisce, probabilmente è dovuto ad un errore di connessione, quindi mostriamo un messaggio di errore
                 Toast.makeText(context, "Errore di connessione", Toast.LENGTH_SHORT).show()
                 // Poi agiamo come se l'email non esistesse, quindi chiamiamo la callback passandogli false
@@ -187,12 +179,10 @@ class RegPrimaFragment : Fragment() {
     // Metodo che si occupa di verificare se lo username inserito sia già associato ad un account esistente nel database FIRESTORE, è praticamente uguale a isEmailAlreadyRegistered
     private fun isUsernameAlreadyRegistered(username: String, callback: (Boolean) -> Unit) {
         val query = FirestoreService.getWhereEqualTo("users", "username", username)
-        query.get()
-            .addOnSuccessListener { querySnapshot ->
+        query.get().addOnSuccessListener { querySnapshot ->
                 val exists = !querySnapshot.isEmpty
                 callback(exists)
-            }
-            .addOnFailureListener {
+            }.addOnFailureListener {
                 callback(true)
             }
     }

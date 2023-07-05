@@ -27,10 +27,10 @@
         android:contentDescription="@string/back"
         app:icon="@drawable/round_refresh_24"
         app:iconSize="24dp"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@id/button_info"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"/>
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/button_info"
@@ -79,7 +79,7 @@
                 android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginTop="8dp"
                 android:fontFamily="sans-serif-black"
-                android:text="Caricamento in corso..."
+                android:text="@string/caricamento_in_corso"
                 android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
         </LinearLayout>
@@ -102,20 +102,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="Non c'è molto da vedere qui"
+                android:text="@string/niente_da_vedere_qui"
                 android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
             <ImageView
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginVertical="8dp"
-                android:contentDescription="Empty Episodes"
+                android:contentDescription="@string/empty_episodes"
                 android:src="@drawable/tumbleweed" />
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Per iniziare a tracciare gli episodi da guardare, cerca una serie TV nella schermata di ricerca e aggiungila alla tua lista delle serie TV in visione"
+                android:text="@string/info_empty_episodes"
                 android:textAlignment="center"
                 android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 

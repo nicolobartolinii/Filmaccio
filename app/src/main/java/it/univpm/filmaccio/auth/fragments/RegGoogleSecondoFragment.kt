@@ -3,7 +3,6 @@ package it.univpm.filmaccio.auth.fragments
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,18 +27,16 @@ import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 // Questa classe gestisce il secondo passo della registrazione di un utente tramite Google.
 // La differenza con il terzo passo della registrazione tramite email è che qui l'utente non viene creato in FirebaseAuth, perché in questo caso l'utente è già
 // stato creato come ho spiegato in LoginFragment.
 // Questa è la classe in cui ho il giga problema stranissimo di cui ho parlato abbondantemente in RegTerzaFragment, quindi nel caso andate a vedere quel file per la spiegazione (e vedrete anche che i due codici sono letteralmente identici).
-@Suppress("DEPRECATION")
 class RegGoogleSecondoFragment : Fragment() {
 
-    companion object {
+    /*companion object {
         private const val PICK_IMAGE_REQUEST = 8
-    }
+    }*/
 
     private var _binding: FragmentRegGoogleSecondoBinding? = null
     private val binding get() = _binding!!
@@ -49,13 +46,15 @@ class RegGoogleSecondoFragment : Fragment() {
     private lateinit var nomeVisualizzatoTextInputEditText: TextInputEditText
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ShapeableImageView
-    private lateinit var selectedImageUri: Uri
+
+    // private lateinit var selectedImageUri: Uri
     private lateinit var email: String
     private lateinit var username: String
     private lateinit var gender: String
     private lateinit var birthDate: Timestamp
     private lateinit var nameShown: String
-    private var croppedImageFile: File? = null
+
+    // private var croppedImageFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -103,10 +102,10 @@ class RegGoogleSecondoFragment : Fragment() {
 
     private fun onPropicClick() {
         MaterialAlertDialogBuilder(requireContext()).setTitle("Info di servizio").setMessage(
-                "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
-            ).setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
-            }.show()/*val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
+        ).setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }.show()/*val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
     }
 
@@ -209,19 +208,19 @@ class RegGoogleSecondoFragment : Fragment() {
         )
 
         FirestoreService.collectionUsers.document(uid!!).set(user).addOnFailureListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            Toast.makeText(
+                requireContext(),
+                "Registrazione al database fallita, avvisa il nostro team di supporto",
+                Toast.LENGTH_LONG
+            ).show()
+        }
         FirestoreService.collectionFollow.document(uid).set(followDocument).addOnFailureListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            Toast.makeText(
+                requireContext(),
+                "Registrazione al database fallita, avvisa il nostro team di supporto",
+                Toast.LENGTH_LONG
+            ).show()
+        }
         FirestoreService.collectionEpisodes.document(uid).set(episodesDocument)
             .addOnFailureListener {
                 Toast.makeText(
@@ -239,14 +238,14 @@ class RegGoogleSecondoFragment : Fragment() {
                 ).show()
             }
         FirestoreService.collectionLists.document(uid).set(listsDocument).addOnSuccessListener {
-                navigateToMainActivity()
-            }.addOnFailureListener {
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            navigateToMainActivity()
+        }.addOnFailureListener {
+            Toast.makeText(
+                requireContext(),
+                "Registrazione al database fallita, avvisa il nostro team di supporto",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     private fun navigateToMainActivity() {

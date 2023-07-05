@@ -16,8 +16,6 @@ import it.univpm.filmaccio.databinding.FragmentHomeBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.main.activities.ViewAllActivity
-import it.univpm.filmaccio.main.utils.FirestoreService
-import it.univpm.filmaccio.main.utils.UserUtils
 import it.univpm.filmaccio.main.viewmodels.HomeViewModel
 
 // Questo fragment è la schermata home dell'app. In questa schermata vengono mostrati i film attualmente in onda,
@@ -34,12 +32,9 @@ class HomeFragment : Fragment() {
     private val homeViewModel: HomeViewModel by viewModels()
 
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
-        _binding = FragmentHomeBinding
-            .inflate(inflater, container, false)
+        _binding = FragmentHomeBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -63,7 +58,7 @@ class HomeFragment : Fragment() {
             binding.firstTopRatedMovieHome,
             binding.secondTopRatedMovieHome,
             binding.thirdTopRatedMovieHome
-            )
+        )
         topRatedSeriesPosters = listOf(
             binding.firstTopRatedSeriesHome,
             binding.secondTopRatedSeriesHome,
@@ -84,8 +79,7 @@ class HomeFragment : Fragment() {
             // nei riquadri della schermata home.
             for (i in 0..2) {
                 nowPlayingMovieIds[i] = it.movies[i].id
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it.movies[i].posterPath}")
                     .into(nowPlayingMoviesPosters[i])
                 // Un piccolo dettaglio su questa cosa è il link che viene utilizzato per caricare le immagini.
                 // Questo link è standard fino a dopo il p/ dopo di che abbiamo la definizione della larghezza
@@ -102,8 +96,7 @@ class HomeFragment : Fragment() {
             topRatedMovies = it
             // Qui si fa la stessa cosa che si fa per i film in onda, ma per i film più votati.
             for (i in 0..2) {
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it[i].posterPath}")
                     .into(topRatedMoviesPosters[i])
             }
         }
@@ -112,8 +105,7 @@ class HomeFragment : Fragment() {
             topRatedSeries = it
             // Qui si fa la stessa cosa che si fa per i film in onda, ma per le serie tv più votate.
             for (i in 0..2) {
-                Glide.with(this)
-                    .load("https://image.tmdb.org/t/p/w185${it[i].posterPath}")
+                Glide.with(this).load("https://image.tmdb.org/t/p/w185${it[i].posterPath}")
                     .into(topRatedSeriesPosters[i])
             }
             viewFlipperHome.displayedChild = 1

@@ -42,7 +42,6 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="3dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="Stagione 1"
                         android:textAppearance="@style/TextAppearance.Material3.TitleSmall"
                         android:textColor="?colorPrimary" />
 
@@ -51,7 +50,6 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:fontFamily="sans-serif-medium"
-                        android:text="2022 | 10 episodi"
                         android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <TextView
@@ -61,7 +59,6 @@
                         android:ellipsize="end"
                         android:fontFamily="sans-serif-medium"
                         android:maxLines="2"
-                        android:text="Terza stagione della serie con Dwayne Johnson. Nel 2032, l'attore ed ex star del wrestling ripercorre i momenti decisivi della sua vita."
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
                 </LinearLayout>

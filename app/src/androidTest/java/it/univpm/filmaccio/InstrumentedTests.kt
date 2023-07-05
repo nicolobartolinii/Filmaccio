@@ -60,14 +60,14 @@ class InstrumentedTests {
         onView(withId(R.id.navigation_search)).perform(click())
         // Verifica che il fragment di ricerca sia visualizzato correttamente
         onView(withId(R.id.view_flipper_search)).check(
-                matches(
-                    hasDescendant(
-                        withEffectiveVisibility(
-                            ViewMatchers.Visibility.VISIBLE
-                        )
+            matches(
+                hasDescendant(
+                    withEffectiveVisibility(
+                        ViewMatchers.Visibility.VISIBLE
                     )
                 )
             )
+        )
         // Simula un click sulla barra di ricerca
         onView(withId(R.id.search_bar)).perform(click())
         // Scrive la query di ricerca nella barra di ricerca

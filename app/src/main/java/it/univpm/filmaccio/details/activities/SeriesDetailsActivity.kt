@@ -7,7 +7,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -31,7 +30,6 @@ import it.univpm.filmaccio.details.adapters.SeasonsAdapter
 import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModel
 import it.univpm.filmaccio.details.viewmodels.SeriesDetailsViewModelFactory
 import it.univpm.filmaccio.main.activities.ViewAllActivity
-import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
@@ -207,10 +205,8 @@ class SeriesDetailsActivity : AppCompatActivity() {
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
 
             if (it.title.length > 50) titleTextView.setOnClickListener { _ ->
-                MaterialAlertDialogBuilder(this).setTitle("Titolo completo")
-                    .setMessage(it.title)
-                    .setPositiveButton("Ok", null)
-                    .show()
+                MaterialAlertDialogBuilder(this).setTitle("Titolo completo").setMessage(it.title)
+                    .setPositiveButton("Ok", null).show()
             }
             viewFlipperSeries.displayedChild = 1
         }

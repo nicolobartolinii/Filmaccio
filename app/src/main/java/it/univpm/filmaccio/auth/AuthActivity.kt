@@ -38,8 +38,7 @@ class AuthActivity : AppCompatActivity() {
             }.addOnFailureListener { exception ->
                 // Gestisci l'errore di lettura da Firestore
                 Toast.makeText(
-                    baseContext, "Errore di lettura del database: $exception",
-                    Toast.LENGTH_SHORT
+                    baseContext, "Errore di lettura del database: $exception", Toast.LENGTH_SHORT
                 ).show()
                 setContentView(R.layout.activity_auth)
             }

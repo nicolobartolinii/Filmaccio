@@ -28,7 +28,7 @@
             android:layout_gravity="bottom|center_horizontal"
             android:layout_marginTop="50dp"
             android:fontFamily="sans-serif-black"
-            android:text="Caricamento in corso..."
+            android:text="@string/caricamento_in_corso"
             android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
     </FrameLayout>

@@ -10,7 +10,6 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -138,13 +137,14 @@ class EditProfileActivity : AppCompatActivity() {
                 }
             }
 
-        propicChooseLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                val selectedImageUri = result.data?.data
-                Glide.with(this).load(selectedImageUri).into(propicImageView)
-                savePropicButton.isEnabled = true
+        propicChooseLauncher =
+            registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                if (result.resultCode == Activity.RESULT_OK) {
+                    val selectedImageUri = result.data?.data
+                    Glide.with(this).load(selectedImageUri).into(propicImageView)
+                    savePropicButton.isEnabled = true
+                }
             }
-        }
 
         backdropImageView.setOnClickListener {
             val intent = Intent(this, ChangeBackdropActivity::class.java)
@@ -158,9 +158,7 @@ class EditProfileActivity : AppCompatActivity() {
 
         saveBackdropButton.setOnClickListener {
             FirestoreService.updateUserField(
-                uid!!,
-                "backdropImage",
-                selectedBackdropImageUrl!!
+                uid!!, "backdropImage", selectedBackdropImageUrl!!
             ) { updateSuccessful ->
                 if (updateSuccessful) {
                     val snackbar = Snackbar.make(
@@ -200,7 +198,9 @@ class EditProfileActivity : AppCompatActivity() {
                     val propicUrl = uri.toString()
 
                     // aggiorniamo il documento su Firebase Firestore
-                    FirestoreService.updateUserField(uid!!, "profileImage", propicUrl) { updateSuccessful ->
+                    FirestoreService.updateUserField(
+                        uid!!, "profileImage", propicUrl
+                    ) { updateSuccessful ->
                         if (updateSuccessful) {
                             val snackbar = Snackbar.make(
                                 buttonChangePassword,
@@ -214,7 +214,9 @@ class EditProfileActivity : AppCompatActivity() {
                             snackbar.show()
                         } else {
                             Toast.makeText(
-                                this, "C'è stato un problema con la modifica, riprova.", Toast.LENGTH_LONG
+                                this,
+                                "C'è stato un problema con la modifica, riprova.",
+                                Toast.LENGTH_LONG
                             ).show()
                         }
                     }

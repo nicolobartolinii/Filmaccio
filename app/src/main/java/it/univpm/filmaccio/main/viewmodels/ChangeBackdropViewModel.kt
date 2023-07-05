@@ -11,7 +11,7 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
-class ChangeBackdropViewModel() : ViewModel() {
+class ChangeBackdropViewModel : ViewModel() {
 
     var backdropsTotal = listOf<String>()
 
@@ -31,7 +31,7 @@ class ChangeBackdropViewModel() : ViewModel() {
         }
     val itemsPerPage = 20
 
-    var pages = 0
+    private var pages = 0
         set(value) {
             field = value
             _pages.value = value

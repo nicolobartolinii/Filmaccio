@@ -17,7 +17,7 @@ data class Movie(
     @SerializedName("runtime") val duration: Int,
     @SerializedName("credits") var credits: Credits,
 ) : java.io.Serializable {
-    data class Credits (
+    data class Credits(
         @SerializedName("cast") var cast: List<Character>,
         @SerializedName("crew") var crew: List<Director>
     ) : java.io.Serializable

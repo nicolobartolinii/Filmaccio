@@ -342,7 +342,8 @@ object FirestoreService {
         for (movie in document) {
             val movieId = movie.key.toLong()
             if (movie.value["ratings"] == null) continue
-            val rating = (movie.value["value"] as Double) / (movie.value["ratings"] as List<String>).size
+            val rating =
+                (movie.value["value"] as Double) / (movie.value["ratings"] as List<String>).size
             val pair = Pair(movieId, rating)
             ratings.add(pair)
         }

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -23,10 +22,10 @@
                 android:id="@+id/textView9"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:fontFamily="@font/roboto_bold"
-                android:text="@string/feed"
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="16dp"
+                android:fontFamily="@font/roboto_bold"
+                android:text="@string/feed"
                 android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                 android:textColor="?attr/colorPrimary"
                 app:layout_constraintEnd_toStartOf="@id/button_reload"
@@ -43,10 +42,10 @@
                 android:contentDescription="@string/back"
                 app:icon="@drawable/round_refresh_24"
                 app:iconSize="24dp"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/button_info"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"/>
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
             <Button
                 android:id="@+id/button_info"
@@ -75,18 +74,18 @@
                 android:ellipsize="end"
                 android:fontFamily="@font/roboto_bold"
                 android:maxLines="1"
-                android:text="Attività degli utenti seguiti"
+                android:text="@string/attivit_degli_utenti_seguiti"
                 android:textColor="?attr/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9"
-                app:layout_constraintEnd_toEndOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@+id/textView9" />
 
             <ViewFlipper
                 android:id="@+id/feed_view_flipper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_followed_users_feed">
@@ -113,7 +112,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="Caricamento in corso..."
+                        android:text="@string/caricamento_in_corso"
                         android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
                 </LinearLayout>
@@ -135,20 +134,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Non c'è molto da vedere qui"
+                        android:text="@string/niente_da_vedere_qui"
                         android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginVertical="8dp"
-                        android:contentDescription="Empty Feed"
+                        android:contentDescription="@string/empty_feed"
                         android:src="@drawable/tumbleweed" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Per visualizzare le ultime attività relative agli utenti che segui, inizia seguendo un utente. Cerca il suo nome utente nella schermata di ricerca e seguilo."
+                        android:text="@string/info_empty_feed"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
@@ -164,18 +163,18 @@
                 android:layout_marginHorizontal="16dp"
                 android:layout_marginTop="8dp"
                 android:fontFamily="@font/roboto_bold"
-                android:text="Personaggi seguiti"
+                android:text="@string/personaggi_seguiti"
                 android:textColor="?attr/colorPrimary"
-                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/feed_view_flipper" />
 
             <ViewFlipper
                 android:id="@+id/people_view_flipper"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
                 android:layout_marginHorizontal="16dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/title_followed_people_feed">
@@ -202,7 +201,7 @@
                         android:layout_gravity="bottom|center_horizontal"
                         android:layout_marginTop="8dp"
                         android:fontFamily="sans-serif-black"
-                        android:text="Caricamento in corso..."
+                        android:text="@string/caricamento_in_corso"
                         android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
 
                 </LinearLayout>
@@ -223,20 +222,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="Non c'è molto da vedere qui"
+                        android:text="@string/niente_da_vedere_qui"
                         android:textAppearance="@style/TextAppearance.Material3.TitleSmall" />
 
                     <ImageView
                         android:layout_width="100dp"
                         android:layout_height="100dp"
                         android:layout_marginVertical="8dp"
-                        android:contentDescription="Empty Followed People"
+                        android:contentDescription="@string/empty_followed_people"
                         android:src="@drawable/tumbleweed" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Per visualizzare la lista dei personaggi che segui, inizia seguendo un personaggio. Cerca il suo nome nella schermata di ricerca o clicca nella sua scheda nel dettaglio di un film o di una serie TV e seguilo."
+                        android:text="@string/info_empty_followed_people"
                         android:textAlignment="center"
                         android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 

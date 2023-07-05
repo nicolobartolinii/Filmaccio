@@ -67,6 +67,7 @@ class ViewAllAdapter(private val type: Char = 'm') :
     // layout in modo da poterle visualizzare correttamente nella RecyclerView.
     // Quindi se il risultato è TmdbEntiy impostiamo il titolo e l'immagine, se è un utente impostiamo
     // la foto profilo e il nome (visualizzato).
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         when (val entity = entities[position]) {
             is Movie -> {

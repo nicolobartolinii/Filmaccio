@@ -34,9 +34,7 @@ class CastAdapter(private val cast: List<Character>) :
                 .load("https://image.tmdb.org/t/p/w185${castMember.profilePath}")
                 .into(holder.personImage)
         } else {
-            Glide.with(holder.itemView.context)
-                .load(R.drawable.error_404)
-                .into(holder.personImage)
+            Glide.with(holder.itemView.context).load(R.drawable.error_404).into(holder.personImage)
         }
         holder.nameCastTextView.text = castMember.name
         holder.characterNameCastTextView.text = castMember.character

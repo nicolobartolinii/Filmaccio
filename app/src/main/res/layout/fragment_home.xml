@@ -31,7 +31,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:fontFamily="@font/roboto_bold"
-                    android:text="Home"
+                    android:text="@string/home"
                     android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
                     android:textColor="?attr/colorPrimary"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -124,7 +124,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="Film più votati"
+                        android:text="@string/film_piu_votati"
                         android:textColor="?attr/colorPrimary" />
 
                     <View
@@ -198,7 +198,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:fontFamily="@font/roboto_bold"
-                        android:text="Serie TV più votate"
+                        android:text="@string/serie_tv_piu_votate"
                         android:textColor="?attr/colorPrimary" />
 
                     <View

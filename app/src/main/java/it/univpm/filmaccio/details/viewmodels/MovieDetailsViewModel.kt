@@ -10,7 +10,6 @@ import com.google.firebase.Timestamp
 import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.main.utils.UserUtils
-import it.univpm.filmaccio.details.viewmodels.MovieDetailsViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 

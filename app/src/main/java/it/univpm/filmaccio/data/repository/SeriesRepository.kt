@@ -19,9 +19,7 @@ class SeriesRepository {
     }
 
     suspend fun getTopRatedSeries(
-        page: Int = 1,
-        language: String = "it-IT",
-        region: String = "IT"
+        page: Int = 1, language: String = "it-IT", region: String = "IT"
     ): DiscoverSeriesResponse {
         return tmdbApi.getTopRatedSeries(page = page, language = language, region = region)
     }
@@ -34,15 +32,11 @@ class SeriesRepository {
         }
         series.seasons = series.seasons.map {
             val season = tmdbApi.getSeasonDetails(
-                seriesId = seriesId,
-                seasonNumber = it.number,
-                language = "it-IT"
+                seriesId = seriesId, seasonNumber = it.number, language = "it-IT"
             )
             if (seasonHasMissingDetails(season)) {
                 val seasonInEnglish = tmdbApi.getSeasonDetails(
-                    seriesId = seriesId,
-                    seasonNumber = it.number,
-                    language = "en-US"
+                    seriesId = seriesId, seasonNumber = it.number, language = "en-US"
                 )
                 fillMissingSeasonDetails(season, seasonInEnglish)
             }
@@ -53,15 +47,11 @@ class SeriesRepository {
 
     suspend fun getSeasonDetails(seriesId: Long, seasonNumber: Long): Series.Season {
         val season = tmdbApi.getSeasonDetails(
-            seriesId = seriesId,
-            seasonNumber = seasonNumber,
-            language = "it-IT"
+            seriesId = seriesId, seasonNumber = seasonNumber, language = "it-IT"
         )
         if (seasonHasMissingDetails(season)) {
             val seasonInEnglish = tmdbApi.getSeasonDetails(
-                seriesId = seriesId,
-                seasonNumber = seasonNumber,
-                language = "en-US"
+                seriesId = seriesId, seasonNumber = seasonNumber, language = "en-US"
             )
             fillMissingSeasonDetails(season, seasonInEnglish)
         }
@@ -101,10 +91,7 @@ class SeriesRepository {
     }
 
     suspend fun convertIdToProfileListItem(
-        id1: Long,
-        id2: Long,
-        id3: Long,
-        listTitle: String
+        id1: Long, id2: Long, id3: Long, listTitle: String
     ): ProfileListItem {
         val listName = when (listTitle) {
             "watching_t" -> "in visione (TV)__"
@@ -152,6 +139,7 @@ class SeriesRepository {
         return series.title.isEmpty() || series.overview.isEmpty()
     }
 
+    @Suppress("BooleanMethodIsAlwaysInverted")
     private fun seasonHasMissingDetails(season: Series.Season): Boolean {
         return season.name.isEmpty() || season.overview.isEmpty() || season.episodes.any { it.name.isEmpty() || it.name == "Episodio ${it.number}" || it.overview.isEmpty() }
     }
@@ -220,11 +208,15 @@ class SeriesRepository {
         return FirestoreService.getSeriesReview(userId, seriesId)
     }
 
-    suspend fun updateSeriesRating(userId: String, seriesId: Long, rating: Float, timestamp: Timestamp) {
+    suspend fun updateSeriesRating(
+        userId: String, seriesId: Long, rating: Float, timestamp: Timestamp
+    ) {
         FirestoreService.updateSeriesRating(userId, seriesId, rating, timestamp)
     }
 
-    suspend fun updateSeriesReview(userId: String, seriesId: Long, review: String, timestamp: Timestamp) {
+    suspend fun updateSeriesReview(
+        userId: String, seriesId: Long, review: String, timestamp: Timestamp
+    ) {
         FirestoreService.updateSeriesReview(userId, seriesId, review, timestamp)
     }
 

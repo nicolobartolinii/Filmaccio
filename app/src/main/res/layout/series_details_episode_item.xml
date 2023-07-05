@@ -37,7 +37,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="Nome episodio"
                 android:textAppearance="@style/TextAppearance.Material3.BodyMedium"
                 android:textColor="?colorPrimary" />
 
@@ -46,7 +45,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="@font/roboto_medium"
-                android:text="@string/season_number_episode_number"
                 android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
             <TextView
@@ -55,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Descrizione episodio"
                 android:textAppearance="@style/TextAppearance.Material3.BodySmall" />
 
         </LinearLayout>

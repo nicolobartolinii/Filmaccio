@@ -14,6 +14,7 @@ import kotlinx.coroutines.Dispatchers
 class HomeViewModel : ViewModel() {
     // Qui creiamo un oggetto che contiene il repository per i film
     private val movieRepository = MovieRepository()
+
     // Qui creiamo un oggetto che contiene il repository per le serie tv
     private val seriesRepository = SeriesRepository()
 
@@ -28,7 +29,7 @@ class HomeViewModel : ViewModel() {
 
     val topRatedMovies = liveData(Dispatchers.IO) {
         var movies = FirestoreService.getAllRatings("movies")
-        movies = movies.sortedBy { - it.second }
+        movies = movies.sortedBy { -it.second }
         val moviesList = mutableListOf<Movie>()
         for (movie in movies) {
             moviesList.add(movieRepository.getMovieDetails(movie.first))
@@ -38,7 +39,7 @@ class HomeViewModel : ViewModel() {
 
     val topRatedSeries = liveData(Dispatchers.IO) {
         var series = FirestoreService.getAllRatings("series")
-        series = series.sortedBy { - it.second }
+        series = series.sortedBy { -it.second }
         val seriesList = mutableListOf<Series>()
         for (serie in series) {
             seriesList.add(seriesRepository.getSeriesDetails(serie.first))

@@ -27,9 +27,7 @@ class RegSecondaFragment : Fragment() {
     private lateinit var genereRadioGroup: RadioGroup
     private lateinit var dataNascitaDatePicker: DatePicker
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         _binding = FragmentRegSecondaBinding.inflate(inflater, container, false)
 
@@ -117,11 +115,7 @@ class RegSecondaFragment : Fragment() {
 
             // Per passare i dati al terzo fragment, facciamo così come abbiamo fatto per passare i dati al secondo fragment, creiamo un'azione con i dati che vogliamo passare e poi navighiamo verso l'azione
             val action = RegSecondaFragmentDirections.actionRegSecondaFragmentToRegTerzaFragment(
-                email,
-                username,
-                password,
-                gender,
-                birthDate
+                email, username, password, gender, birthDate
             )
 
             Navigation.findNavController(binding.root).navigate(action)

@@ -28,10 +28,8 @@ class PasswordResetFragment : Fragment() {
     private lateinit var buttonBackReset: Button
     private lateinit var db: FirebaseFirestore
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentPasswordResetBinding.inflate(inflater, container, false)
 
         db = FirebaseFirestore.getInstance()

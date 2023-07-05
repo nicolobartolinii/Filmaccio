@@ -11,14 +11,12 @@ import android.widget.TextView
 import android.widget.ViewFlipper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.details.adapters.ProductsAdapter
 import it.univpm.filmaccio.details.viewmodels.PersonDetailsViewModel
-import kotlinx.coroutines.launch
 
 class PersonDetailsActivity : AppCompatActivity() {
 
@@ -95,6 +93,7 @@ class PersonDetailsActivity : AppCompatActivity() {
                     genderTextView.text = "Femminile"
                     knownForLabel.text = "Conosciuta per"
                 }
+
                 2 -> genderTextView.text = "Maschile"
                 else -> genderTextView.text = "Non disponibile"
             }

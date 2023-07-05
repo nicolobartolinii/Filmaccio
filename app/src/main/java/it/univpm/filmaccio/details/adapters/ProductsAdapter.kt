@@ -17,8 +17,8 @@ class ProductsAdapter(private val products: List<Person.Product>) :
     RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        LayoutInflater.from(parent.context)
-            .inflate(R.layout.search_result_entity, parent, false).apply {
+        LayoutInflater.from(parent.context).inflate(R.layout.search_result_entity, parent, false)
+            .apply {
                 return ViewHolder(this)
             }
     }
@@ -31,8 +31,7 @@ class ProductsAdapter(private val products: List<Person.Product>) :
                 .load("https://image.tmdb.org/t/p/w185${product.posterPath}")
                 .into(holder.shapeableImageView)
         } else {
-            Glide.with(holder.itemView.context)
-                .load(R.drawable.error_404)
+            Glide.with(holder.itemView.context).load(R.drawable.error_404)
                 .into(holder.shapeableImageView)
         }
         holder.itemView.setOnClickListener {

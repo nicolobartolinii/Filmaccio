@@ -11,7 +11,8 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 
-class BackdropAdapter(private val listener: ImageSelectionListener) : RecyclerView.Adapter<BackdropAdapter.ViewHolder>() {
+class BackdropAdapter(private val listener: ImageSelectionListener) :
+    RecyclerView.Adapter<BackdropAdapter.ViewHolder>() {
 
     interface ImageSelectionListener {
         fun onImageSelected(position: Int)
@@ -19,7 +20,7 @@ class BackdropAdapter(private val listener: ImageSelectionListener) : RecyclerVi
     }
 
     private val backdropList = ArrayList<String>()
-    var selectedViewHolder: ViewHolder? = null
+    private var selectedViewHolder: ViewHolder? = null
     var selectedPosition: Int = -1
 
     @SuppressLint("NotifyDataSetChanged")
@@ -52,7 +53,9 @@ class BackdropAdapter(private val listener: ImageSelectionListener) : RecyclerVi
                 selectedPosition = position
                 val typedValue = TypedValue()
                 val theme = holder.itemView.context.theme
-                theme.resolveAttribute(com.google.android.material.R.attr.colorTertiaryContainer, typedValue, true)
+                theme.resolveAttribute(
+                    com.google.android.material.R.attr.colorTertiaryContainer, typedValue, true
+                )
                 val color = typedValue.data
                 holder.backdropImage.strokeColor = ColorStateList.valueOf(color)
                 holder.backdropImage.strokeWidth = 10F

@@ -83,7 +83,9 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
             _isSeriesInWatching.value = false
         } else {
             seriesRepository.addToList(userId, "watching_t", seriesId)
-            if (!FirestoreService.getWatchingSeries(userId).first().containsKey(seriesId.toString())) FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, seriesId)
+            if (!FirestoreService.getWatchingSeries(userId).first()
+                    .containsKey(seriesId.toString())
+            ) FirestoreService.addSeriesToWatching(UserUtils.getCurrentUserUid()!!, seriesId)
             if (_isSeriesInWatchlist.value == true) {
                 seriesRepository.removeFromList(userId, "watchlist_t", seriesId)
                 _isSeriesInWatchlist.value = false
@@ -147,8 +149,7 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
 class SeriesDetailsViewModelFactory(private val seriesId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SeriesDetailsViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return SeriesDetailsViewModel(seriesId) as T
+            @Suppress("UNCHECKED_CAST") return SeriesDetailsViewModel(seriesId) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

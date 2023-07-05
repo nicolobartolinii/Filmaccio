@@ -1,36 +1,22 @@
 package it.univpm.filmaccio.main.adapters
 
-import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.data.models.NextEpisode
 import it.univpm.filmaccio.data.models.Person
-import it.univpm.filmaccio.data.repository.PeopleRepository
-import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
-import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
-import it.univpm.filmaccio.main.utils.FirestoreService
-import it.univpm.filmaccio.main.utils.UserUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class PeopleAdapter(
     private val followedPeople: List<Person>,
     private val context: Context
 ) : RecyclerView.Adapter<PeopleAdapter.PeopleViewHolder>() {
-
-    private val peopleRepository = PeopleRepository()
 
     class PeopleViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val personImage: ShapeableImageView = view.findViewById(R.id.followed_person_image)

@@ -143,7 +143,8 @@ class SearchFragment : Fragment() {
             loadingOperations++
             recommendedMovies = it.movies
             for (i in 0..2) {
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${recommendedMovies[i].posterPath}")
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${recommendedMovies[i].posterPath}")
                     .into(recommendedMoviePosters[i]!!)
             }
             loadingOperations--
@@ -155,7 +156,8 @@ class SearchFragment : Fragment() {
             loadingOperations++
             recommendedSeries = it.series
             for (i in 0..2) {
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${recommendedSeries[i].posterPath}")
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${recommendedSeries[i].posterPath}")
                     .into(recommendedSeriesPosters[i]!!)
             }
             loadingOperations--
@@ -167,7 +169,8 @@ class SearchFragment : Fragment() {
             loadingOperations++
             trendingMovies = it.movies
             for (i in 0..2) {
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${trendingMovies[i].posterPath}")
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${trendingMovies[i].posterPath}")
                     .into(trendingMoviePosters[i]!!)
             }
             loadingOperations--
@@ -179,7 +182,8 @@ class SearchFragment : Fragment() {
             loadingOperations++
             trendingSeries = it.series
             for (i in 0..2) {
-                Glide.with(this).load("https://image.tmdb.org/t/p/w185${trendingSeries[i].posterPath}")
+                Glide.with(this)
+                    .load("https://image.tmdb.org/t/p/w185${trendingSeries[i].posterPath}")
                     .into(trendingSeriesPosters[i]!!)
             }
             loadingOperations--

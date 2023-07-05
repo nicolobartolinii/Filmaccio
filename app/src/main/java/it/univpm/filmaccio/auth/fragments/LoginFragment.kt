@@ -51,9 +51,7 @@ class LoginFragment : Fragment() {
     // Variabile che contiene il riferimento al database Firestore
     private lateinit var auth: FirebaseAuth
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
         // Inflating del layout di questo fragment (verrà fatto in tutte le schermate quindi non lo commenterò più, serve per "disegnare" l'interfaccia ed è il riferimento all'XML
         // della schermata, senza questo la schermata sarebbe vuota. Questo riferimento avviene attraverso la classe FragmentLoginBinding che è generata automaticamente dal View Binding)
@@ -133,9 +131,7 @@ class LoginFragment : Fragment() {
     private fun signInWithGoogle() {
         // Configurazione dell'oggetto GoogleSignInOptions che serve per configurare il login con Google
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
+            .requestIdToken(getString(R.string.default_web_client_id)).requestEmail().build()
 
         // Creazione del client per il login con Google
         val googleSignInClient = GoogleSignIn.getClient(requireActivity(), gso)
@@ -168,8 +164,7 @@ class LoginFragment : Fragment() {
 
                 // Autenticazione con Google tramite Firebase Authentication
                 val credential = GoogleAuthProvider.getCredential(account?.idToken, null)
-                UserUtils.auth.signInWithCredential(credential)
-                    .addOnCompleteListener { authTask ->
+                UserUtils.auth.signInWithCredential(credential).addOnCompleteListener { authTask ->
                         // Controllo che l'autenticazione con Google tramite Firebase Authentication sia andata a buon fine
                         if (authTask.isSuccessful) {
                             // Se l'autenticazione è andata a buon fine, allora otteniamo la variabile user che contiene i dati dell'utente appena loggato (anche se non era ancora registrato)
@@ -180,12 +175,12 @@ class LoginFragment : Fragment() {
                             // Perché? Perché il database AUTHENTICATION contiene solo i dati di autenticazione (email, password, ecc.), mentre il database FIRESTORE contiene i dati dell'utente (nome, cognome, ecc.)
                             // Inoltre, quando un utente che non è mai entrato nell'app si logga con Google, viene automaticamente registrato nel database AUTHENTICATION, ma non nel database FIRESTORE, quindi in quel caso
                             // dobbiamo accorgercene e passare alla schermata di registrazione in cui l'utente aggiunge i suoi dati e viene inserito nel database FIRESTORE
-                            val userRef = FirestoreService.getWhereEqualTo("users", "uid", user!!.uid)
+                            val userRef =
+                                FirestoreService.getWhereEqualTo("users", "uid", user!!.uid)
 
                             // La variabile userRef non è altro che una TASK asincrona che si occupa di fare una ricerca nel database.
                             // Quì sotto aggiungiamo a questa TASK un listener che si accorge di quando la task termina
-                            userRef.get()
-                                .addOnCompleteListener { userTask ->
+                            userRef.get().addOnCompleteListener { userTask ->
                                     // Quì controlliamo se la task è andata a buon fine e se ha trovato qualcosa (significa che l'utente è già registrato nel database FIRESTORE e allora possiamo farlo andare alla MainActivity)
                                     if (userTask.isSuccessful && !userTask.result.isEmpty) {
                                         // L'utente esiste nel database, passa alla MainActivity

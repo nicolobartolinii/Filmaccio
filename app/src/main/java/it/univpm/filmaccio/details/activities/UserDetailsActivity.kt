@@ -1,5 +1,6 @@
 package it.univpm.filmaccio.details.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
@@ -50,6 +51,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var finishedSeriesRecyclerView: RecyclerView
     private lateinit var finishedSeriesViewAllButton: Button
     private lateinit var finishedSeriesViewFlipper: ViewFlipper
+
     // variabili per le repository
     private lateinit var movieRepository: MovieRepository
     private lateinit var seriesRepository: SeriesRepository
@@ -59,18 +61,18 @@ class UserDetailsActivity : AppCompatActivity() {
     private var tvMinutes = 0
     private var movieNumber = 0
     private var tvNumber = 0
-    private var followersNumber = 0
-    private var followingNumber = 0
 
     // array per view all
-    var followersArrayList: ArrayList<String> = arrayListOf()
-    var followeingArrayList: ArrayList<String> = arrayListOf()
+    private var followersArrayList: ArrayList<String> = arrayListOf()
+    private var followingArrayList: ArrayList<String> = arrayListOf()
     private lateinit var userLists: Map<String, List<Long>>
     private lateinit var finishedSeries: List<Series>
     private lateinit var targetUid: String
 
     // aapter
     private lateinit var profileListsAdapter: ProfileHorizontalListAdapter
+
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityUserDetailsBinding.inflate(layoutInflater)
@@ -176,7 +178,7 @@ class UserDetailsActivity : AppCompatActivity() {
         CoroutineScope(Dispatchers.Main).launch {
             //funzione per ottenere i following in array list per passarli successivamente
             followingFlow.collect { followingFlow ->
-                followeingArrayList = ArrayList(followingFlow)
+                followingArrayList = ArrayList(followingFlow)
             }
         }
         CoroutineScope(Dispatchers.Main).launch {
@@ -189,7 +191,7 @@ class UserDetailsActivity : AppCompatActivity() {
         followingCard.setOnClickListener {
             // clicco su following e parte il view all
             val intent = Intent(this, ViewAllActivity::class.java)
-            intent.putExtra("entities", followeingArrayList) // entities è la lista di entità
+            intent.putExtra("entities", followingArrayList) // entities è la lista di entità
             intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
             startActivity(intent)
         }
@@ -213,6 +215,7 @@ class UserDetailsActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun loadProfileListsAndTimes() {
         // Collezioniamo le liste dell'utente corrente contenute nella variabile lists del view model
         userDetailsViewModel.lists.collectLatest { lists ->

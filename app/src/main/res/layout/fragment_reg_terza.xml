@@ -127,10 +127,10 @@
         android:layout_marginTop="12dp"
         android:contentDescription="@string/imposta_propic_description"
         android:scaleType="centerCrop"
-        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay"
         android:src="@drawable/default_propic"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/propicTextView" />
+        app:layout_constraintTop_toBottomOf="@+id/propicTextView"
+        app:shapeAppearanceOverlay="@style/Theme.Filmaccio.CircleShapeAppearanceOverlay" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

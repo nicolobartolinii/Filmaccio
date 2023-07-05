@@ -3,38 +3,23 @@ package it.univpm.filmaccio.main.adapters
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
-import it.univpm.filmaccio.data.models.NextEpisode
-import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.models.TmdbEntity
-import it.univpm.filmaccio.data.repository.PeopleRepository
-import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
-import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.details.activities.UserDetailsActivity
-import it.univpm.filmaccio.main.utils.FirestoreService
-import it.univpm.filmaccio.main.utils.UserUtils
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class FeedAdapter(
-    private val feed: List<Pair<ReviewTriple, TmdbEntity>>,
-    private val context: Context
+    private val feed: List<Pair<ReviewTriple, TmdbEntity>>, private val context: Context
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {
-
-    private val peopleRepository = PeopleRepository()
 
     class FeedViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val userImage: ShapeableImageView = view.findViewById(R.id.review_user_image)
@@ -45,25 +30,21 @@ class FeedAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FeedViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.feed_review_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.feed_review_item, parent, false)
         return FeedViewHolder(view)
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onBindViewHolder(holder: FeedViewHolder, position: Int) {
         val review = feed[position]
         if (review.second.imagePath != null) {
-            Glide.with(context)
-                .load("https://image.tmdb.org/t/p/w500${review.second.imagePath}")
+            Glide.with(context).load("https://image.tmdb.org/t/p/w500${review.second.imagePath}")
                 .into(holder.productImage)
         } else {
-            Glide.with(context)
-                .load(R.drawable.error_404)
-                .into(holder.productImage)
+            Glide.with(context).load(R.drawable.error_404).into(holder.productImage)
         }
-        Glide.with(context)
-            .load(review.first.user.profileImage)
-            .into(holder.userImage)
+        Glide.with(context).load(review.first.user.profileImage).into(holder.userImage)
         holder.userTextView.text = review.first.user.nameShown
         holder.reviewInfo.text = "Recensione lasciata il: ${review.first.date}"
         holder.reviewText.text = review.first.review

@@ -78,8 +78,7 @@ class ChangeBackdropActivity : AppCompatActivity(), BackdropAdapter.ImageSelecti
         confirmButton.setOnClickListener {
             // Calcolo l'indice globale dell'elemento selezionato basandomi sulla sua posizione nella pagina corrente,
             // il numero della pagina corrente e il numero di elementi per pagina
-            val positionInCurrentPage =
-                backdropAdapter.selectedPosition
+            val positionInCurrentPage = backdropAdapter.selectedPosition
             val globalSelectedIndex =
                 ((changeBackdropViewModel.currentPage - 1) * changeBackdropViewModel.itemsPerPage) + positionInCurrentPage
 

@@ -3,8 +3,6 @@ package it.univpm.filmaccio.main.viewmodels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
 import it.univpm.filmaccio.data.models.Person
@@ -15,13 +13,12 @@ import it.univpm.filmaccio.data.repository.PeopleRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-class FeedViewModel() : ViewModel() {
+class FeedViewModel : ViewModel() {
 
     private val peopleRepository = PeopleRepository()
     private val movieRepository = MovieRepository()
@@ -55,13 +52,11 @@ class FeedViewModel() : ViewModel() {
                 val series = seriesRepository.getSeriesDetails(seriesReview.second)
                 val tmdbEntity = TmdbEntity(series.id, series.title, series.posterPath, "series")
                 reviews.add(Pair(seriesReview.first, tmdbEntity))
-            }
-            else if (movieReview != null && seriesReview == null) {
+            } else if (movieReview != null && seriesReview == null) {
                 val movie = movieRepository.getMovieDetails(movieReview.second)
                 val tmdbEntity = TmdbEntity(movie.id, movie.title, movie.posterPath, "movie")
                 reviews.add(Pair(movieReview.first, tmdbEntity))
-            }
-            else if (movieReview != null && seriesReview != null) {
+            } else if (movieReview != null && seriesReview != null) {
                 val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
                 val movieDate = format.parse(movieReview.first.date)!!
                 val movieTimestamp = Timestamp(movieDate)
@@ -71,10 +66,10 @@ class FeedViewModel() : ViewModel() {
                     val movie = movieRepository.getMovieDetails(movieReview.second)
                     val tmdbEntity = TmdbEntity(movie.id, movie.title, movie.posterPath, "movie")
                     reviews.add(Pair(movieReview.first, tmdbEntity))
-                }
-                else if (seriesTimestamp > movieTimestamp && seriesReview.second != 0L) {
+                } else if (seriesTimestamp > movieTimestamp && seriesReview.second != 0L) {
                     val series = seriesRepository.getSeriesDetails(seriesReview.second)
-                    val tmdbEntity = TmdbEntity(series.id, series.title, series.posterPath, "series")
+                    val tmdbEntity =
+                        TmdbEntity(series.id, series.title, series.posterPath, "series")
                     reviews.add(Pair(seriesReview.first, tmdbEntity))
                 }
             }

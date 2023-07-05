@@ -7,7 +7,6 @@ import android.text.Spannable
 import android.text.SpannableString
 import android.text.style.ForegroundColorSpan
 import android.util.TypedValue
-import android.view.View
 import android.widget.Button
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -61,8 +60,6 @@ class MovieDetailsActivity : AppCompatActivity() {
     private lateinit var submitReviewButton: Button
     private lateinit var averageRatingBar: RatingBar
     private lateinit var buttonViewAllReviews: Button
-
-    private var loadingOperations = 0
 
     @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -147,10 +144,8 @@ class MovieDetailsActivity : AppCompatActivity() {
             castRecyclerView.adapter = CastAdapter(it.credits.cast)
 
             if (it.title.length > 50) titleTextView.setOnClickListener { _ ->
-                MaterialAlertDialogBuilder(this).setTitle("Titolo completo")
-                    .setMessage(it.title)
-                    .setPositiveButton("Ok", null)
-                    .show()
+                MaterialAlertDialogBuilder(this).setTitle("Titolo completo").setMessage(it.title)
+                    .setPositiveButton("Ok", null).show()
             }
             viewFlipperMovie.displayedChild = 1
         }

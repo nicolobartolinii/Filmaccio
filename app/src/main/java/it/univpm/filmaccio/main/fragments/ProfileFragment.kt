@@ -20,7 +20,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
-import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
@@ -94,7 +93,7 @@ class ProfileFragment : Fragment() {
         // dichiarazione bottoni
         reloadButton = binding.reloadButton
         settingsButton = binding.settingsButton
-        editProfileButton = binding.modifyProfileButton
+        editProfileButton = binding.editProfileButton
         viewFlipper = binding.viewFlipper
         profileImage = binding.profileImage
         backdropImage = binding.backdropImage
@@ -220,6 +219,7 @@ class ProfileFragment : Fragment() {
         return Triple(months, days, hours)
     }
 
+    @SuppressLint("SetTextI18n")
     private suspend fun loadProfileListsAndTimes() {
         // Collezioniamo le liste dell'utente corrente contenute nella variabile lists del view model
         profileViewModel.lists.collectLatest { lists ->
@@ -236,15 +236,17 @@ class ProfileFragment : Fragment() {
                     if (listTitle == "watched_m") {
                         // Se la lista è quella dei film visti allora aggiorniamo le variabili
                         // movieMinutes e movieNumber con i valori corretti
-                        movieMinutes =
-                            ids.sumOf { movieRepository.getMovieDetails(it).duration }
+                        movieMinutes = ids.sumOf { movieRepository.getMovieDetails(it).duration }
                         movieNumber = ids.size
                     } else if (listTitle == "finished_t") {
                         // Se la lista è quella delle serie viste allora aggiorniamo le variabili
                         // tvMinutes e tvNumber con i valori corretti
-                        val watchingSeries = FirestoreService.getWatchingSeries(UserUtils.getCurrentUserUid()!!).first()
+                        val watchingSeries =
+                            FirestoreService.getWatchingSeries(UserUtils.getCurrentUserUid()!!)
+                                .first()
                         for (series in watchingSeries) {
-                            val seriesDetails = seriesRepository.getSeriesDetails(series.key.toLong())
+                            val seriesDetails =
+                                seriesRepository.getSeriesDetails(series.key.toLong())
                             for (season in series.value) {
                                 tvMinutes += if (seriesDetails.seasons.any { it.number == 0L }) season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt()].episodes[episode.toInt() - 1].duration }
                                 else season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt() - 1].episodes[episode.toInt() - 1].duration }
@@ -356,10 +358,8 @@ class ProfileFragment : Fragment() {
                 currentUser = user
                 binding.displayNameText.text = user.nameShown
                 binding.usernameText.text = user.username
-                Glide.with(this@ProfileFragment).load(user.profileImage)
-                    .into(profileImage)
-                Glide.with(this@ProfileFragment).load(user.backdropImage)
-                    .into(backdropImage)
+                Glide.with(this@ProfileFragment).load(user.profileImage).into(profileImage)
+                Glide.with(this@ProfileFragment).load(user.backdropImage).into(backdropImage)
             }
         }
     }

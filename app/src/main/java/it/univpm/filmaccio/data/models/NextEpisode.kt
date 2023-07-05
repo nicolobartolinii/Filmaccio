@@ -1,7 +1,5 @@
 package it.univpm.filmaccio.data.models
 
-import com.google.gson.annotations.SerializedName
-
 data class NextEpisode(
     val seriesId: Long,
     val seriesTitle: String,

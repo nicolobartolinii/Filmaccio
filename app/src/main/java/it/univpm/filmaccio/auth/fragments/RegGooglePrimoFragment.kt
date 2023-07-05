@@ -13,8 +13,6 @@ import androidx.navigation.Navigation
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.databinding.FragmentRegGooglePrimoBinding
 import it.univpm.filmaccio.main.utils.FirestoreService
@@ -33,12 +31,9 @@ class RegGooglePrimoFragment : Fragment() {
     private lateinit var usernameRegInputTextEdit: TextInputEditText
     private lateinit var genereRadioGroup: RadioGroup
     private lateinit var dataNascitaDatePicker: DatePicker
-    private val db = Firebase.firestore
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View {
         _binding = FragmentRegGooglePrimoBinding.inflate(inflater, container, false)
 
         buttonBack = binding.buttonBack
@@ -112,9 +107,7 @@ class RegGooglePrimoFragment : Fragment() {
 
             val action =
                 RegGooglePrimoFragmentDirections.actionRegGooglePrimoFragmentToRegGoogleSecondoFragment(
-                    username,
-                    gender,
-                    birthDate
+                    username, gender, birthDate
                 )
             isUsernameAlreadyRegistered(username) { usernameExists ->
                 if (usernameExists) {
@@ -138,8 +131,7 @@ class RegGooglePrimoFragment : Fragment() {
             .addOnSuccessListener { querySnapshot ->
                 val exists = !querySnapshot.isEmpty
                 callback(exists)
-            }
-            .addOnFailureListener {
+            }.addOnFailureListener {
                 callback(true)
             }
     }

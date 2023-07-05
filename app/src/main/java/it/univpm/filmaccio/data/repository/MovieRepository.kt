@@ -7,8 +7,6 @@ import it.univpm.filmaccio.data.models.ImagesResponse
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.data.models.ReviewTriple
-import it.univpm.filmaccio.data.models.Series
-import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
@@ -22,9 +20,7 @@ class MovieRepository {
 
     // Questo metodo implementa la chiamata all'endpoint nowPlaying in modo da poterlo usare in altre classi
     suspend fun getNowPlayingMovies(
-        page: Int = 1,
-        language: String = "it-IT",
-        region: String = "IT"
+        page: Int = 1, language: String = "it-IT", region: String = "IT"
     ): DiscoverMoviesResponse {
         return tmdbApi.getNowPlayingMovies(page = page, language = language, region = region)
     }
@@ -36,9 +32,7 @@ class MovieRepository {
 
     // Questo metodo implementa la chiamata all'endpoint movie/top_rated in modo da poterlo usare in altre classi
     suspend fun getTopRatedMovies(
-        page: Int = 1,
-        language: String = "it-IT",
-        region: String = "IT"
+        page: Int = 1, language: String = "it-IT", region: String = "IT"
     ): DiscoverMoviesResponse {
         return tmdbApi.getTopRatedMovies(page = page, language = language, region = region)
     }
@@ -93,10 +87,7 @@ class MovieRepository {
     // in un oggetto di tipo ProfileListItem. In particolare, passiamo gli id dei primi tre film della lista e il suo nome
     // e otteniamo un oggetto ProfileListItem che contiene il nome della lista e le url dei poster dei primi tre film
     suspend fun convertIdToProfileListItem(
-        id1: Long,
-        id2: Long,
-        id3: Long,
-        listTitle: String
+        id1: Long, id2: Long, id3: Long, listTitle: String
     ): ProfileListItem {
         // Qui convertiamo il nome della lista in modo da poterlo mostrare nella schermata profilo
         val listName = when (listTitle) {
@@ -179,11 +170,15 @@ class MovieRepository {
         return FirestoreService.getMovieReview(userId, movieId)
     }
 
-    suspend fun updateMovieRating(userId: String, movieId: Long, rating: Float, timestamp: Timestamp) {
+    suspend fun updateMovieRating(
+        userId: String, movieId: Long, rating: Float, timestamp: Timestamp
+    ) {
         FirestoreService.updateMovieRating(userId, movieId, rating, timestamp)
     }
 
-    suspend fun updateMovieReview(userId: String, movieId: Long, review: String, timestamp: Timestamp) {
+    suspend fun updateMovieReview(
+        userId: String, movieId: Long, review: String, timestamp: Timestamp
+    ) {
         FirestoreService.updateMovieReview(userId, movieId, review, timestamp)
     }
 

@@ -18,17 +18,17 @@ import it.univpm.filmaccio.main.activities.ViewAllActivity
 
 // Questo adapter serve per la RecyclerView che mostra le liste di film e serie TV salvate dall'utente.
 // Non è ancora implementato benissimo infatti è da rivedere perché a volte porta a dei crash.
-class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long>>, private val context: Context) :
-    ListAdapter<ProfileListItem, ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>(
-        ProfileListItemDiffCallback()
-    ) {
+class ProfileHorizontalListAdapter(
+    private val userLists: Map<String, List<Long>>, private val context: Context
+) : ListAdapter<ProfileListItem, ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>(
+    ProfileListItemDiffCallback()
+) {
 
     override fun onCreateViewHolder(
-        parent: ViewGroup,
-        viewType: Int
+        parent: ViewGroup, viewType: Int
     ): ProfileHorizontalListsViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.profile_lists_item, parent, false)
+        val view =
+            LayoutInflater.from(parent.context).inflate(R.layout.profile_lists_item, parent, false)
         return ProfileHorizontalListsViewHolder(view)
     }
 
@@ -41,24 +41,21 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
             if (item.imageURL1 != null) Glide.with(holder.firstListPoster.context)
                 .load("https://image.tmdb.org/t/p/w92${item.imageURL1}")
                 .into(holder.firstListPoster)
-            else Glide.with(holder.firstListPoster.context)
-                .load(R.drawable.error_404)
+            else Glide.with(holder.firstListPoster.context).load(R.drawable.error_404)
                 .into(holder.firstListPoster)
             if (item.imageURL2 != "") {
                 holder.secondListPoster.visibility = View.VISIBLE
                 if (item.imageURL2 != null) Glide.with(holder.secondListPoster.context)
                     .load("https://image.tmdb.org/t/p/w92${item.imageURL2}")
                     .into(holder.secondListPoster)
-                else Glide.with(holder.secondListPoster.context)
-                    .load(R.drawable.error_404)
+                else Glide.with(holder.secondListPoster.context).load(R.drawable.error_404)
                     .into(holder.secondListPoster)
                 if (item.imageURL3 != "") {
                     holder.thirdListPoster.visibility = View.VISIBLE
                     if (item.imageURL3 != null) Glide.with(holder.thirdListPoster.context)
                         .load("https://image.tmdb.org/t/p/w92${item.imageURL3}")
                         .into(holder.thirdListPoster)
-                    else Glide.with(holder.thirdListPoster.context)
-                        .load(R.drawable.error_404)
+                    else Glide.with(holder.thirdListPoster.context).load(R.drawable.error_404)
                         .into(holder.thirdListPoster)
                 }
             }
@@ -79,6 +76,7 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
                     intent.putExtra("type", 'm')
                     context.startActivity(intent)
                 }
+
                 "WATCHLIST (TV)" -> {
                     val intent = Intent(context, ViewAllActivity::class.java)
                     intent.putExtra("entities", ArrayList(userLists["watchlist_t"] ?: emptyList()))
@@ -86,6 +84,7 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
                     intent.putExtra("type", 't')
                     context.startActivity(intent)
                 }
+
                 "VISTI (FILM)" -> {
                     val intent = Intent(context, ViewAllActivity::class.java)
                     intent.putExtra("entities", ArrayList(userLists["watched_m"] ?: emptyList()))
@@ -93,6 +92,7 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
                     intent.putExtra("type", 'm')
                     context.startActivity(intent)
                 }
+
                 "IN VISIONE (TV)" -> {
                     val intent = Intent(context, ViewAllActivity::class.java)
                     intent.putExtra("entities", ArrayList(userLists["watching_t"] ?: emptyList()))
@@ -100,6 +100,7 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
                     intent.putExtra("type", 't')
                     context.startActivity(intent)
                 }
+
                 "PREFERITI (FILM)" -> {
                     val intent = Intent(context, ViewAllActivity::class.java)
                     intent.putExtra("entities", ArrayList(userLists["favorite_m"] ?: emptyList()))
@@ -107,6 +108,7 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
                     intent.putExtra("type", 'm')
                     context.startActivity(intent)
                 }
+
                 "PREFERITI (TV)" -> {
                     val intent = Intent(context, ViewAllActivity::class.java)
                     intent.putExtra("entities", ArrayList(userLists["favorite_t"] ?: emptyList()))
@@ -133,8 +135,7 @@ class ProfileHorizontalListAdapter (private val userLists: Map<String, List<Long
         }
 
         override fun areContentsTheSame(
-            oldItem: ProfileListItem,
-            newItem: ProfileListItem
+            oldItem: ProfileListItem, newItem: ProfileListItem
         ): Boolean {
             return oldItem == newItem
         }

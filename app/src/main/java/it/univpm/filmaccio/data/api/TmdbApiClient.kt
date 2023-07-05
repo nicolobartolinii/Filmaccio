@@ -9,10 +9,9 @@ object TmdbApiClient {
     private const val BASE_URL = "https://api.themoviedb.org/3/"
 
     // Creazione del client tramite Retrofit, buildiamo il client con il base URL e un converter gson (è la pratica standard fare così)
-    private val rf = Retrofit.Builder()
-        .baseUrl(BASE_URL)
-        .addConverterFactory(GsonConverterFactory.create())
-        .build()
+    private val rf =
+        Retrofit.Builder().baseUrl(BASE_URL).addConverterFactory(GsonConverterFactory.create())
+            .build()
 
     // Creazione del servizio tramite Retrofit, buildiamo il servizio con il client creato prima e la classe che contiene i metodi per le chiamate alle API (cioè i vari endpoint)
     val TMDB_API: TmdbApiService = rf.create(TmdbApiService::class.java)

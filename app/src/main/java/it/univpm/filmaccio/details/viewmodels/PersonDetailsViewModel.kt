@@ -42,8 +42,7 @@ class PersonDetailsViewModel(private var personId: Long = 0L) : ViewModel() {
     class PersonDetailsViewModelFactory(private val personId: Long) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PersonDetailsViewModel::class.java)) {
-                @Suppress("UNCHECKED_CAST")
-                return PersonDetailsViewModel(personId) as T
+                @Suppress("UNCHECKED_CAST") return PersonDetailsViewModel(personId) as T
             }
             throw IllegalArgumentException("Unknown ViewModel class")
         }

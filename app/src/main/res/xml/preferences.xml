@@ -1,5 +1,4 @@
-<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+<PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <ListPreference
         app:key="theme"
@@ -11,7 +10,6 @@
         app:icon="@drawable/round_invert_colors_24"/>
 
     <Preference
-        android:id="@+id/logout_preference"
         app:key="logout"
         app:title="Logout"
         app:summary="Effettua il logout dall'app"

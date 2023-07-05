@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_card"
     style="@style/Widget.MaterialComponents.CardView"
-    android:layout_marginEnd="8dp"
     android:layout_width="150dp"
-    android:layout_height="94dp">
+    android:layout_height="94dp"
+    android:layout_marginEnd="8dp">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,7 +20,6 @@
             android:layout_marginVertical="4dp"
             android:fontFamily="sans-serif-black"
             android:gravity="center"
-            android:text="FILM PREFERITI"
             android:textAppearance="@style/TextAppearance.Material3.BodyMedium" />
 
         <LinearLayout
@@ -39,7 +38,7 @@
                 android:layout_width="40dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
+                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
             <View
                 android:layout_width="0dp"
@@ -51,7 +50,7 @@
                 android:layout_width="40dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
+                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
             <View
                 android:layout_width="0dp"
@@ -63,7 +62,7 @@
                 android:layout_width="40dp"
                 android:layout_height="60dp"
                 android:scaleType="centerCrop"
-                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius"/>
+                app:shapeAppearanceOverlay="@style/Theme.Filmaccio.SquareCornerRadius" />
 
             <View
                 android:layout_width="0dp"

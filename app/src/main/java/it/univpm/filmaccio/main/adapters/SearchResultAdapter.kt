@@ -69,25 +69,30 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                         .load("https://image.tmdb.org/t/p/w185${result.imagePath}")
                         .into(holder.shapeableImageView)
                 } else {
-                    Glide.with(holder.itemView.context)
-                        .load(R.drawable.error_404)
+                    Glide.with(holder.itemView.context).load(R.drawable.error_404)
                         .into(holder.shapeableImageView)
                 }
 
                 holder.itemView.setOnClickListener {
                     val context = holder.itemView.context
-                    if (result.mediaType == "movie") {
-                        val intent = Intent(context, MovieDetailsActivity::class.java)
-                        intent.putExtra("movieId", result.id)
-                        context.startActivity(intent)
-                    } else if (result.mediaType == "tv") {
-                        val intent = Intent(context, SeriesDetailsActivity::class.java)
-                        intent.putExtra("seriesId", result.id)
-                        context.startActivity(intent)
-                    } else if (result.mediaType == "person") {
-                        val intent = Intent(context, PersonDetailsActivity::class.java)
-                        intent.putExtra("personId", result.id)
-                        context.startActivity(intent)
+                    when (result.mediaType) {
+                        "movie" -> {
+                            val intent = Intent(context, MovieDetailsActivity::class.java)
+                            intent.putExtra("movieId", result.id)
+                            context.startActivity(intent)
+                        }
+
+                        "tv" -> {
+                            val intent = Intent(context, SeriesDetailsActivity::class.java)
+                            intent.putExtra("seriesId", result.id)
+                            context.startActivity(intent)
+                        }
+
+                        "person" -> {
+                            val intent = Intent(context, PersonDetailsActivity::class.java)
+                            intent.putExtra("personId", result.id)
+                            context.startActivity(intent)
+                        }
                     }
                 }
             }
@@ -100,12 +105,12 @@ class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>
                     val context = holder.itemView.context
                     val intent = Intent(context, UserDetailsActivity::class.java)
                     intent.putExtra("uid", result.uid)
-                    intent.putExtra("nameShown",result.nameShown)
-                    intent.putExtra("username",result.username)
-                    intent.putExtra("backdropImage",result.backdropImage)
-                    intent.putExtra("profileImage",result.profileImage)
+                    intent.putExtra("nameShown", result.nameShown)
+                    intent.putExtra("username", result.username)
+                    intent.putExtra("backdropImage", result.backdropImage)
+                    intent.putExtra("profileImage", result.profileImage)
                     context.startActivity(intent)
-               }
+                }
 
             }
         }

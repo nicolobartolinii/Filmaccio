@@ -35,7 +35,6 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="16dp"
             android:layout_marginTop="16dp"
-            android:text="Ultime uscite"
             android:textAppearance="@style/TextAppearance.Material3.HeadlineSmall"
             android:textColor="?attr/colorPrimary"
             android:textStyle="bold"
@@ -74,14 +73,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:text="Non c'è molto da vedere qui"
+                    android:text="@string/niente_da_vedere_qui"
                     android:textAppearance="@style/TextAppearance.Material3.LabelSmall" />
 
                 <ImageView
                     android:layout_width="70dp"
                     android:layout_height="70dp"
                     android:layout_marginVertical="8dp"
-                    android:contentDescription="Empty Episodes"
+                    android:contentDescription="@string/empty_view_all"
                     android:src="@drawable/tumbleweed" />
 
             </LinearLayout>

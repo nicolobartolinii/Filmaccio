@@ -19,9 +19,7 @@ class SettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_settings) // R da indicazione cartella res di resource
         if (savedInstanceState == null) { // se è la prima volta che viene attivata
-            supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.settings, SettingsFragment())
+            supportFragmentManager.beginTransaction().replace(R.id.settings, SettingsFragment())
                 .commit()
         }
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -32,7 +30,8 @@ class SettingsActivity : AppCompatActivity() {
         override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
             setPreferencesFromResource(R.xml.preferences, rootKey)
 
-            val colorStateList = ContextCompat.getColorStateList(requireContext(), R.color.icon_color)
+            val colorStateList =
+                ContextCompat.getColorStateList(requireContext(), R.color.icon_color)
             findPreference<Preference>("theme")?.icon?.setTintList(colorStateList)
             findPreference<Preference>("logout")?.icon?.setTintList(colorStateList)
 

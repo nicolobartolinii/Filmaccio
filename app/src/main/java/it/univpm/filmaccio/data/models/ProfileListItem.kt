@@ -5,8 +5,5 @@ package it.univpm.filmaccio.data.models
 // Praticamente lì abbiamo dei rettangoli che vanno a rappresentare le liste dell'utente e questi rettangoli hanno
 // in alto il nome della lista e in basso tre immagini che rappresentano i primi tre film della lista.
 data class ProfileListItem(
-    val title: String,
-    val imageURL1: String?,
-    val imageURL2: String?,
-    val imageURL3: String?
+    val title: String, val imageURL1: String?, val imageURL2: String?, val imageURL3: String?
 )

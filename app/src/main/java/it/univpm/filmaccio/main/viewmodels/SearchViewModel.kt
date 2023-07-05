@@ -1,6 +1,5 @@
 package it.univpm.filmaccio.main.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
@@ -22,6 +21,7 @@ class SearchViewModel : ViewModel() {
     private val movieRepository = MovieRepository()
     private val seriesRepository = SeriesRepository()
     private val searchRepository = SearchRepository()
+
     // Qui creiamo un oggetto LiveData che contiene i risultati della ricerca.
     var searchResults = MutableLiveData<List<Any>>()
 
@@ -59,7 +59,8 @@ class SearchViewModel : ViewModel() {
         // Qui invece creiamo un oggetto che contiene la chiamata al repository per la ricerca di utenti (tramite Firestore, perché
         // i dati degli utenti non sono su TMDB ma su Firebase)
         val usersSearch = if (query.isNotEmpty()) {
-            FirestoreService.searchUsers(query).toList()[0] // Questo indice 0 è necessario perché la funzione toList() restituisce un flusso di liste, e noi vogliamo solo la prima (e unica) lista
+            FirestoreService.searchUsers(query)
+                .toList()[0] // Questo indice 0 è necessario perché la funzione toList() restituisce un flusso di liste, e noi vogliamo solo la prima (e unica) lista
         } else {
             listOf()
         }

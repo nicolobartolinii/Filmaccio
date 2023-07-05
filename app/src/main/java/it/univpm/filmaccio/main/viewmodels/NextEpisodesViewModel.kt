@@ -12,7 +12,6 @@ import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import java.util.Collections
 
 class NextEpisodesViewModel : ViewModel() {
 
@@ -44,18 +43,25 @@ class NextEpisodesViewModel : ViewModel() {
             if (series.value.containsKey("0")) series.value.remove("0")
             if (series.value.isNotEmpty()) {
                 for (season in series.value) {
-                    Log.d("NextEpisodesViewModel", "Season: $season, Series name: ${seriesDetails.title}")
+                    Log.d(
+                        "NextEpisodesViewModel",
+                        "Season: $season, Series name: ${seriesDetails.title}"
+                    )
                     seasonNumber = season.key.toLong()
                     val seasonDetails = seriesRepository.getSeasonDetails(seriesId, seasonNumber)
                     if (season.value.size == seasonDetails.episodes.size) {
-                        if (series.value.size != seriesDetails.seasons.size && !series.value.containsKey((seasonNumber + 1L).toString())) {
-                            FirestoreService.addSeasonToWatchingSeries(uid, seriesId, seasonNumber + 1L)
+                        if (series.value.size != seriesDetails.seasons.size && !series.value.containsKey(
+                                (seasonNumber + 1L).toString()
+                            )
+                        ) {
+                            FirestoreService.addSeasonToWatchingSeries(
+                                uid, seriesId, seasonNumber + 1L
+                            )
                             seasonNumber++
                             nextEpisodeNumber = 1L
                             break
                         } else continue
-                    }
-                    else {
+                    } else {
                         if (season.key.toLong() != 1L && !series.value.containsKey("1")) {
                             seasonNumber = 1L
                             while (series.value.containsKey(seasonNumber.toString())) {
@@ -76,7 +82,10 @@ class NextEpisodesViewModel : ViewModel() {
                             }
                         }
                     }
-                    Log.d("NextEpisodesViewModel", "Season: $season, nextEpisodeNumber: $nextEpisodeNumber, seasonDetails.episodes.size: ${seasonDetails.episodes.size},")
+                    Log.d(
+                        "NextEpisodesViewModel",
+                        "Season: $season, nextEpisodeNumber: $nextEpisodeNumber, seasonDetails.episodes.size: ${seasonDetails.episodes.size},"
+                    )
                     if (nextEpisodeNumber != -1L && season.value.size == seriesDetails.seasons[seasonNumber.toInt() - 1].episodes.size) continue
                     else if (nextEpisodeNumber != -1L && series.value.size == seriesDetails.seasons.size) break
                     else break

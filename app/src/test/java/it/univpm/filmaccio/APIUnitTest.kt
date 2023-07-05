@@ -1,14 +1,10 @@
 package it.univpm.filmaccio
 
 import io.mockk.coEvery
-import io.mockk.every
 import io.mockk.mockk
 import it.univpm.filmaccio.data.models.SearchResponse
 import it.univpm.filmaccio.data.models.TmdbEntity
-import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.SearchRepository
-import it.univpm.filmaccio.data.repository.SeriesRepository
-import it.univpm.filmaccio.data.repository.UsersRepository
 import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test

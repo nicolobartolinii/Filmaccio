@@ -23,8 +23,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class NextEpisodesAdapter(
-    private val nextEpisodes: List<NextEpisode>,
-    private val context: Context
+    private val nextEpisodes: List<NextEpisode>, private val context: Context
 ) : RecyclerView.Adapter<NextEpisodesAdapter.NextEpisodeViewHolder>() {
 
     private val seriesRepository = SeriesRepository()
@@ -40,8 +39,7 @@ class NextEpisodesAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NextEpisodeViewHolder {
-        val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.episode_item, parent, false)
+        val view = LayoutInflater.from(parent.context).inflate(R.layout.episode_item, parent, false)
         return NextEpisodeViewHolder(view)
     }
 
@@ -65,10 +63,7 @@ class NextEpisodesAdapter(
 
         holder.buttonWatchEpisode.setOnClickListener {
             FirestoreService.addWatchedEpisode(
-                uid,
-                episode.seriesId,
-                episode.seasonNumber,
-                episode.episodeNumber
+                uid, episode.seriesId, episode.seasonNumber, episode.episodeNumber
             )
             holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
             holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)

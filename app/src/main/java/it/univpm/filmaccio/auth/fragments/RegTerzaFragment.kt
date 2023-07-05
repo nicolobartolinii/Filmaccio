@@ -3,7 +3,6 @@ package it.univpm.filmaccio.auth.fragments
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -28,17 +27,15 @@ import it.univpm.filmaccio.main.utils.Constants
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.ByteArrayOutputStream
-import java.io.File
 
 // Questo fragment è il terzo e ultimo passo della registrazione tramite email, in cui l'utente inserisce il proprio nome visualizzato e la propria immagine profilo
 // Anche quì abbiamo la soppressione del deprecation per l'utilizzo di alcuni metodi in modo da non avere warning "inutili"
-@Suppress("DEPRECATION")
 class RegTerzaFragment : Fragment() {
 
     // Per la spiegazione di questo companion object, vedere la classe LoginFragment (il 7 l'ho scelto totalmente a caso)
-    companion object {
+    /*companion object {
         private const val PICK_IMAGE_REQUEST = 7
-    }
+    }*/
 
     private var _binding: FragmentRegTerzaBinding? = null
     private val binding get() = _binding!!
@@ -48,7 +45,8 @@ class RegTerzaFragment : Fragment() {
     private lateinit var nomeVisualizzatoTextInputEditText: TextInputEditText
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ShapeableImageView
-    private lateinit var selectedImageUri: Uri
+
+    // private lateinit var selectedImageUri: Uri
     private lateinit var email: String
     private lateinit var username: String
     private lateinit var password: String
@@ -57,7 +55,7 @@ class RegTerzaFragment : Fragment() {
     private lateinit var nameShown: String
 
     // Variabile che ci serve per salvare temporaneamente l'immagine profilo scelta dall'utente (in modo che sia ritagliata in forma rotonda)
-    private var croppedImageFile: File? = null
+    // private var croppedImageFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View {
@@ -107,43 +105,43 @@ class RegTerzaFragment : Fragment() {
             val auth = UserUtils.auth
             // Chiamiamo il metodo per registrare l'utente con email e password e gli passiamo come parametri email e password inserite dall'utente e ci aggiungiamo un listener in ascolto sul completamento della registrazione
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                    // Se la registrazione è andata a buon fine
-                    if (task.isSuccessful) {
-                        // Recuperiamo l'utente registrato
-                        val user = auth.currentUser
-                        // Recuperiamo l'uid dell'utente registrato
-                        val uid = user?.uid
-                        // Inviamo l'email di verifica all'utente registrato e ci aggiungiamo un listener in ascolto sul completamento dell'invio dell'email di verifica
-                        user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
-                                // Se l'invio dell'email di verifica è andato a buon fine
-                                if (verifyTask.isSuccessful) {
-                                    // Mostriamo un dialog all'utente per avvisarlo che deve verificare la sua email (potremmo in futuro aggiungere al database un campo che indica
-                                    // se l'utente ha verificato la sua email o meno e in base a quello bloccare o meno l'accesso a determinate funzionalità dell'app)
-                                    MaterialAlertDialogBuilder(requireContext()).setTitle("Verifica la tua email")
-                                        .setMessage("Benvenuto in Filmaccio! Per sbloccare tutte le funzionalità dell'app, ricordati di verificare il tuo indirizzo email cliccando sul link che ti abbiamo inviato.")
-                                        .setPositiveButton("OK") { dialog, _ ->
-                                            dialog.dismiss()
-                                        }.show()
-                                } else {
-                                    // Se l'invio dell'email di verifica non è andato a buon fine, mostriamo un toast all'utente per avvisarlo che l'invio dell'email di verifica è fallito
-                                    Toast.makeText(
-                                        requireContext(),
-                                        "Invio dell'email di verifica fallito, contatta il nostro team di supporto",
-                                        Toast.LENGTH_LONG
-                                    ).show()
-                                }
-                            }
-                        // Chiamiamo il metodo per caricare l'immagine profilo e l'utente nel database e gli passiamo come parametro l'uid dell'utente registrato
-                        uploadPropicAndUser(uid)
-                    } else {
-                        // Se la registrazione non è andata a buon fine, mostriamo un toast all'utente per avvisarlo che la registrazione è fallita e lo reindirizziamo alla schermata di login
-                        Toast.makeText(
-                            requireContext(), "Registrazione fallita, riprova", Toast.LENGTH_LONG
-                        ).show()
-                        Navigation.findNavController(binding.root)
-                            .navigate(R.id.action_regTerzaFragment_to_loginFragment)
+                // Se la registrazione è andata a buon fine
+                if (task.isSuccessful) {
+                    // Recuperiamo l'utente registrato
+                    val user = auth.currentUser
+                    // Recuperiamo l'uid dell'utente registrato
+                    val uid = user?.uid
+                    // Inviamo l'email di verifica all'utente registrato e ci aggiungiamo un listener in ascolto sul completamento dell'invio dell'email di verifica
+                    user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
+                        // Se l'invio dell'email di verifica è andato a buon fine
+                        if (verifyTask.isSuccessful) {
+                            // Mostriamo un dialog all'utente per avvisarlo che deve verificare la sua email (potremmo in futuro aggiungere al database un campo che indica
+                            // se l'utente ha verificato la sua email o meno e in base a quello bloccare o meno l'accesso a determinate funzionalità dell'app)
+                            MaterialAlertDialogBuilder(requireContext()).setTitle("Verifica la tua email")
+                                .setMessage("Benvenuto in Filmaccio! Per sbloccare tutte le funzionalità dell'app, ricordati di verificare il tuo indirizzo email cliccando sul link che ti abbiamo inviato.")
+                                .setPositiveButton("OK") { dialog, _ ->
+                                    dialog.dismiss()
+                                }.show()
+                        } else {
+                            // Se l'invio dell'email di verifica non è andato a buon fine, mostriamo un toast all'utente per avvisarlo che l'invio dell'email di verifica è fallito
+                            Toast.makeText(
+                                requireContext(),
+                                "Invio dell'email di verifica fallito, contatta il nostro team di supporto",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
+                    // Chiamiamo il metodo per caricare l'immagine profilo e l'utente nel database e gli passiamo come parametro l'uid dell'utente registrato
+                    uploadPropicAndUser(uid)
+                } else {
+                    // Se la registrazione non è andata a buon fine, mostriamo un toast all'utente per avvisarlo che la registrazione è fallita e lo reindirizziamo alla schermata di login
+                    Toast.makeText(
+                        requireContext(), "Registrazione fallita, riprova", Toast.LENGTH_LONG
+                    ).show()
+                    Navigation.findNavController(binding.root)
+                        .navigate(R.id.action_regTerzaFragment_to_loginFragment)
                 }
+            }
         }
 
         // Impostazione del listener sul click per l'immagine profilo
@@ -155,10 +153,10 @@ class RegTerzaFragment : Fragment() {
     // Metodo che viene chiamato quando l'utente clicca sull'immagine profilo da impostare
     private fun onPropicClick() {
         MaterialAlertDialogBuilder(requireContext()).setTitle("Info di servizio").setMessage(
-                "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
-            ).setPositiveButton("OK") { dialog, _ ->
-                dialog.dismiss()
-            }.show()/*// Creiamo un intent per aprire la galleria in modo da permettere all'utente di scegliere un'immagine profilo
+            "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
+        ).setPositiveButton("OK") { dialog, _ ->
+            dialog.dismiss()
+        }.show()/*// Creiamo un intent per aprire la galleria in modo da permettere all'utente di scegliere un'immagine profilo
         val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
         // Avviamo l'activity per scegliere un'immagine profilo (qui usiamo il metodo deprecato e usiamo il codice contenuto nel companion object così come abbiamo fatto nel fragment del login)
         startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
@@ -315,13 +313,13 @@ class RegTerzaFragment : Fragment() {
             }
         // Aggiungiamo i dati del documento follow del nuovo utente alla collection follow
         FirestoreService.collectionFollow.document(uid).set(followDocument).addOnFailureListener {
-                // Si è verificato un errore durante l'aggiunta del documento follow al database Firestore
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            // Si è verificato un errore durante l'aggiunta del documento follow al database Firestore
+            Toast.makeText(
+                requireContext(),
+                "Registrazione al database fallita, avvisa il nostro team di supporto",
+                Toast.LENGTH_LONG
+            ).show()
+        }
         FirestoreService.collectionEpisodes.document(uid).set(episodesDocument)
             .addOnFailureListener {
                 Toast.makeText(
@@ -340,16 +338,16 @@ class RegTerzaFragment : Fragment() {
             }
         // Aggiungiamo i dati del documento lists del nuovo utente alla collection lists
         FirestoreService.collectionLists.document(uid).set(listsDocument).addOnSuccessListener {
-                // A questo punto la registrazione è completata, quindi possiamo navigare alla HomeActivity
-                navigateToMainActivity()
-            }.addOnFailureListener {
-                // Si è verificato un errore durante l'aggiunta del documento lists al database Firestore
-                Toast.makeText(
-                    requireContext(),
-                    "Registrazione al database fallita, avvisa il nostro team di supporto",
-                    Toast.LENGTH_LONG
-                ).show()
-            }
+            // A questo punto la registrazione è completata, quindi possiamo navigare alla HomeActivity
+            navigateToMainActivity()
+        }.addOnFailureListener {
+            // Si è verificato un errore durante l'aggiunta del documento lists al database Firestore
+            Toast.makeText(
+                requireContext(),
+                "Registrazione al database fallita, avvisa il nostro team di supporto",
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     // Questo metodo serve per navigare alla HomeActivity, viene chiamato quando la registrazione è completata

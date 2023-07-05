@@ -9,11 +9,4 @@
         <item name="cornerSize">10%</item>
     </style>
 
-    <style name="Theme.Filmaccio.ActiveSmallButton" parent="Widget.Material3.Button">
-        <item name="android:background">@drawable/button_active</item>
-    </style>
-
-    <style name="Theme.Filmaccio.OutlinedSmallButton" parent="Widget.Material3.Button.OutlinedButton">
-        <item name="android:background">@drawable/button_outlined</item>
-    </style>
 </resources>
