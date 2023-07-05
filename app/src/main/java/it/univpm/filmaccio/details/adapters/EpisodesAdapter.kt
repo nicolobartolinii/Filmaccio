@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.firestore.FieldValue
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.data.repository.SeriesRepository
+import it.univpm.filmaccio.data.repository.UsersRepository
 import it.univpm.filmaccio.details.viewmodels.EpisodesViewModel
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -30,6 +32,7 @@ class EpisodesAdapter(
 ) : RecyclerView.Adapter<EpisodesAdapter.EpisodeViewHolder>() {
 
     private val seriesRepository = SeriesRepository()
+    private val usersRepository = UsersRepository()
 
     class EpisodeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val name: TextView = view.findViewById(R.id.episode_item_name)
@@ -101,6 +104,8 @@ class EpisodesAdapter(
                 FirestoreService.removeEpisodeFromWatched(
                     uid, seriesId, seasonNumber, episode.number
                 )
+                usersRepository.updateUserField(uid, "tvMinutes", FieldValue.increment(-episode.duration.toLong())) {}
+                usersRepository.updateUserField(uid, "tvNumber", FieldValue.increment(-1)) {}
                 holder.buttonWatchEpisode.setBackgroundColor(color)
                 holder.buttonWatchEpisode.setIconResource(R.drawable.round_remove_red_eye_24)
                 false
@@ -109,6 +114,8 @@ class EpisodesAdapter(
                     FirestoreService.addToList(uid, "watching_t", seriesId)
                 }
                 FirestoreService.addWatchedEpisode(uid, seriesId, seasonNumber, episode.number)
+                usersRepository.updateUserField(uid, "tvMinutes", FieldValue.increment(episode.duration.toLong())) {}
+                usersRepository.updateUserField(uid, "tvNumber", FieldValue.increment(1)) {}
                 holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
                 holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)
                 true

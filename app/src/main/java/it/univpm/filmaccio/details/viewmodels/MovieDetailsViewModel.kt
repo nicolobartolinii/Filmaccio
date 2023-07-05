@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FieldValue
 import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.repository.MovieRepository
+import it.univpm.filmaccio.data.repository.UsersRepository
 import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -16,6 +18,8 @@ import kotlinx.coroutines.launch
 class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
 
     private val movieRepository = MovieRepository()
+
+    private val usersRepository = UsersRepository()
 
     private val userId = UserUtils.getCurrentUserUid()!!
 
@@ -73,9 +77,13 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
     fun toggleWatched(movieId: Long) = viewModelScope.launch {
         if (_isMovieWatched.value == true) {
             movieRepository.removeFromList(userId, "watched_m", movieId)
+            usersRepository.updateUserField(userId, "movieMinutes", FieldValue.increment(-currentMovie.value!!.duration.toLong())) {}
+            usersRepository.updateUserField(userId, "moviesNumber", FieldValue.increment(-1)) {}
             _isMovieWatched.value = false
         } else {
             movieRepository.addToList(userId, "watched_m", movieId)
+            usersRepository.updateUserField(userId, "movieMinutes", FieldValue.increment(currentMovie.value!!.duration.toLong())) {}
+            usersRepository.updateUserField(userId, "moviesNumber", FieldValue.increment(1)) {}
             if (_isMovieInWatchlist.value == true) {
                 movieRepository.removeFromList(userId, "watchlist_m", movieId)
                 _isMovieInWatchlist.value = false

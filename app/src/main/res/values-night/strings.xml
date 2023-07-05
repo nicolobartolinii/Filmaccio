@@ -39,8 +39,8 @@
     <string name="see_all">Vedi tutto</string>
     <string name="feed">Feed</string>
     <string name="ricerca_hint">Ricerca film, serie TV, personaggi o utenti</string>
-    <string name="recommended_movies_text">Film consigliati per te</string>
-    <string name="recommended_series_text">Serie TV consigliate per te</string>
+    <string name="recommended_movies_text">Film popolari</string>
+    <string name="recommended_series_text">Serie TV popolari</string>
     <string name="trending_movies_text">Film di tendenza</string>
     <string name="trending_series_text">Serie TV di tendenza</string>
     <string name="backdrop_profile_image_description">backdrop profile image</string>

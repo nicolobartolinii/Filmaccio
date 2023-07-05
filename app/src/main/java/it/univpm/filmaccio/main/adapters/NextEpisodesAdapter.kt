@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.button.MaterialButton
 import com.google.android.material.imageview.ShapeableImageView
+import com.google.firebase.firestore.FieldValue
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.NextEpisode
 import it.univpm.filmaccio.data.repository.SeriesRepository
+import it.univpm.filmaccio.data.repository.UsersRepository
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
@@ -27,6 +29,7 @@ class NextEpisodesAdapter(
 ) : RecyclerView.Adapter<NextEpisodesAdapter.NextEpisodeViewHolder>() {
 
     private val seriesRepository = SeriesRepository()
+    private val usersRepository = UsersRepository()
 
     class NextEpisodeViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val seriesNameTextView: TextView = view.findViewById(R.id.episode_item_series_name)
@@ -65,6 +68,8 @@ class NextEpisodesAdapter(
             FirestoreService.addWatchedEpisode(
                 uid, episode.seriesId, episode.seasonNumber, episode.episodeNumber
             )
+            usersRepository.updateUserField(uid, "tvMinutes", FieldValue.increment(episode.duration.toLong())) {}
+            usersRepository.updateUserField(uid, "tvNumber", FieldValue.increment(1)) {}
             holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
             holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)
             holder.buttonWatchEpisode.isClickable = false

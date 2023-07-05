@@ -556,17 +556,51 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/divider_info_lists" />
 
-                    <androidx.recyclerview.widget.RecyclerView
-                        android:id="@+id/horizontal_cards_lists"
+                    <ViewFlipper
+                        android:id="@+id/view_flipper_lists"
                         android:layout_width="0dp"
-                        android:layout_height="120dp"
+                        android:layout_height="wrap_content"
                         android:layout_marginHorizontal="8dp"
                         android:layout_marginTop="8dp"
-                        android:orientation="horizontal"
-                        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/listeTitle" />
+                        app:layout_constraintTop_toBottomOf="@id/listeTitle">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginHorizontal="16dp"
+                            android:layout_marginTop="16dp"
+                            android:gravity="center"
+                            android:orientation="vertical">
+
+                            <ProgressBar
+                                style="@style/Widget.MaterialComponents.CircularProgressIndicator"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="top|center_horizontal"
+                                android:layout_marginBottom="10dp"
+                                android:indeterminate="true" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="bottom|center_horizontal"
+                                android:layout_marginTop="8dp"
+                                android:fontFamily="sans-serif-black"
+                                android:text="@string/caricamento_in_corso"
+                                android:textAppearance="@style/TextAppearance.Material3.BodyLarge" />
+
+                        </LinearLayout>
+
+                        <androidx.recyclerview.widget.RecyclerView
+                            android:id="@+id/horizontal_cards_lists"
+                            android:layout_width="wrap_content"
+                            android:layout_height="120dp"
+                            android:orientation="horizontal"
+                            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
+
+                    </ViewFlipper>
 
                     <!-- Divisore -->
                     <View
@@ -576,7 +610,7 @@
                         android:background="?android:attr/dividerVertical"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/horizontal_cards_lists"
+                        app:layout_constraintTop_toBottomOf="@id/view_flipper_lists"
                         tools:layout_editor_absoluteY="569dp" />
 
                     <!-- Titolo "Serie TV" -->

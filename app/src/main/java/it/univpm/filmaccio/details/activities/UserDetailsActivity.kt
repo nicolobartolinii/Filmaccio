@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.card.MaterialCardView
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.data.models.Series
+import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.databinding.ActivityUserDetailsBinding
@@ -27,10 +28,8 @@ import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.FirestoreService.getFollowers
 import it.univpm.filmaccio.main.utils.FirestoreService.getFollowing
 import it.univpm.filmaccio.main.utils.UserUtils
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
@@ -51,6 +50,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var finishedSeriesRecyclerView: RecyclerView
     private lateinit var finishedSeriesViewAllButton: Button
     private lateinit var finishedSeriesViewFlipper: ViewFlipper
+    private lateinit var viewFlipperLists: ViewFlipper
 
     // variabili per le repository
     private lateinit var movieRepository: MovieRepository
@@ -68,6 +68,7 @@ class UserDetailsActivity : AppCompatActivity() {
     private lateinit var userLists: Map<String, List<Long>>
     private lateinit var finishedSeries: List<Series>
     private lateinit var targetUid: String
+    private lateinit var currentUser: User
 
     // aapter
     private lateinit var profileListsAdapter: ProfileHorizontalListAdapter
@@ -94,6 +95,7 @@ class UserDetailsActivity : AppCompatActivity() {
         finishedSeriesRecyclerView = binding.serieTVHorizontalList
         finishedSeriesViewAllButton = binding.finishedSeriesButtonViewAll
         finishedSeriesViewFlipper = binding.finishedSeriesViewFlipper
+        viewFlipperLists = binding.viewFlipperLists
         // Inizializzazione repo
         movieRepository = MovieRepository()
         seriesRepository = SeriesRepository()
@@ -140,6 +142,7 @@ class UserDetailsActivity : AppCompatActivity() {
             // breve ritardo di 25 secondi (per qualche motivo questa cosa serve solo al primo avvio)
             Handler(Looper.getMainLooper()).postDelayed({
                 viewFlipper.displayedChild = 0
+                viewFlipperLists.displayedChild = 0
             }, 25)
             userDetailsViewModel.isFirstLaunch = false
         }
@@ -148,8 +151,8 @@ class UserDetailsActivity : AppCompatActivity() {
             //obser vero o falso se l'utente è seguito o meno
             if (isUserFollowed == true) seguiBotton.text = "SEGUI GIÀ"
             else seguiBotton.text = "SEGUI"
-
         }
+
         seguiBotton.setOnClickListener {
             // funzione che implementa il segui stile instagram
             if (seguiBotton.text == "SEGUI") {
@@ -175,13 +178,15 @@ class UserDetailsActivity : AppCompatActivity() {
                 }
             }
         }
-        CoroutineScope(Dispatchers.Main).launch {
+
+        lifecycleScope.launch {
             //funzione per ottenere i following in array list per passarli successivamente
             followingFlow.collect { followingFlow ->
                 followingArrayList = ArrayList(followingFlow)
             }
         }
-        CoroutineScope(Dispatchers.Main).launch {
+
+        lifecycleScope.launch {
             //funzione per ottenere i followers in array list per passarli successivamente
             followersFlow.collect { followersFlow ->
                 followersArrayList = ArrayList(followersFlow)
@@ -192,20 +197,25 @@ class UserDetailsActivity : AppCompatActivity() {
             // clicco su following e parte il view all
             val intent = Intent(this, ViewAllActivity::class.java)
             intent.putExtra("entities", followingArrayList) // entities è la lista di entità
-            intent.putExtra("title", "SEGUITI") // title è il titolo della schermata
+            intent.putExtra("title", "Seguiti") // title è il titolo della schermata
             startActivity(intent)
         }
         followersCard.setOnClickListener {
             // clicco su following e parte il view all
             val intent = Intent(this, ViewAllActivity::class.java)
             intent.putExtra("entities", followersArrayList) // entities è la lista di entità
-            intent.putExtra("title", "FOLLOWERS") // title è il titolo della schermata
+            intent.putExtra("title", "Followers") // title è il titolo della schermata
             startActivity(intent)
+        }
+
+        lifecycleScope.launch {
+            loadCurrentUserDetails()
         }
 
         lifecycleScope.launch {
             loadProfileListsAndTimes()
         }
+
 
         finishedSeriesViewAllButton.setOnClickListener {
             val intent = Intent(this, ViewAllActivity::class.java)
@@ -229,30 +239,18 @@ class UserDetailsActivity : AppCompatActivity() {
                     val listTitle = entry.key
                     val ids = entry.value
 
-                    if (listTitle == "watched_m") {
-                        // Se la lista è quella dei film visti allora aggiorniamo le variabili
-                        // movieMinutes e movieNumber con i valori corretti
-                        movieMinutes = ids.sumOf { movieRepository.getMovieDetails(it).duration }
-                        movieNumber = ids.size
-                    } else if (listTitle == "finished_t") {
-                        // Se la lista è quella delle serie viste allora aggiorniamo le variabili
-                        // tvMinutes e tvNumber con i valori corretti
-                        val watchingSeries = FirestoreService.getWatchingSeries(targetUid).first()
-                        for (series in watchingSeries) {
-                            val seriesDetails =
-                                seriesRepository.getSeriesDetails(series.key.toLong())
-                            for (season in series.value) {
-                                tvMinutes += if (seriesDetails.seasons.any { it.number == 0L }) season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt()].episodes[episode.toInt() - 1].duration }
-                                else season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt() - 1].episodes[episode.toInt() - 1].duration }
-                                tvNumber += season.value.size
-                            }
-                        }
+                    if (listTitle == "finished_t") {
                         finishedSeries = ids.map { seriesRepository.getSeriesDetails(it) }
                         val firstThreeFinishedSeries = finishedSeries.take(3)
                         val adapter = ViewAllAdapter()
                         adapter.submitList(firstThreeFinishedSeries)
                         finishedSeriesRecyclerView.adapter = adapter
                     }
+
+                    movieMinutes = currentUser.movieMinutes.toInt()
+                    movieNumber = currentUser.moviesNumber.toInt()
+                    tvMinutes = currentUser.tvMinutes.toInt()
+                    tvNumber = currentUser.tvNumber.toInt()
 
                     val movieTime = convertMinutesToMonthsDaysHours(movieMinutes)
                     val tvTime = convertMinutesToMonthsDaysHours(tvMinutes)
@@ -284,6 +282,8 @@ class UserDetailsActivity : AppCompatActivity() {
                     if (tvTime.third == "01") {
                         binding.tvTimeHoursText.text = "ora"
                     }
+
+                    viewFlipper.displayedChild = 1
 
                     if (ids.size >= 3) {
                         // Se la lista di id è lunga almeno 3 allora possiamo creare una lista
@@ -335,7 +335,7 @@ class UserDetailsActivity : AppCompatActivity() {
                 profileListsAdapter = ProfileHorizontalListAdapter(userLists, this)
                 binding.horizontalCardsLists.adapter = profileListsAdapter
                 profileListsAdapter.submitList(profileListItems)
-                viewFlipper.displayedChild = 1
+                viewFlipperLists.displayedChild = 1
                 if (finishedSeriesRecyclerView.adapter?.itemCount == 0) {
                     finishedSeriesViewFlipper.displayedChild = 1
                 } else finishedSeriesViewFlipper.displayedChild = 0
@@ -352,5 +352,11 @@ class UserDetailsActivity : AppCompatActivity() {
         if (days.length == 1) days = days.padStart(2, '0')
         if (hours.length == 1) hours = hours.padStart(2, '0')
         return Triple(months, days, hours)
+    }
+
+    private suspend fun loadCurrentUserDetails() {
+        userDetailsViewModel.currentUser.collectLatest {
+            if (it != null) currentUser = it
+        }
     }
 }

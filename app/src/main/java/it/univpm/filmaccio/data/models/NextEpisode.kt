@@ -6,5 +6,6 @@ data class NextEpisode(
     val seasonNumber: Long,
     val episodeNumber: Long,
     val episodeTitle: String,
-    val posterPath: String?
+    val posterPath: String?,
+    val duration: Long = 0
 )

@@ -34,7 +34,6 @@ import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import it.univpm.filmaccio.main.viewmodels.ProfileViewModel
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 // Questo fragment è la schermata in cui viene mostrato il profilo dell'utente corrente (non degli altri utenti).
@@ -61,6 +60,7 @@ class ProfileFragment : Fragment() {
     private lateinit var finishedSeriesRecyclerView: RecyclerView
     private lateinit var finishedSeriesViewAllButton: Button
     private lateinit var finishedSeriesViewFlipper: ViewFlipper
+    private lateinit var viewFlipperLists: ViewFlipper
     private var movieMinutes = 0
     private var tvMinutes = 0
     private var movieNumber = 0
@@ -104,6 +104,7 @@ class ProfileFragment : Fragment() {
         finishedSeriesRecyclerView = binding.serieTVHorizontalList
         finishedSeriesViewAllButton = binding.finishedSeriesButtonViewAll
         finishedSeriesViewFlipper = binding.finishedSeriesViewFlipper
+        viewFlipperLists = binding.viewFlipperLists
         val followersFlow = FirestoreService.getFollowers(currentUserUid)
         val followingFlow = FirestoreService.getFollowing(currentUserUid)
 
@@ -155,6 +156,7 @@ class ProfileFragment : Fragment() {
             // breve ritardo di 25 secondi (per qualche motivo questa cosa serve solo al primo avvio)
             Handler(Looper.getMainLooper()).postDelayed({
                 viewFlipper.displayedChild = 0
+                viewFlipperLists.displayedChild = 0
             }, 25)
             profileViewModel.isFirstLaunch = false
         }
@@ -187,6 +189,7 @@ class ProfileFragment : Fragment() {
         reloadButton.setOnClickListener {
             // Se l'utente clicca sul bottone di ricarica allora ricarichiamo la pagina
             viewFlipper.displayedChild = 0
+            viewFlipperLists.displayedChild = 0
             viewLifecycleOwner.lifecycleScope.launch {
                 profileViewModel.getLists()
                 loadProfileListsAndTimes()
@@ -233,32 +236,18 @@ class ProfileFragment : Fragment() {
                     val listTitle = entry.key
                     val ids = entry.value
 
-                    if (listTitle == "watched_m") {
-                        // Se la lista è quella dei film visti allora aggiorniamo le variabili
-                        // movieMinutes e movieNumber con i valori corretti
-                        movieMinutes = ids.sumOf { movieRepository.getMovieDetails(it).duration }
-                        movieNumber = ids.size
-                    } else if (listTitle == "finished_t") {
-                        // Se la lista è quella delle serie viste allora aggiorniamo le variabili
-                        // tvMinutes e tvNumber con i valori corretti
-                        val watchingSeries =
-                            FirestoreService.getWatchingSeries(UserUtils.getCurrentUserUid()!!)
-                                .first()
-                        for (series in watchingSeries) {
-                            val seriesDetails =
-                                seriesRepository.getSeriesDetails(series.key.toLong())
-                            for (season in series.value) {
-                                tvMinutes += if (seriesDetails.seasons.any { it.number == 0L }) season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt()].episodes[episode.toInt() - 1].duration }
-                                else season.value.sumOf { episode -> seriesDetails.seasons[season.key.toInt() - 1].episodes[episode.toInt() - 1].duration }
-                                tvNumber += season.value.size
-                            }
-                        }
+                    if (listTitle == "finished_t") {
                         finishedSeries = ids.map { seriesRepository.getSeriesDetails(it) }
                         val firstThreeFinishedSeries = finishedSeries.take(3)
                         val adapter = ViewAllAdapter()
                         adapter.submitList(firstThreeFinishedSeries)
                         finishedSeriesRecyclerView.adapter = adapter
                     }
+
+                    movieMinutes = currentUser.movieMinutes.toInt()
+                    movieNumber = currentUser.moviesNumber.toInt()
+                    tvMinutes = currentUser.tvMinutes.toInt()
+                    tvNumber = currentUser.tvNumber.toInt()
 
                     val movieTime = convertMinutesToMonthsDaysHours(movieMinutes)
                     val tvTime = convertMinutesToMonthsDaysHours(tvMinutes)
@@ -290,6 +279,8 @@ class ProfileFragment : Fragment() {
                     if (tvTime.third == "01") {
                         binding.tvTimeHoursText.text = "ora"
                     }
+
+                    viewFlipper.displayedChild = 1
 
                     if (ids.size >= 3) {
                         // Se la lista di id è lunga almeno 3 allora possiamo creare una lista
@@ -341,7 +332,7 @@ class ProfileFragment : Fragment() {
                 profileListsAdapter = ProfileHorizontalListAdapter(userLists, requireContext())
                 binding.horizontalCardsLists.adapter = profileListsAdapter
                 profileListsAdapter.submitList(profileListItems)
-                viewFlipper.displayedChild = 1
+                viewFlipperLists.displayedChild = 1
                 if (finishedSeriesRecyclerView.adapter?.itemCount == 0) {
                     finishedSeriesViewFlipper.displayedChild = 1
                 } else finishedSeriesViewFlipper.displayedChild = 0

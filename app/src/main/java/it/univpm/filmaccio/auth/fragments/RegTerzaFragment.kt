@@ -260,7 +260,11 @@ class RegTerzaFragment : Fragment() {
             "birthDate" to birthDate,
             "nameShown" to nameShown,
             "profileImage" to imageURL,
-            "backdropImage" to Constants.DESERT_BACKDROP_URL
+            "backdropImage" to Constants.DESERT_BACKDROP_URL,
+            "movieMinutes" to 0,
+            "moviesNumber" to 0,
+            "tvMinutes" to 0,
+            "tvNumber" to 0
         )
         // Creiamo una HashMap con due ArrayList vuoti per setuppare il documento follow del nuovo utente
         val followDocument = hashMapOf(
