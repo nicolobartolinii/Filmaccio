@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.Series
+import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.databinding.FragmentHomeBinding
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
@@ -191,8 +192,12 @@ class HomeFragment : Fragment() {
         }
 
         binding.buttonTopRatedSeriesViewAll.setOnClickListener {
+            val tmdbEntitySeries = ArrayList<TmdbEntity>()
+            for (series in topRatedSeries.take(25)) {
+                tmdbEntitySeries.add(TmdbEntity(series.id, series.title, series.posterPath, "series"))
+            }
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
-            intent.putExtra("entities", ArrayList(topRatedSeries.take(25)))
+            intent.putExtra("entities", tmdbEntitySeries)
             intent.putExtra("title", "Serie TV più votate (top 25)")
             startActivity(intent)
         }

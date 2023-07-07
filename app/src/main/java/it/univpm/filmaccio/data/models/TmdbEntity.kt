@@ -12,4 +12,4 @@ data class TmdbEntity(
     @SerializedName(value = "title", alternate = ["name"]) val title: String,
     @SerializedName(value = "poster_path", alternate = ["profile_path"]) val imagePath: String?,
     @SerializedName("media_type") val mediaType: String
-)
+) : java.io.Serializable

@@ -15,6 +15,7 @@ import it.univpm.filmaccio.data.models.Movie
 import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.data.models.Series
+import it.univpm.filmaccio.data.models.TmdbEntity
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.MovieRepository
 import it.univpm.filmaccio.data.repository.SeriesRepository
@@ -105,6 +106,44 @@ class ViewAllAdapter(private val type: Char = 'm') :
                     val intent = Intent(context, SeriesDetailsActivity::class.java)
                     intent.putExtra("seriesId", entity.id)
                     context.startActivity(intent)
+                }
+            }
+
+            is TmdbEntity -> {
+                if (entity.mediaType == "series") {
+                    holder.title.text = entity.title
+                    if (entity.imagePath != null) {
+                        Glide.with(holder.itemView.context)
+                            .load("https://image.tmdb.org/t/p/w185${entity.imagePath}")
+                            .into(holder.shapeableImageView)
+                    } else {
+                        Glide.with(holder.itemView.context).load(R.drawable.error_404)
+                            .into(holder.shapeableImageView)
+                    }
+
+                    holder.itemView.setOnClickListener {
+                        val context = holder.itemView.context
+                        val intent = Intent(context, SeriesDetailsActivity::class.java)
+                        intent.putExtra("seriesId", entity.id)
+                        context.startActivity(intent)
+                    }
+                } else if (entity.mediaType == "movie") {
+                    holder.title.text = entity.title
+                    if (entity.imagePath != null) {
+                        Glide.with(holder.itemView.context)
+                            .load("https://image.tmdb.org/t/p/w185${entity.imagePath}")
+                            .into(holder.shapeableImageView)
+                    } else {
+                        Glide.with(holder.itemView.context).load(R.drawable.error_404)
+                            .into(holder.shapeableImageView)
+                    }
+
+                    holder.itemView.setOnClickListener {
+                        val context = holder.itemView.context
+                        val intent = Intent(context, MovieDetailsActivity::class.java)
+                        intent.putExtra("movieId", entity.id)
+                        context.startActivity(intent)
+                    }
                 }
             }
 
@@ -221,6 +260,7 @@ class ViewAllAdapter(private val type: Char = 'm') :
             is Series -> TYPE_TMDB_ENTITY
             is Person -> TYPE_TMDB_ENTITY
             is Long -> TYPE_TMDB_ENTITY
+            is TmdbEntity -> TYPE_TMDB_ENTITY
             is User -> TYPE_USER
             is String -> TYPE_USER
             is ReviewTriple -> TYPE_REVIEW
