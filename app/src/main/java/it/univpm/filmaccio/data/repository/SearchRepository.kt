@@ -1,6 +1,5 @@
 package it.univpm.filmaccio.data.repository
 
-import android.util.Log
 import it.univpm.filmaccio.data.api.TmdbApiClient
 import it.univpm.filmaccio.data.models.SearchResponse
 
