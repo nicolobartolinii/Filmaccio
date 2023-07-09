@@ -154,9 +154,19 @@ class ProfileFragment : Fragment() {
         if (profileViewModel.isFirstLaunch) {
             // Se è la prima volta allora facciamo comparire la schermata di caricamento con un
             // breve ritardo di 25 secondi (per qualche motivo questa cosa serve solo al primo avvio)
+            // Inoltre lanciamo una coroutine per ottenere i dati dell'utente corrente con un piccolo
+            // delay solo se è la prima volta che viene aperto il fragment, questo serve per evitare
+            // il crash dell'app dovuto dal fatto che l'utente corrente non è ancora stato caricato
+            // quando viene aperto il fragment una frazione di secondo dopo aver aperto l'app
+            // In ogni caso se l'utente apre il fragment in un modo estremamente rapido, l'app crasha
+            // ugualmente, però almeno con questo piccolo delay si riduce la finestra di tempo in cui
+            // l'app può crashare. (purtroppo non ho trovato un'altra soluzione per questo problema)
             Handler(Looper.getMainLooper()).postDelayed({
                 viewFlipper.displayedChild = 0
                 viewFlipperLists.displayedChild = 0
+                viewLifecycleOwner.lifecycleScope.launch {
+                    loadCurrentUserDetails()
+                }
             }, 25)
             profileViewModel.isFirstLaunch = false
         }
@@ -182,8 +192,10 @@ class ProfileFragment : Fragment() {
         }
 
         // Qui lanciamo una coroutine per ottenere le informazioni dell'utente corrente
-        viewLifecycleOwner.lifecycleScope.launch {
-            loadCurrentUserDetails()
+        if (!profileViewModel.isFirstLaunch) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                loadCurrentUserDetails()
+            }
         }
 
         reloadButton.setOnClickListener {
