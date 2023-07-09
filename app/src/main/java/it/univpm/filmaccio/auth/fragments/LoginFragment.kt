@@ -89,7 +89,9 @@ class LoginFragment : Fragment() {
             val password = inputPassword.text.toString()
 
             // Chiamata del metodo che si occupa di effettuare il login con email e password ed effettuare i vari controlli necessari
-            loginUserWithEmailAndPassword(email, password)
+            if (email.isNotEmpty() && password.isNotEmpty()) {
+                loginUserWithEmailAndPassword(email, password)
+            }
         }
 
         // Impostazione del listener del click per il pulsante di login con Google
