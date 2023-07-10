@@ -12,6 +12,13 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Character
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 
+/**
+ * Adapter per la RecyclerView che mostra il cast di un film
+ *
+ * @param cast lista di attori (personaggi)
+ *
+ * @author nicolobartolinii
+ */
 class CastAdapter(private val cast: List<Character>) :
     RecyclerView.Adapter<CastAdapter.ViewHolder>() {
 

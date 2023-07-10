@@ -17,6 +17,19 @@ import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 import it.univpm.filmaccio.details.activities.UserDetailsActivity
 
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView presente nel FeedFragment.
+ * In breve, mostra le recensioni degli utenti che l'utente segue.
+ * Ogni recensione è composta da un'immagine del prodotto recensito, l'immagine del profilo dell'utente che ha
+ * lasciato la recensione, il nome dell'utente, la data in cui è stata lasciata la recensione e il testo della recensione.
+ * Cliccando sull'immagine del prodotto si viene reindirizzati alla pagina di dettaglio del prodotto.
+ * Cliccando sull'immagine del profilo si viene reindirizzati alla pagina di dettaglio dell'utente.
+ *
+ * @param feed lista di coppie (recensione, prodotto recensito)
+ * @param context contesto dell'activity
+ *
+ * @author nicolobartolinii
+ */
 class FeedAdapter(
     private val feed: List<Pair<ReviewTriple, TmdbEntity>>, private val context: Context
 ) : RecyclerView.Adapter<FeedAdapter.FeedViewHolder>() {

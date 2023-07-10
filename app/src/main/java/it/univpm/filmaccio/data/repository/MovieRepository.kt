@@ -10,9 +10,13 @@ import it.univpm.filmaccio.data.models.ReviewTriple
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
-// Questa classe è un repository che si occupa di gestire i dati relativi ai film.
-// In particolare si occupa di fare le chiamate all'API di TMDB per ottenere i dati relativi ai film e
-// di gestire i dati relativi alle liste di film dell'utente.
+/**
+ * Questa classe è un repository che si occupa di gestire i dati relativi ai film.
+ * In particolare si occupa di fare le chiamate all'API di TMDB per ottenere i dati relativi ai film e
+ * di gestire i dati relativi alle liste di film dell'utente e altre operazioni sempre relative a film.
+ *
+ * @author nicolobartolinii
+ */
 class MovieRepository {
 
     // Qui creiamo un oggetto che contiene il client per le chiamate alle API di TMDB
@@ -152,44 +156,53 @@ class MovieRepository {
         if (movie.overview.isEmpty()) movie.overview = movieInEnglish.overview
     }
 
+    // Questo metodo controlla se un film è stato valutato da un utente
     suspend fun isMovieRated(userId: String, movieId: Long): Boolean {
         val movieRating = FirestoreService.getMovieRating(userId, movieId).first
         return movieRating != 0f
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per ottenere la valutazione di un film da parte di un utente
     suspend fun getMovieRating(userId: String, movieId: Long): Pair<Float, Timestamp> {
         return FirestoreService.getMovieRating(userId, movieId)
     }
 
+    // Questo metodo controlla se un film è stato recensito da un utente
     suspend fun isMovieReviewed(userId: String, movieId: Long): Boolean {
         val movieReview = FirestoreService.getMovieReview(userId, movieId).first
         return movieReview != ""
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per ottenere la recensione di un film da parte di un utente
     suspend fun getMovieReview(userId: String, movieId: Long): Pair<String, Timestamp> {
         return FirestoreService.getMovieReview(userId, movieId)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per aggiornare la valutazione di un film da parte di un utente
     suspend fun updateMovieRating(
         userId: String, movieId: Long, rating: Float, timestamp: Timestamp
     ) {
         FirestoreService.updateMovieRating(userId, movieId, rating, timestamp)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per aggiornare la recensione di un film da parte di un utente
     suspend fun updateMovieReview(
         userId: String, movieId: Long, review: String, timestamp: Timestamp
     ) {
         FirestoreService.updateMovieReview(userId, movieId, review, timestamp)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService ottenere la media di valutazione di un film
     suspend fun getAverageMovieRating(movieId: Long): Float {
         return FirestoreService.getAverageMovieRating(movieId)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per ottenere tutte le recensioni di un film
     suspend fun getMovieReviews(movieId: Long): List<ReviewTriple> {
         return FirestoreService.getMovieReviews(movieId)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per ottenere tutte le recensioni di un utente
     suspend fun getUserReviews(userId: String): Pair<ReviewTriple, Long>? {
         return FirestoreService.getUserReviews(userId, "movies")
     }

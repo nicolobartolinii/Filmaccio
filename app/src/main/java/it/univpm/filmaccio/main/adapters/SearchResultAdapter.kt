@@ -19,6 +19,16 @@ import it.univpm.filmaccio.details.activities.UserDetailsActivity
 
 // Questa classe è un adapter per la RecyclerView che mostra i risultati della ricerca.
 // Ho spiegato a cosa servono gli adapter nei commenti di SearchFragment.
+
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView presente nel SearchFragment.
+ * In breve, mostra i risultati della ricerca.
+ * Ogni risultato è composto da un'immagine, il nome e il tipo del risultato.
+ * Cliccando sull'element si viene reindirizzati alla pagina di dettaglio corretta in base al tipo di risultato.
+ *
+ * @author nicolobartolinii
+ * @author NicolaPiccia
+ */
 class SearchResultAdapter : RecyclerView.Adapter<SearchResultAdapter.ViewHolder>() {
 
     // Questo companion object contiene delle costanti che rappresentano i tipi di risultati

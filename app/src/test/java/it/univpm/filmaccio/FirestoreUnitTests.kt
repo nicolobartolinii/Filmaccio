@@ -11,6 +11,11 @@ import junit.framework.TestCase.assertTrue
 import kotlinx.coroutines.runBlocking
 import org.junit.Test
 
+/**
+ * Questa classe contiene i test unitari per Firestore.
+ *
+ * @author nicolobartolinii
+ */
 class FirestoreUnitTests {
 
     @Test

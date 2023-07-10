@@ -9,6 +9,11 @@ import kotlinx.coroutines.runBlocking
 import org.junit.Assert.assertEquals
 import org.junit.Test
 
+/**
+ * Questa classe contiene i test unitari per le API.
+ *
+ * @author nicolobartolinii
+ */
 class APIUnitTest {
 
     @Test

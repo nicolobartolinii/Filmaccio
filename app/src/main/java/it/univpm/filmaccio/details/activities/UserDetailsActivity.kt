@@ -32,7 +32,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
-
+/**
+ * Activity che mostra i dettagli di un utente
+ *
+ * @author NicolaPiccia
+ * @author nicolobartolinii
+ */
 class UserDetailsActivity : AppCompatActivity() {
     private lateinit var binding: ActivityUserDetailsBinding
 

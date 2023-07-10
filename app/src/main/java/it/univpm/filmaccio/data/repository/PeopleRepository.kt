@@ -5,8 +5,12 @@ import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
-// Questa classe è un repository che si occupa di gestire i dati relativi alle persone.
-// In particolare si occupa di fare le chiamate all'API di TMDB per ottenere i dati relativi alle persone.
+/**
+ * Questa classe è un repository che si occupa di gestire i dati relativi alle persone.
+ * In particolare si occupa di fare le chiamate all'API di TMDB per ottenere i dati relativi alle persone.
+ *
+ * @author nicolobartolinii
+ */
 class PeopleRepository {
     // Qui creiamo un oggetto che contiene il client per le chiamate alle API di TMDB
     private val tmdbApi = TmdbApiClient.TMDB_API
@@ -37,29 +41,35 @@ class PeopleRepository {
         return person
     }
 
+    // Questo metodo si occupa di verificare se una persona ha dei dettagli mancanti in italiano
     private fun personHasMissingDetails(person: Person): Boolean {
         return person.biography.isEmpty()
     }
 
+    // Questo metodo si occupa di riempire i dettagli mancanti di una persona in italiano con quelli in inglese
     private fun fillMissingDetails(person: Person, personInEnglish: Person) {
         if (person.biography.isEmpty()) {
             person.biography = personInEnglish.biography
         }
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per verificare se una persona è seguita da un utente
     suspend fun isPersonFollowed(userId: String, personId: Long): Boolean {
         val peopleFollowed: List<Long> = FirestoreService.getPeopleFollowed(userId).first()
         return personId in peopleFollowed
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per seguire una persona
     fun followPerson(userId: String, personId: Long) {
         FirestoreService.followPerson(userId, personId)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per smettere di seguire una persona
     fun unfollowPerson(userId: String, personId: Long) {
         FirestoreService.unfollowPerson(userId, personId)
     }
 
+    // Questo metodo si aggancia all'oggetto FirestoreService per ottenere la lista di persone seguite da un utente
     suspend fun getFollowedPeople(userId: String): List<Person> {
         val followdPeopleIds = FirestoreService.getPeopleFollowed(userId).first()
         val followedPeople = mutableListOf<Person>()

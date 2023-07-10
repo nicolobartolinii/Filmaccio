@@ -10,10 +10,22 @@ import it.univpm.filmaccio.main.activities.MainActivity
 import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 
-// Questa è l'activity che viene avviata quando si apre l'app. Controlla se l'utente è già loggato e in caso positivo lo reindirizza alla MainActivity
+/**
+ * Questa è l'Activity entry point dell'app. Controlla se l'utente è già loggato
+ * e, in caso positivo, lo reindirizza alla MainActivity.
+ *
+ * <p>L'Activity utilizza la classe UserUtils per ottenere un'istanza di FirebaseAuth e, attraverso
+ * questa, controllare se l'utente è già loggato.
+ *
+ * <p>Se l'utente non è loggato, verrà visualizzato il fragment di login.
+ *
+ * @see it.univpm.filmaccio.auth.fragments.LoginFragment
+ *
+ * @author nicolobartolinii
+ */
 class AuthActivity : AppCompatActivity() {
 
-    // Variabile che conterrà l'istanza di firebaseAuth che si occupa di gestire l'autenticazione
+    // Variabile che conterrà l'istanza di FirebaseAuth che si occupa di gestire l'autenticazione
     private lateinit var auth: FirebaseAuth
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

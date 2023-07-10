@@ -10,7 +10,14 @@ import it.univpm.filmaccio.data.models.Series
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.flow.first
 
-// Per la spiegazione di questa classe vedere MovieRepository.kt che è molto simile
+/**
+ * Questa classe è un repository che si occupa di gestire i dati relativi alle serie.
+ * È molto simile a MovieRepository, quindi per la spiegazione vedere quella classe.
+ *
+ * @see MovieRepository
+ *
+ * @author nicolobartolinii
+ */
 class SeriesRepository {
     private val tmdbApi = TmdbApiClient.TMDB_API
 
@@ -134,7 +141,6 @@ class SeriesRepository {
         )
     }
 
-    // Controlla se la serie o la stagione ha dettagli mancanti
     private fun seriesHasMissingDetails(series: Series): Boolean {
         return series.title.isEmpty() || series.overview.isEmpty()
     }
@@ -144,7 +150,6 @@ class SeriesRepository {
         return season.name.isEmpty() || season.overview.isEmpty() || season.episodes.any { it.name.isEmpty() || it.name == "Episodio ${it.number}" || it.overview.isEmpty() }
     }
 
-    // Riempi i dettagli mancanti dalla versione inglese della serie o della stagione
     private fun fillMissingDetails(series: Series, seriesInEnglish: Series) {
         if (series.title.isEmpty()) series.title = seriesInEnglish.title
         if (series.overview.isEmpty()) series.overview = seriesInEnglish.overview

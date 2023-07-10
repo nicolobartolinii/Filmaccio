@@ -18,8 +18,17 @@ import it.univpm.filmaccio.databinding.FragmentRegGooglePrimoBinding
 import it.univpm.filmaccio.main.utils.FirestoreService
 import java.util.Calendar
 
-// Questa classe gestisce la registrazione di un utente tramite Google, richiedendo i dati mancanti. A differenza della registrazione tramite email, in questo caso non vengono richiesti
-// la password e l'email, in quanto sono già stati forniti da Google. Per il resto, la classe è praticamente uguale a RegSecondoFragment, quindi evito di commentarla.
+/**
+ * Questo fragment è il primo passo della registrazione tramite Google, in cui l'utente inserisce
+ * il proprio username (che deve essere univoco), il proprio genere e la propria data di nascita
+ *
+ * Questo passaggio è praticamente identico al secondo passo della registrazione tramite email,
+ * quindi per i commenti si rimanda a RegSecondoFragment.
+ *
+ * @see RegSecondaFragment
+ *
+ * @author nicolobartolinii
+ */
 class RegGooglePrimoFragment : Fragment() {
 
     private var _binding: FragmentRegGooglePrimoBinding? = null

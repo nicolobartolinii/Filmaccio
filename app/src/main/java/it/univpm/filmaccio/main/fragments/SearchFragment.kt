@@ -28,9 +28,14 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
 
-// Questa è la schermata di ricerca dell'app, che può essere vista anche come la schermata di esplorazione.
-// In questa schermata inizialmente abbiamo una lista di film e serie TV consigliati e di tendenza.
-// In alto, però, abbiamo una barra di ricerca che permette di cercare film, serie TV, persone e altri utenti.
+/**
+ * Fragment che mostra la schermata di ricerca. In questa schermata è possibile cercare film, serie TV,
+ * persone e altri utenti. Inoltre, in questa schermata vengono mostrati i film e le serie TV popolari
+ * e di tendenza. In alto è presente una barra di ricerca che permette di cercare film, serie TV, persone
+ * e altri utenti.
+ *
+ * @author nicolobartolinii
+ */
 class SearchFragment : Fragment() {
     private var _binding: FragmentSearchBinding? = null
     private val binding get() = _binding!!

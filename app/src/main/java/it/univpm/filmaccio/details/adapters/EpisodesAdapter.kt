@@ -23,6 +23,17 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Adapter per la RecyclerView che mostra gli episodi di una stagione di una serie
+ *
+ * @param episodes lista di episodi
+ * @param seriesId id della serie
+ * @param seasonNumber numero della stagione
+ * @param context contesto
+ * @param isSeriesInWatching true se la serie è nella lista "In visione" dell'utente, false altrimenti
+ *
+ * @author nicolobartolinii
+ */
 class EpisodesAdapter(
     private val episodes: List<Series.Episode>,
     private val seriesId: Long,
@@ -104,7 +115,11 @@ class EpisodesAdapter(
                 FirestoreService.removeEpisodeFromWatched(
                     uid, seriesId, seasonNumber, episode.number
                 )
-                usersRepository.updateUserField(uid, "tvMinutes", FieldValue.increment(-episode.duration.toLong())) {}
+                usersRepository.updateUserField(
+                    uid,
+                    "tvMinutes",
+                    FieldValue.increment(-episode.duration.toLong())
+                ) {}
                 usersRepository.updateUserField(uid, "tvNumber", FieldValue.increment(-1)) {}
                 holder.buttonWatchEpisode.setBackgroundColor(color)
                 holder.buttonWatchEpisode.setIconResource(R.drawable.round_remove_red_eye_24)
@@ -114,7 +129,11 @@ class EpisodesAdapter(
                     FirestoreService.addToList(uid, "watching_t", seriesId)
                 }
                 FirestoreService.addWatchedEpisode(uid, seriesId, seasonNumber, episode.number)
-                usersRepository.updateUserField(uid, "tvMinutes", FieldValue.increment(episode.duration.toLong())) {}
+                usersRepository.updateUserField(
+                    uid,
+                    "tvMinutes",
+                    FieldValue.increment(episode.duration.toLong())
+                ) {}
                 usersRepository.updateUserField(uid, "tvNumber", FieldValue.increment(1)) {}
                 holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
                 holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)

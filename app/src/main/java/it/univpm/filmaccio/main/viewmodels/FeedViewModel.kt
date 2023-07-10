@@ -18,6 +18,12 @@ import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/**
+ * Questa classe è il ViewModel della schermata feed dell'applicazione, quindi si occupa di gestire
+ * i dati relativi alle recensioni e alle persone relative all'utente corrente.
+ *
+ * @author nicolobartolinii
+ */
 class FeedViewModel : ViewModel() {
 
     private val peopleRepository = PeopleRepository()
@@ -45,7 +51,6 @@ class FeedViewModel : ViewModel() {
         val following = FirestoreService.getFollowing(userId).first()
         val reviews = mutableListOf<Pair<ReviewTriple, TmdbEntity>>()
         for (user in following) {
-            // val userObject = FirestoreService.getUserByUid(user).first()!!
             val movieReview = movieRepository.getUserReviews(user)
             val seriesReview = seriesRepository.getUserReviews(user)
             if (movieReview == null && seriesReview != null) {

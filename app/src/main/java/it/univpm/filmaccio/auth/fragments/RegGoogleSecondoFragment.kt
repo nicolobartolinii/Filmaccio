@@ -28,12 +28,23 @@ import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.ByteArrayOutputStream
 
-// Questa classe gestisce il secondo passo della registrazione di un utente tramite Google.
-// La differenza con il terzo passo della registrazione tramite email è che qui l'utente non viene creato in FirebaseAuth, perché in questo caso l'utente è già
-// stato creato come ho spiegato in LoginFragment.
-// Questa è la classe in cui ho il giga problema stranissimo di cui ho parlato abbondantemente in RegTerzaFragment, quindi nel caso andate a vedere quel file per la spiegazione (e vedrete anche che i due codici sono letteralmente identici).
+/**
+ * Questo fragment è il secondo passo della registrazione tramite Google, in cui l'utente inserisce
+ * il proprio nome visualizzato e la propria immagine profilo (disabilitato per problemi tecnici).
+ *
+ * Questo passaggio è praticamente identico al terzo passo della registrazione tramite email,
+ * quindi per i commenti si rimanda a RegTerzaFragment.
+ *
+ * @see RegTerzaFragment
+ *
+ * L'unica differenza sostanziale è che qui l'utente non viene creato in FirebaseAuth, perché in questo caso l'utente è già
+ * stato creato come spiegato in LoginFragment. Quindi qui l'utente viene creato solo in Firestore.
+ *
+ * @author nicolobartolinii
+ */
 class RegGoogleSecondoFragment : Fragment() {
 
+    // (DISABILITATO per problemi tecnici)
     /*companion object {
         private const val PICK_IMAGE_REQUEST = 8
     }*/
@@ -47,6 +58,7 @@ class RegGoogleSecondoFragment : Fragment() {
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ShapeableImageView
 
+    // (DISABILITATO per problemi tecnici)
     // private lateinit var selectedImageUri: Uri
     private lateinit var email: String
     private lateinit var username: String
@@ -54,6 +66,7 @@ class RegGoogleSecondoFragment : Fragment() {
     private lateinit var birthDate: Timestamp
     private lateinit var nameShown: String
 
+    // (DISABILITATO per problemi tecnici)
     // private var croppedImageFile: File? = null
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -105,10 +118,13 @@ class RegGoogleSecondoFragment : Fragment() {
             "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
         ).setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
-        }.show()/*val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
+        }.show()
+        /* (DISABILITATO per problemi tecnici)
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
     }
 
+    // (DISABILITATO per problemi tecnici)
     /* @Deprecated("Deprecated in Java")
      override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
          super.onActivityResult(requestCode, resultCode, data)
@@ -151,7 +167,6 @@ class RegGoogleSecondoFragment : Fragment() {
     private fun uploadPropicAndUser(uid: String?) {
         val selectedImageBitmap = (propicImageView.drawable as BitmapDrawable).bitmap
 
-        // Comprimiamo l'immagine
         val byteArrayOutputStream = ByteArrayOutputStream()
         selectedImageBitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream)
         val imageData = byteArrayOutputStream.toByteArray()

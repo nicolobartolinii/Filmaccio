@@ -15,6 +15,13 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel per la gestione dei dettagli di un film
+ *
+ * @param movieId id del film
+ *
+ * @author nicolobartolinii
+ */
 class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
 
     private val movieRepository = MovieRepository()
@@ -77,12 +84,20 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
     fun toggleWatched(movieId: Long) = viewModelScope.launch {
         if (_isMovieWatched.value == true) {
             movieRepository.removeFromList(userId, "watched_m", movieId)
-            usersRepository.updateUserField(userId, "movieMinutes", FieldValue.increment(-currentMovie.value!!.duration.toLong())) {}
+            usersRepository.updateUserField(
+                userId,
+                "movieMinutes",
+                FieldValue.increment(-currentMovie.value!!.duration.toLong())
+            ) {}
             usersRepository.updateUserField(userId, "moviesNumber", FieldValue.increment(-1)) {}
             _isMovieWatched.value = false
         } else {
             movieRepository.addToList(userId, "watched_m", movieId)
-            usersRepository.updateUserField(userId, "movieMinutes", FieldValue.increment(currentMovie.value!!.duration.toLong())) {}
+            usersRepository.updateUserField(
+                userId,
+                "movieMinutes",
+                FieldValue.increment(currentMovie.value!!.duration.toLong())
+            ) {}
             usersRepository.updateUserField(userId, "moviesNumber", FieldValue.increment(1)) {}
             if (_isMovieInWatchlist.value == true) {
                 movieRepository.removeFromList(userId, "watchlist_m", movieId)
@@ -142,9 +157,17 @@ class MovieDetailsViewModel(private var movieId: Long = 0L) : ViewModel() {
         }
     }
 
+    @Suppress("UNUSED")
     suspend fun getMovieReviews(movieId: Long) = movieRepository.getMovieReviews(movieId)
 }
 
+/**
+ * Factory per la creazione di un MovieDetailsViewModel con parametri personalizzati
+ *
+ * @param movieId id del film
+ *
+ * @author nicolobartolinii
+ */
 class MovieDetailsViewModelFactory(private val movieId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieDetailsViewModel::class.java)) {

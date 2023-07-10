@@ -11,6 +11,15 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel per la gestione degli episodi di una serie
+ *
+ * @param seriesId id della serie
+ * @param seasonNumber numero della stagione
+ * @param episodeNumber numero dell'episodio
+ *
+ * @author nicolobartolinii
+ */
 class EpisodesViewModel(
     private val seriesId: Long, private val seasonNumber: Long, private val episodeNumber: Long
 ) : ViewModel() {
@@ -30,6 +39,15 @@ class EpisodesViewModel(
     }
 }
 
+/**
+ * Factory per la creazione di un EpisodesViewModel con parametri personalizzati
+ *
+ * @param seriesId id della serie
+ * @param seasonNumber numero della stagione
+ * @param episodeNumber numero dell'episodio
+ *
+ * @author nicolobartolinii
+ */
 class EpisodesViewModelFactory(
     private val seriesId: Long, private val seasonNumber: Long, private val episodeNumber: Long
 ) : ViewModelProvider.Factory {

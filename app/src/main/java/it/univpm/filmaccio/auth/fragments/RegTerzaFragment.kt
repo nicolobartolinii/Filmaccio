@@ -28,11 +28,15 @@ import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.ByteArrayOutputStream
 
-// Questo fragment è il terzo e ultimo passo della registrazione tramite email, in cui l'utente inserisce il proprio nome visualizzato e la propria immagine profilo
-// Anche quì abbiamo la soppressione del deprecation per l'utilizzo di alcuni metodi in modo da non avere warning "inutili"
+/**
+ * Questo fragment è il terzo e ultimo passo della registrazione tramite email, in cui l'utente inserisce
+ * il proprio nome visualizzato e la propria immagine profilo (per ora disabilitato)
+ *
+ * @author nicolobartolinii
+ */
 class RegTerzaFragment : Fragment() {
 
-    // Per la spiegazione di questo companion object, vedere la classe LoginFragment (il 7 l'ho scelto totalmente a caso)
+    // (DISABILITATO)
     /*companion object {
         private const val PICK_IMAGE_REQUEST = 7
     }*/
@@ -46,6 +50,7 @@ class RegTerzaFragment : Fragment() {
     private lateinit var nomeVisualizzatoTectInputLayout: TextInputLayout
     private lateinit var propicImageView: ShapeableImageView
 
+    // (DISABILITATO)
     // private lateinit var selectedImageUri: Uri
     private lateinit var email: String
     private lateinit var username: String
@@ -54,6 +59,7 @@ class RegTerzaFragment : Fragment() {
     private lateinit var birthDate: Timestamp
     private lateinit var nameShown: String
 
+    // (DISABILITATO)
     // Variabile che ci serve per salvare temporaneamente l'immagine profilo scelta dall'utente (in modo che sia ritagliata in forma rotonda)
     // private var croppedImageFile: File? = null
     override fun onCreateView(
@@ -67,7 +73,9 @@ class RegTerzaFragment : Fragment() {
         nomeVisualizzatoTectInputLayout = binding.nomeVisualizatoTextInputLayout
         propicImageView = binding.propicSetSimageView
 
-        // Quì recuperiamo i dati passati dal fragment precedente (RegSecondaFragment) prima rispetto a quando l'abbiamo fatto nel RegSecondaFragment perché ci servirà lo username per inserirlo di default nel campo nome visualizzato
+        // Quì recuperiamo i dati passati dal fragment precedente (RegSecondaFragment) prima rispetto
+        // a quando l'abbiamo fatto nel RegSecondaFragment perché ci servirà lo username
+        // per inserirlo di default nel campo nome visualizzato
         val args: RegTerzaFragmentArgs by navArgs()
         email = args.email
         username = args.username
@@ -75,7 +83,8 @@ class RegTerzaFragment : Fragment() {
         gender = args.gender
         birthDate = args.birthDate
 
-        // Quì infatti inseriamo lo username nel campo nome visualizzato, così se l'utente vuole avere un nome visualizzato uguale allo username, non deve riscriverlo
+        // Qui infatti inseriamo lo username nel campo nome visualizzato, così se l'utente
+        // vuole avere un nome visualizzato uguale allo username, non deve stare a riscriverlo
         nomeVisualizzatoTextInputEditText.setText(username, TextView.BufferType.EDITABLE)
 
         // Impostazione del listener sul click per il pulsante per tornare indietro
@@ -91,9 +100,11 @@ class RegTerzaFragment : Fragment() {
             // Qui recuperiamo il nome visualizzato inserito dall'utente
             nameShown = nomeVisualizzatoTextInputEditText.text.toString()
 
-            // Qui controlliamo se il nome visualizzato inserito dall'utente non è valido (cioè se non è lungo tra 3 e 50 caratteri)
+            // Qui controlliamo se il nome visualizzato inserito dall'utente non è valido
+            // (cioè se non è lungo tra 3 e 50 caratteri)
             if (nameShown.length > 50 || nameShown.isEmpty() || nameShown.length < 3) {
-                // Se non è valido, mostriamo un errore nel textLayout del nome visualizzato e interrompiamo l'esecuzione del codice
+                // Se non è valido, mostriamo un errore nel textLayout del nome visualizzato
+                // e interrompiamo l'esecuzione del codice
                 nomeVisualizzatoTectInputLayout.isErrorEnabled = true
                 nomeVisualizzatoTectInputLayout.error =
                     "Il nome visualizzato deve essere lungo tra 3 e 50 caratteri"
@@ -101,9 +112,12 @@ class RegTerzaFragment : Fragment() {
             }
 
             // Se il nome visualizzato è valido, allora ci occupiamo dell'immagine profilo
-            // Per farlo, supponiamo che l'immagine profilo inserita dall'utente non dia problemi e procediamo direttamente con la registrazione inserendo l'immagine profilo durante la registrazione stessa
+            // Per farlo, supponiamo che l'immagine profilo inserita dall'utente non dia problemi
+            // e procediamo direttamente con la registrazione inserendo l'immagine profilo durante la registrazione stessa
             val auth = UserUtils.auth
-            // Chiamiamo il metodo per registrare l'utente con email e password e gli passiamo come parametri email e password inserite dall'utente e ci aggiungiamo un listener in ascolto sul completamento della registrazione
+            // Chiamiamo il metodo per registrare l'utente con email e password e gli passiamo come
+            // parametri email e password inserite dall'utente e ci aggiungiamo un listener
+            // in ascolto sul completamento della registrazione
             auth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 // Se la registrazione è andata a buon fine
                 if (task.isSuccessful) {
@@ -111,19 +125,23 @@ class RegTerzaFragment : Fragment() {
                     val user = auth.currentUser
                     // Recuperiamo l'uid dell'utente registrato
                     val uid = user?.uid
-                    // Inviamo l'email di verifica all'utente registrato e ci aggiungiamo un listener in ascolto sul completamento dell'invio dell'email di verifica
+                    // Inviamo l'email di verifica all'utente registrato e ci aggiungiamo un
+                    // listener in ascolto sul completamento dell'invio dell'email di verifica
                     user?.sendEmailVerification()?.addOnCompleteListener { verifyTask ->
                         // Se l'invio dell'email di verifica è andato a buon fine
                         if (verifyTask.isSuccessful) {
-                            // Mostriamo un dialog all'utente per avvisarlo che deve verificare la sua email (potremmo in futuro aggiungere al database un campo che indica
-                            // se l'utente ha verificato la sua email o meno e in base a quello bloccare o meno l'accesso a determinate funzionalità dell'app)
+                            // Mostriamo un dialog all'utente per avvisarlo che deve verificare
+                            // la sua email (se riprendiamo l'app dopo l'esame potremmo in futuro
+                            // aggiungere dei check sull'eventuale verifica e in base a quello bloccare
+                            // o meno l'accesso a determinate funzionalità dell'app)
                             MaterialAlertDialogBuilder(requireContext()).setTitle("Verifica la tua email")
                                 .setMessage("Benvenuto in Filmaccio! Per sbloccare tutte le funzionalità dell'app, ricordati di verificare il tuo indirizzo email cliccando sul link che ti abbiamo inviato.")
                                 .setPositiveButton("OK") { dialog, _ ->
                                     dialog.dismiss()
                                 }.show()
                         } else {
-                            // Se l'invio dell'email di verifica non è andato a buon fine, mostriamo un toast all'utente per avvisarlo che l'invio dell'email di verifica è fallito
+                            // Se l'invio dell'email di verifica non è andato a buon fine, mostriamo
+                            // un toast all'utente per avvisarlo che l'invio dell'email di verifica è fallito
                             Toast.makeText(
                                 requireContext(),
                                 "Invio dell'email di verifica fallito, contatta il nostro team di supporto",
@@ -131,10 +149,12 @@ class RegTerzaFragment : Fragment() {
                             ).show()
                         }
                     }
-                    // Chiamiamo il metodo per caricare l'immagine profilo e l'utente nel database e gli passiamo come parametro l'uid dell'utente registrato
+                    // Chiamiamo il metodo per caricare l'immagine profilo e l'utente nel database
+                    // e gli passiamo come parametro l'uid dell'utente registrato
                     uploadPropicAndUser(uid)
                 } else {
-                    // Se la registrazione non è andata a buon fine, mostriamo un toast all'utente per avvisarlo che la registrazione è fallita e lo reindirizziamo alla schermata di login
+                    // Se la registrazione non è andata a buon fine, mostriamo un toast all'utente
+                    // per avvisarlo che la registrazione è fallita e lo reindirizziamo alla schermata di login
                     Toast.makeText(
                         requireContext(), "Registrazione fallita, riprova", Toast.LENGTH_LONG
                     ).show()
@@ -152,17 +172,22 @@ class RegTerzaFragment : Fragment() {
 
     // Metodo che viene chiamato quando l'utente clicca sull'immagine profilo da impostare
     private fun onPropicClick() {
+        // Temporaneamente disabilitiamo la possibilità di scegliere un'immagine profilo a causa
+        // di un problema stranissimo che non fa funzionare questa funzionalità nella registrazione
+        // tramite Google, mentre qui sì, nonostante il codice sia identico
         MaterialAlertDialogBuilder(requireContext()).setTitle("Info di servizio").setMessage(
             "Funzionalità temporaneamente disabilitata per problemi tecnici.\n\n" + "Per personalizzare la tua immagine di profilo, puoi farlo dopo la registrazione, nella schermata di modifica del profilo."
         ).setPositiveButton("OK") { dialog, _ ->
             dialog.dismiss()
-        }.show()/*// Creiamo un intent per aprire la galleria in modo da permettere all'utente di scegliere un'immagine profilo
-        val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
-        // Avviamo l'activity per scegliere un'immagine profilo (qui usiamo il metodo deprecato e usiamo il codice contenuto nel companion object così come abbiamo fatto nel fragment del login)
-        startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
+        }.show()
+        // (DISABILITATO per problemi tecnici)
+        /*// Creiamo un intent per aprire la galleria in modo da permettere all'utente di scegliere un'immagine profilo
+            val intent = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI)
+            // Avviamo l'activity per scegliere un'immagine profilo (qui usiamo il metodo deprecato e usiamo il codice contenuto nel companion object così come abbiamo fatto nel fragment del login)
+            startActivityForResult(intent, PICK_IMAGE_REQUEST)*/
     }
 
-    /*// Discorso analogo fatto per onActivityResult nel fragment del login
+    /* (DISABILITATO per problemi tecnici)
     @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -175,11 +200,11 @@ class RegTerzaFragment : Fragment() {
         }
     }
 
+// (DISABILITATO per problemi tecnici)
     // Questo metodo inserisce l'immagine di profilo scelta dall'utente nella ShapeableImageView propicImageView dopo averla modificata in modo da renderla circolare e averla salvata in un file temporaneo (in modo da poterla caricare nel database)
-    // Se c'è qualcosa che non vi torna in questo metodo (e in quelli che vengono chiamati all'interno) è perché mi sono fatto aiutare da ChatGPT per riuscire a fare questa cosa di ritagliare l'immagine e salvarla. Quindi ci sono alcune cose che non ho capito bene nemmeno io
-    // e forse è anche per questo che non sono riuscito a fare in modo che funzionasse anche nella classe RegGoogleSecondaFragment (che è praticamente identica a questa). Ovviamente ChatGPT può sbarellare
-    // Piccolo appunto: questo è il metodo incriminato che mi ha dato quel problema strano. Se guardate, infatti, nella classe RegGoogleSecondaFragment, a partire dal metodo onPropicClick() fino alla fine del file, il codice è esattamente identico a quello che trovate qui.
+    // Piccolo appunto: questo è il metodo incriminato che dava quel problema strano. Nella classe RegGoogleSecondaFragment, a partire dal metodo onPropicClick() fino alla fine del file, il codice è esattamente identico a quello che sta qui.
     // Tuttavia, nonostante il codice sia esattamente identico, nell'altra classe non funziona. Ho debuggato line-by-line e ho scoperto che il problema è proprio qui, in questo metodo. Infatti, quando il codice passa alla riga 213, successivamente in questa classe si passa al metodo onResourceReady, mentre nell'altra classe si passa al metodo onLoadFailed e non so perché.
+    // Ho provato a chiedere su StackOverflow e su Discord ma niente, dovremmo chiedere al prof.
     private fun loadImageWithCircularCrop(imageUri: Uri?) {
         // Qui usiamo Glide (una libreria per gestire le immagini in Android in modo da caricarle facilmente da internet e modificarle nel codice e altro) per creare una RequestBuilder che ci permette di caricare l'immagine profilo scelta dall'utente dopo averla modificata (ritagliandola in modo circolare)
         val requestBuilder = Glide.with(this)
@@ -188,7 +213,6 @@ class RegTerzaFragment : Fragment() {
             .apply(RequestOptions.circleCropTransform())
 
         // Con questo codice qui sotto, creiamo un CustomTarget che ci permette di caricare l'immagine profilo modificata in un file temporaneo attraverso il metodo saveBitmapToFile e di caricarla nella ShaepableImageView
-        // Sinceramente non so spiegare bene perché viene fatto in questo modo.
         val target = object : CustomTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 // Salviamo l'immagine ritagliata in un file temporaneo
@@ -197,7 +221,6 @@ class RegTerzaFragment : Fragment() {
                 propicImageView.setImageBitmap(resource)
             }
 
-            // Questo metodo è una delle cose che non so spiegare (come ho scritto sopra). Credo che possa servire a eliminare l'immagine contenuta nella ShapeableImageView per qualche motivo.
             override fun onLoadCleared(placeholder: Drawable?) {
                 // Rimuoviamo l'immagine caricata in precedenza
                 propicImageView.setImageDrawable(null)
@@ -221,8 +244,9 @@ class RegTerzaFragment : Fragment() {
         return file
     }*/
 
-    // Questo metodo serve a caricare l'immagine profilo ritagliata in Firebase Cloud Storage e i dati dell'utente in Firestore
+    // Questo metodo serve a caricare l'immagine profilo di default in Firebase Cloud Storage e i dati dell'utente in Firestore
     private fun uploadPropicAndUser(uid: String?) {
+        // Otteniamo il Bitmap dell'immagine profilo di default
         val selectedImageBitmap = (propicImageView.drawable as BitmapDrawable).bitmap
 
         // Comprimiamo l'immagine
@@ -233,14 +257,18 @@ class RegTerzaFragment : Fragment() {
         val storageReference = Firebase.storage.reference
         val propicReference = storageReference.child("propic/${uid}/profile.jpg")
 
+        // Carichiamo l'immagine profilo di default in Firebase Cloud Storage
         val uploadTask = propicReference.putBytes(imageData)
         uploadTask.addOnSuccessListener {
 
+            // Se l'immagine profilo è stata caricata correttamente, otteniamo l'URL dell'immagine profilo appena caricata
             propicReference.downloadUrl.addOnSuccessListener { uri ->
                 val propicURL = uri.toString()
+                // Aggiungiamo i dati dell'utente a Firestore
                 addNewUserToFirestore(uid, propicURL)
             }
         }.addOnFailureListener {
+            // Se l'immagine profilo non è stata caricata correttamente, mostriamo un Toast all'utente per avvisarlo
             Toast.makeText(
                 requireContext(),
                 "Errore durante il caricamento dell'immagine, avvisa il nostro team di supporto (Errore: $it)",
@@ -282,27 +310,14 @@ class RegTerzaFragment : Fragment() {
             "favorite_t" to arrayListOf(),
             "finished_t" to arrayListOf()
         )
+        // Creiamo una HashMap con un HashMap vuota per setuppare il documento episodes del nuovo utente
         val episodesDocument = hashMapOf(
             "watchingSeries" to hashMapOf<String, Any>()
         )
+        // Creiamo una HashMap con un HashMap vuota per setuppare il documento reviews del nuovo utente
         val reviewsDocument = hashMapOf(
             "movies" to hashMapOf<String, Map<String, Map<String, Any>>>(), "series" to hashMapOf()
         )
-
-        // A tal proposito, forse adesso è il momento migliore di spiegare come ho strutturato il database Firestore.
-        // Abbiamo una collection users, una collection follow e una collection lists.
-        // Tutte queste collection contengono un documento per ogni utente registrato all'app.
-        // I documenti relativi agli utenti hanno sempre come nome l'uid dell'utente corrispondente.
-        // Il documento dell'utente dentro users contiene i dati dell'utente come sono nella HashMap che abbiamo creato sopra.
-        // Il documento dell'utente dentro follow contiene due ArrayList: una per i follower dell'utente e una per gli utenti che l'utente segue (ovviamente sono entrambe inizialmente vuote).
-        // Il documento dell'utente dentro lists contiene sei ArrayList: una per i film da vedere (watchlist_m), una per le serie TV da vedere (watchlist_t), una per i film visti (watched_m),
-        // una per le serie TV che si sta guardando (watching_t), una per i film preferiti (favorite_m) e una per le serie TV preferite (favorite_t).
-        // Per quanto riguarda le liste di film e serie TV, ogni elemento delle liste è un Long che rappresenta l'id del film o della serie TV. Inoltre, il nome delle liste finisce con _m o _t a seconda che la lista sia di film o di serie TV.
-        // Questa cosa dei nomi è necessaria perché purtroppo l'API che usiamo non distingue gli id dei film da quelli delle serie TV, quindi passando un'id di un film alla chiamata che ti da i dettagli di una serie TV, non darà errore 404 ma darà i dettagli di una serie TV "a caso".
-        // Quindi poi come vedrete nel codice successivo quando si va a lavorare con le liste, useremo l'attributo last() per prendere l'ultimo carattere del nome della lista e capire se è una lista di film o di serie TV e in base a quello faremo la chiamata giusta all'API.
-        // Questo ovviamente andrà fatto anche per le eventuali nuove liste create dall'utente. Infatti l'utente, oltre a scegliere il nome della sua lista (che non dovrà superare i 12 caratteri), dovrà anche scegliere se la lista sarà di film o di serie TV e in base a quello nell'aggiunta
-        // della lista al database Firestore, si aggiungerà alla collection lists un nuovo campo con il nome della lista e il suffisso _m o _t a seconda che la lista sia di film o di serie TV.
-
 
         // Aggiungiamo i dati dell'utente al documento dell'utente dentro la collection users
         FirestoreService.collectionUsers.document(uid!!) // Questo .document(uid!!) serve per creare un documento con nome uguale all'uid dell'utente
@@ -324,6 +339,7 @@ class RegTerzaFragment : Fragment() {
                 Toast.LENGTH_LONG
             ).show()
         }
+        // Aggiungiamo i dati del documento episodes del nuovo utente alla collection episodes
         FirestoreService.collectionEpisodes.document(uid).set(episodesDocument)
             .addOnFailureListener {
                 Toast.makeText(
@@ -332,6 +348,7 @@ class RegTerzaFragment : Fragment() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        // Aggiungiamo i dati del documento reviews del nuovo utente alla collection reviews
         FirestoreService.collectionUsersReviews.document(uid).set(reviewsDocument)
             .addOnFailureListener {
                 Toast.makeText(

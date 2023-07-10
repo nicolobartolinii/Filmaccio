@@ -11,6 +11,14 @@ import com.bumptech.glide.Glide
 import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView presente nella ChangeBackdropActivity.
+ * In breve, mostra le immagini di sfondo disponibili per il profilo in una griglia di due colonne.
+ *
+ * @param listener listener per la selezione di un'immagine di sfondo
+ *
+ * @author nicolobartolinii
+ */
 class BackdropAdapter(private val listener: ImageSelectionListener) :
     RecyclerView.Adapter<BackdropAdapter.ViewHolder>() {
 

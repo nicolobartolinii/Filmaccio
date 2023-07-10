@@ -44,6 +44,15 @@ import kotlinx.coroutines.launch
 // contorto perché è stato un casino farlo bene, ma alla fine è venuto fuori un buon risultato quindi ci sta.
 // Per il resto questo fragment ancora non è del tutto implementato, mancano alcuni dettagli e ci saranno
 // sicuramente dei bug da risolvere.
+
+/**
+ * Fragment che mostra il profilo dell'utente corrente. In questa schermata abbiamo in alto il backdrop scelto dall'utente
+ * e sotto abbiamo: la foto profilo dell'utente, il nome visualizzato, lo username, le informazioni sui film/serie
+ * e sui followers/following e poi le liste di film/serie dell'utente.
+ *
+ * @author nicolobartolinii
+ * @author NicolaPiccia
+ */
 class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
@@ -90,7 +99,6 @@ class ProfileFragment : Fragment() {
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
 
-        // dichiarazione bottoni
         reloadButton = binding.reloadButton
         settingsButton = binding.settingsButton
         editProfileButton = binding.editProfileButton
@@ -109,34 +117,34 @@ class ProfileFragment : Fragment() {
         val followingFlow = FirestoreService.getFollowing(currentUserUid)
 
         viewLifecycleOwner.lifecycleScope.launch {
-            //funzione per ottenere i followers
+            // funzione per ottenere i followers
             followersFlow.collect { followers ->
                 followerTextView.text = followers.size.toString()
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            //funzione per ottenere i following
+            // funzione per ottenere i following
             followingFlow.collect { following ->
                 followingTextView.text = following.size.toString()
             }
         }
         viewLifecycleOwner.lifecycleScope.launch {
-            //funzione per ottenere i following in array list per passarli successivamente
+            // funzione per ottenere i following in array list per passarli successivamente alla view all
             followingFlow.collect { followingFlow ->
                 followingArrayList = ArrayList(followingFlow)
             }
         }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            //funzione per ottenere i follower  in array list per passarli successivamente
+            // funzione per ottenere i follower in array list per passarli successivamente alla view all
             followersFlow.collect { followersFlow ->
                 followersArrayList = ArrayList(followersFlow)
             }
         }
 
         followingCard.setOnClickListener {
-            // clicco su following e parte il view all
+            // Avvio della view all con i following
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
             intent.putExtra("entities", followingArrayList) // entities è la lista di entità
             intent.putExtra("title", "Seguiti") // title è il titolo della schermata
@@ -144,6 +152,7 @@ class ProfileFragment : Fragment() {
         }
 
         followersCard.setOnClickListener {
+            // Avvio della view all con i followers
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
             intent.putExtra("entities", followersArrayList) // entities è la lista di entità
             intent.putExtra("title", "Followers") // title è il titolo della schermata

@@ -11,6 +11,13 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel per la gestione dei dettagli di una persona (attore, regista, ecc.)
+ *
+ * @param personId id della persona
+ *
+ * @author nicolobartolinii
+ */
 class PersonDetailsViewModel(private var personId: Long = 0L) : ViewModel() {
     private val peopleRepository = PeopleRepository()
 
@@ -39,6 +46,13 @@ class PersonDetailsViewModel(private var personId: Long = 0L) : ViewModel() {
         _isFollowed.value = false
     }
 
+    /**
+     * Factory per la creazione di un PersonDetailsViewModel con parametri personalizzati
+     *
+     * @param personId id della persona
+     *
+     * @author nicolobartolinii
+     */
     class PersonDetailsViewModelFactory(private val personId: Long) : ViewModelProvider.Factory {
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             if (modelClass.isAssignableFrom(PersonDetailsViewModel::class.java)) {

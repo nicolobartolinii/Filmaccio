@@ -18,8 +18,12 @@ import it.univpm.filmaccio.main.adapters.PeopleAdapter
 import it.univpm.filmaccio.main.viewmodels.FeedViewModel
 import kotlinx.coroutines.launch
 
-// Questo fragment è la schermata in cui dovrebbe essere mostrato il feed di film, serie TV, persone
-// e altri utenti all'utente. Per ora non è stato implementato nulla.
+/**
+ * Fragment che mostra il feed dell'utente. Quindi la lista di recensioni fatte dagli utenti seguiti
+ * e la lista di personaggi seguiti.
+ *
+ * @author nicolobartolinii
+ */
 class FeedFragment : Fragment() {
     private var _binding: FragmentFeedBinding? = null
     private val binding get() = _binding!!
@@ -51,8 +55,6 @@ class FeedFragment : Fragment() {
         peopleViewFlipper.displayedChild = 0
 
         peopleRecyclerView.layoutManager = GridLayoutManager(requireContext(), 3)
-
-        // feedAdapter = FeedAdapter()
 
         feedViewModel.usersFeed.observe(viewLifecycleOwner) { feed ->
             if (feed == null) feedViewFlipper.displayedChild = 0
@@ -87,10 +89,10 @@ class FeedFragment : Fragment() {
 
         infoButton.setOnClickListener {
             MaterialAlertDialogBuilder(requireContext()).setTitle("Info").setMessage(
-                    "In questa schermata puoi osservare l'ultima recensione effettuata dagli utenti che segui e la lista dei personaggi che segui.\n\n" + "Per aggiungere un utente alla lista dei seguiti, vai nella schermata del suo profilo e clicca sul pulsante \"SEGUI\". Se non trovi un utente che segui in questa lista significa che non ha mai recensito nessun prodotto, potrai trovarlo comunque nella scheda degli utenti seguiti nel tuo profilo.\n\n" + "Per aggiungere un personaggio alla lista dei seguiti, cercalo nella schermata di ricerca o nei dettagli di un prodotto in cui è presente e clicca sul pulsante \"SEGUI\".\n\n" + "A volte, quando aggiungi un utente o un personaggio alla lista dei seguiti, potrebbe non comparire subito in questa schermata. In questo caso, clicca sul pulsante accanto a quello di informazioni per aggiornare le liste."
-                ).setPositiveButton("Ok") { dialog, _ ->
-                    dialog.dismiss()
-                }.show()
+                "In questa schermata puoi osservare l'ultima recensione effettuata dagli utenti che segui e la lista dei personaggi che segui.\n\n" + "Per aggiungere un utente alla lista dei seguiti, vai nella schermata del suo profilo e clicca sul pulsante \"SEGUI\". Se non trovi un utente che segui in questa lista significa che non ha mai recensito nessun prodotto, potrai trovarlo comunque nella scheda degli utenti seguiti nel tuo profilo.\n\n" + "Per aggiungere un personaggio alla lista dei seguiti, cercalo nella schermata di ricerca o nei dettagli di un prodotto in cui è presente e clicca sul pulsante \"SEGUI\".\n\n" + "A volte, quando aggiungi un utente o un personaggio alla lista dei seguiti, potrebbe non comparire subito in questa schermata. In questo caso, clicca sul pulsante accanto a quello di informazioni per aggiornare le liste."
+            ).setPositiveButton("Ok") { dialog, _ ->
+                dialog.dismiss()
+            }.show()
         }
 
         return binding.root

@@ -18,6 +18,16 @@ import com.google.android.material.imageview.ShapeableImageView
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Series
 
+/**
+ * Adapter per la RecyclerView che mostra le stagioni di una serie
+ *
+ * @param seriesId id della serie
+ * @param seasons lista di stagioni
+ * @param context contesto
+ * @param isSeriesInWatching true se la serie è nella lista "In visione" dell'utente, false altrimenti
+ *
+ * @author nicolobartolinii
+ */
 class SeasonsAdapter(
     private val seriesId: Long,
     private val seasons: List<Series.Season>,

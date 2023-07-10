@@ -24,6 +24,14 @@ import it.univpm.filmaccio.main.viewmodels.HomeViewModel
 // Le informazioni su feed e episodi non sono ancora mostrate quindi le ho rimpiute con dei rettangoli placeholder.
 // I film in onda invece vengono mostrati, senza però aver ancora implementato il pulsante "vedi tutti". Quindi
 // si vedono solo i primi tre.
+
+/**
+ * Questo fragment è la schermata home dell'app. In questa schermata vengono mostrati i film attualmente in onda,
+ * e le classifiche dei film e delle serie tv più votati in base alle valutazioni fornite dagli utenti
+ * della nostra app.
+ *
+ * @author nicolobartolinii
+ */
 class HomeFragment : Fragment() {
     private var _binding: FragmentHomeBinding? = null
     private val binding get() = _binding!!
@@ -71,7 +79,7 @@ class HomeFragment : Fragment() {
         val nowPlayingMovieIds = mutableListOf(0L, 0L, 0L)
         // Qui osserviamo il LiveData che contiene i film in onda nel viewmodel.
         // Questa è una gestione asincrona dei dati. Si osserva la variabile nowPlayingMovies del viewModel
-        // e quando questa cambia si esegue il codice che c'è dentro il blocco di codice.
+        // e quando questa cambia si esegue il codice che c'è dentro il blocco.
         homeViewModel.nowPlayingMovies.observe(viewLifecycleOwner) {
             latestReleases = it.movies
             // Quando la variabile del viewModel cambia (cioè quando il viewModel viene inizializzato, come si
@@ -86,10 +94,10 @@ class HomeFragment : Fragment() {
                 // Questo link è standard fino a dopo il p/ dopo di che abbiamo la definizione della larghezza
                 // dell'immagine da reperire da TMDB. Questa larghezza non è un numero a caso, infatti bisogna
                 // controllare che il tipo di immagine che si sta ottenendo (poster, backdrop, etc.) sia
-                // supportata dall'API. In questo caso prendo come larghezza 185 perché tra le larghezze supportate
+                // supportata dall'API. In questo caso prendiamo come larghezza 185 perché tra le varie larghezze supportate
                 // per i poster credo che sia quella che più si avvicina a quello che ci serve in questa situazione.
                 // Nella schermata di dettaglio dei film invece si utilizza una larghezza maggiore perché si vuole
-                // che l'immagine sia più grande (infatti uso w342 se non sbaglio).
+                // che l'immagine sia più grande (w342).
             }
         }
 
@@ -194,7 +202,14 @@ class HomeFragment : Fragment() {
         binding.buttonTopRatedSeriesViewAll.setOnClickListener {
             val tmdbEntitySeries = ArrayList<TmdbEntity>()
             for (series in topRatedSeries.take(25)) {
-                tmdbEntitySeries.add(TmdbEntity(series.id, series.title, series.posterPath, "series"))
+                tmdbEntitySeries.add(
+                    TmdbEntity(
+                        series.id,
+                        series.title,
+                        series.posterPath,
+                        "series"
+                    )
+                )
             }
             val intent = Intent(requireContext(), ViewAllActivity::class.java)
             intent.putExtra("entities", tmdbEntitySeries)

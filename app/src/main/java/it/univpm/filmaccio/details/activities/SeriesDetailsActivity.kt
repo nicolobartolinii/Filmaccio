@@ -34,6 +34,11 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import java.text.SimpleDateFormat
 import java.util.Locale
 
+/**
+ * Activity che mostra i dettagli di una serie tv
+ *
+ * @author nicolobartolinii
+ */
 class SeriesDetailsActivity : AppCompatActivity() {
 
     private lateinit var seriesDetailsViewModel: SeriesDetailsViewModel
@@ -214,10 +219,8 @@ class SeriesDetailsActivity : AppCompatActivity() {
         overviewTextView.setOnClickListener {
             if (overviewFullText.length < 200) return@setOnClickListener
             if (overviewTextView.text.toString().length == 216) {
-                // Se il testo è attualmente collassato, espandilo
                 overviewTextView.text = overviewFullText
             } else {
-                // Se il testo è attualmente espanso, collassalo
                 val spannableString =
                     SpannableString(overviewFullText.take(200) + "... Più dettagli")
                 spannableString.setSpan(

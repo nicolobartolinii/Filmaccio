@@ -23,6 +23,12 @@ import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
 
+/**
+ * Questa classe contiene i test strumentali dell'applicazione.
+ * I test strumentali sono test che vengono eseguiti direttamente sul dispositivo.
+ *
+ * @author nicolobartolinii
+ */
 @RunWith(AndroidJUnit4::class)
 class InstrumentedTests {
 

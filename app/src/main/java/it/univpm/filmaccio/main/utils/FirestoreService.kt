@@ -2,7 +2,6 @@
 
 package it.univpm.filmaccio.main.utils
 
-import android.util.Log
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.FieldValue
 import com.google.firebase.firestore.FirebaseFirestore
@@ -17,11 +16,16 @@ import kotlinx.coroutines.tasks.await
 import java.text.SimpleDateFormat
 import java.util.Locale
 
-// Questo oggetto singleton si occupa di gestire tutte le operazioni che riguardano il database
-// Firestore. In particolare, contiene un oggetto FirebaseFirestore che rappresenta il database
-// e contiene i riferimenti alle collezioni del database.
-// Poi ci sono parecchi metodi che permettono di effettuare operazioni sul database. Sono abbastanza
-// autoesplicativi, quindi non mi metterò a commentarli.
+/**
+ * Questo oggetto singleton si occupa di gestire tutte le operazioni che riguardano il database
+ * Firestore. In particolare, contiene un oggetto FirebaseFirestore che rappresenta il database
+ * e contiene i riferimenti alle collezioni del database.
+ * Poi ci sono parecchi metodi che permettono di effettuare operazioni sul database. Sono abbastanza
+ * autoesplicativi.
+ *
+ * @author nicolobartolinii
+ * @author NicolaPiccia
+ */
 object FirestoreService {
 
     private val db: FirebaseFirestore by lazy { Firebase.firestore }
@@ -397,7 +401,6 @@ object FirestoreService {
                 val date = latestTimestamp.toDate()
                 val format = SimpleDateFormat("dd/MM/yyyy HH:mm", Locale.ITALY)
                 val dateString = format.format(date)
-                Log.d("DATE", "$key1, $value1, $value2, $dateString")
                 latestReview = Triple(key1, value2["text"] as String, dateString)
             }
         }

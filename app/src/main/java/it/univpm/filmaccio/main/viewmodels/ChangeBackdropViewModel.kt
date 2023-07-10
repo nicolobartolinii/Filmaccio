@@ -11,6 +11,11 @@ import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.launch
 import kotlin.random.Random
 
+/**
+ * Questa classe è il ViewModel che gestisce la ChangeBackdropActivity.
+ *
+ * @author nicolobartolinii
+ */
 class ChangeBackdropViewModel : ViewModel() {
 
     var backdropsTotal = listOf<String>()

@@ -18,6 +18,11 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.details.adapters.ProductsAdapter
 import it.univpm.filmaccio.details.viewmodels.PersonDetailsViewModel
 
+/**
+ * Activity che mostra i dettagli di una persona
+ *
+ * @author nicolobartolinii
+ */
 class PersonDetailsActivity : AppCompatActivity() {
 
     private lateinit var personDetailsViewModel: PersonDetailsViewModel
@@ -93,7 +98,6 @@ class PersonDetailsActivity : AppCompatActivity() {
                     genderTextView.text = "Femminile"
                     knownForLabel.text = "Conosciuta per"
                 }
-
                 2 -> genderTextView.text = "Maschile"
                 else -> genderTextView.text = "Non disponibile"
             }
@@ -136,10 +140,8 @@ class PersonDetailsActivity : AppCompatActivity() {
         biographyTextView.setOnClickListener {
             if (biographyFullText.length < 200) return@setOnClickListener
             if (biographyTextView.text.toString().length == 216) {
-                // Se il testo è attualmente collassato, espandilo
                 biographyTextView.text = biographyFullText
             } else {
-                // Se il testo è attualmente espanso, collassalo
                 val spannableString =
                     SpannableString(biographyFullText.take(200) + "... Più dettagli")
                 spannableString.setSpan(

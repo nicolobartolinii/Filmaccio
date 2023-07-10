@@ -18,6 +18,14 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.main.adapters.BackdropAdapter
 import it.univpm.filmaccio.main.viewmodels.ChangeBackdropViewModel
 
+/**
+ * Questa classe è l'activity che gestisce la scelta dello sfondo del profilo.
+ * In breve contiene una griglia di immagini basate sui film e sulle serie TV preferite dall'utente.
+ * L'utente può scorrere le pagine con i pulsanti in basso e confermare la scelta selezionando un'immagine
+ * e cliccando sull'ExtendedFloatingActionButton che comparirà in basso a destra.
+ *
+ * @author nicolobartolinii
+ */
 class ChangeBackdropActivity : AppCompatActivity(), BackdropAdapter.ImageSelectionListener {
 
     private val changeBackdropViewModel: ChangeBackdropViewModel by viewModels()

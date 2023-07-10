@@ -2,7 +2,6 @@ package it.univpm.filmaccio.main.adapters
 
 import android.annotation.SuppressLint
 import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -28,6 +27,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView presente nella ViewAllActivity.
+ * In breve, mostra una lista di molti tipi di entità (serie, film, persone, utenti, recensioni).
+ *
+ * @author nicolobartolinii
+ * @author NicolaPiccia
+ */
 class ViewAllAdapter(private val type: Char = 'm') :
     RecyclerView.Adapter<ViewAllAdapter.ViewHolder>() {
 
@@ -214,7 +220,6 @@ class ViewAllAdapter(private val type: Char = 'm') :
                 CoroutineScope(Dispatchers.Main).launch {
                     FirestoreService.getUserByUid(entity).collect { user ->
                         withContext(Dispatchers.Main) {
-                            Log.d("ViewAllAdapter", "User: $user") // Log the user
                             holder.title.text = user?.nameShown
                             Glide.with(holder.itemView.context).load(user?.profileImage)
                                 .into(holder.shapeableImageView)

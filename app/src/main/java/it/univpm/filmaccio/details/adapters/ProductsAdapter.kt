@@ -13,6 +13,13 @@ import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.details.activities.MovieDetailsActivity
 import it.univpm.filmaccio.details.activities.SeriesDetailsActivity
 
+/**
+ * Adapter per la RecyclerView che mostra i prodotti relativi ad una persona
+ *
+ * @param products lista di prodotti
+ *
+ * @author nicolobartolinii
+ */
 class ProductsAdapter(private val products: List<Person.Product>) :
     RecyclerView.Adapter<ProductsAdapter.ViewHolder>() {
 

@@ -13,6 +13,15 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.Person
 import it.univpm.filmaccio.details.activities.PersonDetailsActivity
 
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView di persone seguite nella schermata feed.
+ * In breve, mostra le persone seguite dall'utente in una griglia di tre colonne.
+ *
+ * @param followedPeople lista di persone seguite dall'utente
+ * @param context contesto dell'applicazione
+ *
+ * @author nicolobartolinii
+ */
 class PeopleAdapter(
     private val followedPeople: List<Person>,
     private val context: Context

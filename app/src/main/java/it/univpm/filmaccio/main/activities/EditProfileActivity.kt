@@ -26,6 +26,12 @@ import it.univpm.filmaccio.main.utils.FirestoreService
 import it.univpm.filmaccio.main.utils.UserUtils
 import java.io.ByteArrayOutputStream
 
+/**
+ * Questa classe è l'activity che gestisce la schermata di modifica del profilo utente.
+ *
+ * @author nicolobartolinii
+ * @author NicolaPiccia
+ */
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var resultLauncher: ActivityResultLauncher<Intent>
@@ -108,7 +114,6 @@ class EditProfileActivity : AppCompatActivity() {
         }
         val auth = UserUtils.auth
 
-        // funzione per cambiare la password, prendo da email la mail di ogni utente e chiamo metodo predefinito di firebase
         buttonChangePassword.setOnClickListener {
             val email = intent.getStringExtra("email")
             auth.sendPasswordResetEmail(email!!).addOnCompleteListener { task ->
@@ -128,9 +133,8 @@ class EditProfileActivity : AppCompatActivity() {
         resultLauncher =
             registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                 if (result.resultCode == Activity.RESULT_OK) {
-                    // ottieni l'URL dell'immagine di sfondo selezionato
+                    // ottiene l'URL dell'immagine di sfondo selezionato
                     selectedBackdropImageUrl = result.data?.getStringExtra("selectedImageUrl")
-                    // carica l'immagine nella tua ImageView
                     Glide.with(this).load(selectedBackdropImageUrl).into(backdropImageView)
 
                     saveBackdropButton.isEnabled = true

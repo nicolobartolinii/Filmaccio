@@ -5,7 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import it.univpm.filmaccio.databinding.ActivityViewAllBinding
 import it.univpm.filmaccio.main.adapters.ViewAllAdapter
 
-@Suppress("UNCHECKED_CAST")
+/**
+ * Questa classe è l'activity che gestisce la visualizzazione di una lista di entità qualsiasi.
+ * È estremamente flessibile perché può visualizzare una lista di entità di moltissimi tipi: film, serie
+ * TV, persone, utenti, recensioni.
+ *
+ * @author nicolobartolinii
+ */
+@Suppress("UNCHECKED_CAST", "DEPRECATION")
 class ViewAllActivity : AppCompatActivity() {
     private lateinit var binding: ActivityViewAllBinding
     private lateinit var viewAllAdapter: ViewAllAdapter

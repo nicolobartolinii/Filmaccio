@@ -3,9 +3,24 @@ package it.univpm.filmaccio.data.models
 import com.google.firebase.Timestamp
 import java.io.Serializable
 
-// Data class che rappresenta un utente dell'applicazione. Questa classe ci serve sia per
-// mostrare gli utenti nella funzionalità di ricerca che per mostrari le informazioni
-// di altri utenti nelle schermate di profilo (non ancora implementate per utenti diversi da quello attuale).
+/**
+ * Data class che rappresenta un utente dell'applicazione.
+ *
+ * @param uid uid dell'utente
+ * @param username username dell'utente
+ * @param email email dell'utente
+ * @param profileImage path dell'immagine del profilo dell'utente
+ * @param nameShown nome visualizzato dell'utente
+ * @param gender genere dell'utente
+ * @param birthDate data di nascita dell'utente
+ * @param backdropImage path dell'immagine di sfondo dell'utente
+ * @param movieMinutes minuti totali di film visti dall'utente
+ * @param moviesNumber numero totale di film visti dall'utente
+ * @param tvMinutes minuti totali di serie TV viste dall'utente
+ * @param tvNumber numero totale di episodi visti dall'utente
+ *
+ * @author nicolobartolinii
+ */
 data class User(
     var uid: String = "",
     var username: String = "",

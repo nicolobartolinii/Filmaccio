@@ -15,6 +15,13 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel per la gestione dei dettagli di una serie tv
+ *
+ * @param seriesId id della serie tv
+ *
+ * @author nicolobartolinii
+ */
 class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
     private val seriesRepository = SeriesRepository()
 
@@ -143,9 +150,17 @@ class SeriesDetailsViewModel(private var seriesId: Long = 0L) : ViewModel() {
         }
     }
 
+    @Suppress("UNUSED")
     suspend fun getSeriesReviews(seriesId: Long) = seriesRepository.getSeriesReviews(seriesId)
 }
 
+/**
+ * Factory per la creazione di un [SeriesDetailsViewModel] con parametri personalizzati.
+ *
+ * @param seriesId id della serie tv
+ *
+ * @author nicolobartolinii
+ */
 class SeriesDetailsViewModelFactory(private val seriesId: Long) : ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(SeriesDetailsViewModel::class.java)) {

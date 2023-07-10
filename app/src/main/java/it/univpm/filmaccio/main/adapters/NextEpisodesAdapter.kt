@@ -24,6 +24,19 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView presente nell'EpisodesFragment.
+ * In breve, mostra il prossimo episodio che l'utente deve vedere per ogni serie che sta vedendo.
+ * Ogni episodio è composto da un'immagine della serie, il nome della serie, il numero della stagione,
+ * il numero dell'episodio, il nome dell'episodio e un pulsante per segnare l'episodio come visto.
+ * Cliccando sul nome della serie si viene reindirizzati alla pagina di dettaglio della serie.
+ * Cliccando sul pulsante per segnare l'episodio come visto, l'episodio viene segnato come visto nel database.
+ *
+ * @param nextEpisodes lista di prossimi episodi da mostrare
+ * @param context contesto dell'activity
+ *
+ * @author nicolobartolinii
+ */
 class NextEpisodesAdapter(
     private val nextEpisodes: List<NextEpisode>, private val context: Context
 ) : RecyclerView.Adapter<NextEpisodesAdapter.NextEpisodeViewHolder>() {
@@ -68,7 +81,11 @@ class NextEpisodesAdapter(
             FirestoreService.addWatchedEpisode(
                 uid, episode.seriesId, episode.seasonNumber, episode.episodeNumber
             )
-            usersRepository.updateUserField(uid, "tvMinutes", FieldValue.increment(episode.duration.toLong())) {}
+            usersRepository.updateUserField(
+                uid,
+                "tvMinutes",
+                FieldValue.increment(episode.duration)
+            ) {}
             usersRepository.updateUserField(uid, "tvNumber", FieldValue.increment(1)) {}
             holder.buttonWatchEpisode.setBackgroundColor(colorTertiary)
             holder.buttonWatchEpisode.setIconResource(R.drawable.ic_check)

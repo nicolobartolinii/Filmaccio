@@ -9,8 +9,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 
-// Questa classe è il ViewModel della schermata del profilo dell'applicazione, quindi si occupa di gestire
-// i dati relativi all'utente che vengono mostrati nella schermata del profilo.
+/**
+ * Questa classe è il ViewModel della schermata del profilo dell'applicazione, quindi si occupa di gestire
+ * i dati relativi all'utente che vengono mostrati nella schermata del profilo.
+ *
+ * @author nicolobartolinii
+ */
 class ProfileViewModel : ViewModel() {
 
     // Qui creiamo un oggetto MutableStateFlow che conterrà l'utente corrente.
@@ -35,9 +39,8 @@ class ProfileViewModel : ViewModel() {
     // Questo metodo si occupa di caricare l'utente corrente. Per farlo, utilizza il metodo
     // getUserByUid del FirestoreService, che restituisce un Flow<User?>. Questo Flow viene
     // osservato e ogni volta che cambia il valore, viene emesso un nuovo valore per l'oggetto
-    // _currentUser. Ovviamente cambia solo quando il ViewModel viene inizializzato, perché
-    // inizialmente currentUser è null e poi non cambia più (ovviamente a meno che l'utente non
-    // effettui il Logout, ma in quel caso verrebbe ricaricato comunque l'intero fragment).
+    // _currentUser. Ovviamente cambia solo quando il ViewModel viene inizializzato o la schermata
+    // viene ricaricata (cioè viene chiamato questo metodo).
     fun loadCurrentUser() = viewModelScope.launch {
         val currentUserUid = UserUtils.getCurrentUserUid()
         FirestoreService.getUserByUid(currentUserUid!!).collect {

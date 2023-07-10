@@ -14,8 +14,12 @@ import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
-// Questa classe è il ViewModel della schermata di ricerca dell'applicazione, quindi si occupa di gestire
-// i dati relativi ai film, serie TV, persone e utenti che vengono mostrati nella schermata di ricerca.
+/**
+ * Questa classe è il ViewModel della schermata di ricerca dell'applicazione, quindi si occupa di gestire
+ * i dati relativi ai film, serie TV, persone e utenti che vengono mostrati nella schermata di ricerca.
+ *
+ * @author nicolobartolinii
+ */
 class SearchViewModel : ViewModel() {
     // Qui otteniamo i vari repository che ci servono
     private val movieRepository = MovieRepository()
@@ -48,16 +52,10 @@ class SearchViewModel : ViewModel() {
     }
 
     // Qui abbiamo la funzione search che viene chiamata quando il testo nella barra di ricerca cambia.
-    // Il funzionamento della funzionalità di ricerca intreccia due modi diversi di gestire
-    // la programmazione asincrona: le coroutine e i flussi. Quindi questo codice può essere un po'
-    // difficile da capire. Lo è anche per me, ci ho messo molto a trovare il modo di far funzionare questa
-    // funzionalità, ma intrecciare coroutine e flussi è l'unico modo che ho trovato per farlo.
     fun search(query: String) = viewModelScope.launch(Dispatchers.IO) {
-
         // Qui creiamo un oggetto che contiene la chiamata al repository per la ricerca di film, serie TV e persone (entità TMDB)
         val multiTmdbSearch = async { searchRepository.searchMulti(query) }
-        // Qui invece creiamo un oggetto che contiene la chiamata al repository per la ricerca di utenti (tramite Firestore, perché
-        // i dati degli utenti non sono su TMDB ma su Firebase)
+        // Qui invece creiamo un oggetto che contiene la chiamata al repository per la ricerca di utenti
         val usersSearch = if (query.isNotEmpty()) {
             FirestoreService.searchUsers(query)
                 .toList()[0] // Questo indice 0 è necessario perché la funzione toList() restituisce un flusso di liste, e noi vogliamo solo la prima (e unica) lista

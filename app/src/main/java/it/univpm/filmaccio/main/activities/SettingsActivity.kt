@@ -12,6 +12,11 @@ import com.google.firebase.auth.FirebaseAuth
 import it.univpm.filmaccio.R
 import it.univpm.filmaccio.auth.AuthActivity
 
+/**
+ * Questa classe è l'activity che gestisce le impostazioni dell'applicazione.
+ *
+ * @author NicolaPiccia
+ */
 class SettingsActivity : AppCompatActivity() {
 
     // creo la activity e imposta il layout sul mio xml

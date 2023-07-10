@@ -9,8 +9,12 @@ import it.univpm.filmaccio.data.repository.SeriesRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
 import kotlinx.coroutines.Dispatchers
 
-// Questa classe è il ViewModel della schermata home dell'applicazione, quindi si occupa di gestire
-// i dati relativi ai film che vengono mostrati nella schermata home.
+/**
+ * Questa classe è il ViewModel della schermata home dell'applicazione, quindi si occupa di gestire
+ * i dati relativi ai film e alle serie TV che vengono mostrati nella schermata home.
+ *
+ * @author nicolobartolinii
+ */
 class HomeViewModel : ViewModel() {
     // Qui creiamo un oggetto che contiene il repository per i film
     private val movieRepository = MovieRepository()
@@ -27,6 +31,8 @@ class HomeViewModel : ViewModel() {
         emit(movies)
     }
 
+    // Qui otteniamo i film con una media di valutazione più alta. Per fare questo, otteniamo tutti i
+    // film con le rispettive valutazioni dal database e poi ordiniamo la lista in base alla media valutazione.
     val topRatedMovies = liveData(Dispatchers.IO) {
         var movies = FirestoreService.getAllRatings("movies")
         movies = movies.sortedBy { -it.second }
@@ -37,6 +43,7 @@ class HomeViewModel : ViewModel() {
         emit(moviesList)
     }
 
+    // Analogo a quanto fatto per i film, otteniamo le serie tv con una media di valutazione più alta.
     val topRatedSeries = liveData(Dispatchers.IO) {
         var series = FirestoreService.getAllRatings("series")
         series = series.sortedBy { -it.second }

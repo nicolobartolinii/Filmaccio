@@ -1,6 +1,5 @@
 package it.univpm.filmaccio.details.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -9,13 +8,18 @@ import androidx.lifecycle.viewModelScope
 import it.univpm.filmaccio.data.models.User
 import it.univpm.filmaccio.data.repository.UsersRepository
 import it.univpm.filmaccio.main.utils.FirestoreService
-import it.univpm.filmaccio.main.utils.UserUtils
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
+/**
+ * ViewModel per la gestione dei dettagli di un utente dell'applicazione
+ *
+ * @param uid id dell'utente
+ *
+ * @author NicolaPiccia
+ * @author nicolobartolinii
+ */
 class UserDetailsViewModel(private val uid: String) : ViewModel() {
 
     private val usersRepository = UsersRepository()

@@ -16,8 +16,12 @@ import it.univpm.filmaccio.R
 import it.univpm.filmaccio.data.models.ProfileListItem
 import it.univpm.filmaccio.main.activities.ViewAllActivity
 
-// Questo adapter serve per la RecyclerView che mostra le liste di film e serie TV salvate dall'utente.
-// Non è ancora implementato benissimo infatti è da rivedere perché a volte porta a dei crash.
+/**
+ * Questa classe è l'adapter che gestisce la RecyclerView presente nel ProfileFragment.
+ * In breve, mostra le liste di film e serie TV salvate dall'utente.
+ *
+ * @author nicolobartolinii
+ */
 class ProfileHorizontalListAdapter(
     private val userLists: Map<String, List<Long>>, private val context: Context
 ) : ListAdapter<ProfileListItem, ProfileHorizontalListAdapter.ProfileHorizontalListsViewHolder>(
@@ -33,7 +37,7 @@ class ProfileHorizontalListAdapter(
     }
 
     override fun onBindViewHolder(holder: ProfileHorizontalListsViewHolder, position: Int) {
-        val item = getItem(position) // Ottieni l'elemento corrente utilizzando getItem(position)
+        val item = getItem(position)
 
         holder.listName.text = item.title
         if (item.imageURL1 != "") {
